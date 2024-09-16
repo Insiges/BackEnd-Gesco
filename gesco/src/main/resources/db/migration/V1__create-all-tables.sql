@@ -1,4 +1,3 @@
-
 create table escola(
 id int not null auto_increment primary key,
 nome varchar(255) not null,
@@ -85,6 +84,14 @@ ON DELETE CASCADE,
 unique index(id)
 );
 
+create table sexo(
+id int not null auto_increment primary key,
+nome varchar(10) not null,
+sigla varchar(2) not null,
+
+unique index(id)
+);
+
 create table alunos(
 id int not null auto_increment primary key,
 nome varchar(100) not null,
@@ -95,6 +102,11 @@ email varchar(255) not null,
 telefone varchar(20) not null unique,
 foto varchar(500) not null,
 id_escola int not null,
+id_sexo int not null,
+
+CONSTRAINT fk_AlunosSexo
+FOREIGN KEY (id_sexo) REFERENCES sexo(id)
+ON DELETE CASCADE,
 
 CONSTRAINT fk_alunosEscola
 FOREIGN KEY (id_escola) REFERENCES escola(id)
@@ -159,6 +171,11 @@ telefone varchar(20) not null,
 dataNascimento date not null,
 foto varchar(500) not null,
 id_escola int not null,
+id_sexo int not null,
+
+CONSTRAINT fk_ProfessorSexo
+FOREIGN KEY (id_sexo) REFERENCES sexo(id)
+ON DELETE CASCADE,
 
 CONSTRAINT fk_ProfessorEscola
 FOREIGN KEY (id_escola) REFERENCES escola(id)
@@ -253,6 +270,11 @@ telefone varchar(20) not null,
 dataNascimento date not null,
 foto varchar(500) not null,
 id_escola int not null,
+id_sexo int not null,
+
+CONSTRAINT fk_ResponsavelSexo
+FOREIGN KEY (id_sexo) REFERENCES sexo(id)
+ON DELETE CASCADE,
 
 CONSTRAINT fk_ResponsavelEscola
 FOREIGN KEY (id_escola) REFERENCES escola(id)
@@ -389,7 +411,7 @@ create table reserva_sala(
 id int not null auto_increment primary key,
 dia date not null,
 hora time not null,
-id_sala int not null,
+id_sala int not null, 
 id_professor int not null,
 
 CONSTRAINT fk_ReservaSala_Sala
@@ -417,3 +439,4 @@ ON DELETE CASCADE,
 
 unique index(id)
 );
+

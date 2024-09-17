@@ -1,10 +1,7 @@
 package com.api.gesco.controller;
 
 import com.api.gesco.domain.escola.DadosCadastroEscola;
-import com.api.gesco.domain.escola.DadosDetalhamentoEscola;
-import com.api.gesco.model.Escola;
-import com.api.gesco.repository.EscolaRepository;
-import com.api.gesco.service.EscolaService;
+import com.api.gesco.service.escola.EscolaService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -25,8 +22,7 @@ public class EscolaController {
     @PostMapping
     @Transactional
     public ResponseEntity cadastrarEscola(@RequestBody @Valid DadosCadastroEscola dados, UriComponentsBuilder uriBuilder){
-        var escola = cadastrarEscola(dados,uriBuilder);
-
+        var escola = service.cadastrarEscola(dados, uriBuilder);
         return escola;
     }
 }

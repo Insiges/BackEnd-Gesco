@@ -246,6 +246,9 @@ dia date not null,
 id_aluno int not null,
 id_disciplina int not null,
 id_professor int not null,
+presenca ENUM('Presente', 'Ausente')
+);
+
 
 CONSTRAINT fk_frequenciaProfessor
 FOREIGN KEY (id_professor) REFERENCES professor(id)

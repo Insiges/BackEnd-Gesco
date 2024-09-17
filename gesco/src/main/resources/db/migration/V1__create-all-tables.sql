@@ -1,3 +1,12 @@
+
+create table sexo(
+id int not null auto_increment primary key,
+nome varchar(10) not null,
+sigla varchar(2) not null,
+
+unique index(id)
+);
+
 create table escola(
 id int not null auto_increment primary key,
 nome varchar(255) not null,
@@ -32,7 +41,7 @@ unique index(id)
 
 create table estado(
 id int not null auto_increment primary key,
-nome varchar(20) not null,
+nome varchar(20) not null unique,
 sigla varchar(2) not null,
 
 unique index(id)
@@ -40,11 +49,10 @@ unique index(id)
 
 create table cidade(
 id int not null auto_increment primary key,
-nome varchar(35) not null,
+nome varchar(35) not null unique,
 
 unique index(id)
 );
-
 
 create table enderecoEscola(
 id int not null primary key auto_increment,
@@ -52,6 +60,7 @@ logradouro varchar(100) not null,
 cep varchar(10) not null,
 bairro varchar(40) not null,
 complemento varchar(20) not null,
+numero varchar(5) not null,
 id_cidade int not null,
 id_estado int not null,
 id_escola int not null,
@@ -80,14 +89,6 @@ id_escola int not null,
 CONSTRAINT fk_turmaEscola
 FOREIGN KEY (id_escola) REFERENCES escola(id)
 ON DELETE CASCADE,
-
-unique index(id)
-);
-
-create table sexo(
-id int not null auto_increment primary key,
-nome varchar(10) not null,
-sigla varchar(2) not null,
 
 unique index(id)
 );
@@ -246,6 +247,7 @@ dia date not null,
 id_aluno int not null,
 id_disciplina int not null,
 id_professor int not null,
+presenca ENUM('Presente', 'Ausente'),
 
 CONSTRAINT fk_frequenciaProfessor
 FOREIGN KEY (id_professor) REFERENCES professor(id)
@@ -411,7 +413,7 @@ create table reserva_sala(
 id int not null auto_increment primary key,
 dia date not null,
 hora time not null,
-id_sala int not null, 
+id_sala int not null,
 id_professor int not null,
 
 CONSTRAINT fk_ReservaSala_Sala
@@ -439,4 +441,3 @@ ON DELETE CASCADE,
 
 unique index(id)
 );
-

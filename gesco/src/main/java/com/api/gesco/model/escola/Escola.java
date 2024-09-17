@@ -1,4 +1,4 @@
-package com.api.gesco.model;
+package com.api.gesco.model.escola;
 
 import com.api.gesco.domain.escola.DadosCadastroEscola;
 import jakarta.persistence.*;

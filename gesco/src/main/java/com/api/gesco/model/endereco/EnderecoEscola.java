@@ -27,11 +27,14 @@ public class EnderecoEscola {
     private Long id_estado;
     private Long id_escola;
 
-    public EnderecoEscola(DadosEndereco dados) {
+    public EnderecoEscola(DadosEndereco dados, Long escola, Long estado, Long cidade) {
         this.logradouro = dados.logradouro();
         this.bairro = dados.bairro();
         this.cep = dados.cep();
         this.numero = dados.numero();
         this.complemento = dados.complemento();
+        this.id_escola = escola;
+        this.id_cidade = cidade;
+        this.id_estado = estado;
     }
 }

@@ -74,7 +74,7 @@ FOREIGN KEY (id_cidade) REFERENCES cidade(id)
 ON DELETE CASCADE,
 
 CONSTRAINT fk_enderecoEscola_Estado
-FOREIGN KEY (id_estado) REFERENCES escola(id)
+FOREIGN KEY (id_estado) REFERENCES estado(id)
 ON DELETE CASCADE,
 unique index(id)
 );

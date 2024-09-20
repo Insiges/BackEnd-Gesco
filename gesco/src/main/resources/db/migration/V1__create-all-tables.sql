@@ -50,6 +50,11 @@ unique index(id)
 create table cidade(
 id int not null auto_increment primary key,
 nome varchar(35) not null unique,
+id_estado int not null,
+
+CONSTRAINT fk_Cidade_Estado
+FOREIGN KEY (id_estado) REFERENCES estado(id)
+ON DELETE CASCADE,
 
 unique index(id)
 );
@@ -62,7 +67,6 @@ bairro varchar(40) not null,
 complemento varchar(20) not null,
 numero varchar(5) not null,
 id_cidade int not null,
-id_estado int not null,
 id_escola int not null,
 
 CONSTRAINT fk_enderecoEscola
@@ -73,9 +77,6 @@ CONSTRAINT fk_enderecoEscola_Cidade
 FOREIGN KEY (id_cidade) REFERENCES cidade(id)
 ON DELETE CASCADE,
 
-CONSTRAINT fk_enderecoEscola_Estado
-FOREIGN KEY (id_estado) REFERENCES escola(id)
-ON DELETE CASCADE,
 unique index(id)
 );
 

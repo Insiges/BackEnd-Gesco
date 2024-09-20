@@ -1,14 +1,13 @@
 package com.api.gesco.model.escola;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Table(name = "telefoneescola")
 @Entity(name = "TelefoneEscola")
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
@@ -18,10 +17,21 @@ public class TelefoneEscola {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String telefone;
-    private Long id_escola;
 
-    public TelefoneEscola(String telefone, Long id) {
+    @ManyToOne
+    @JoinColumn(name = "id_escola") // Define a chave estrangeira
+    @JsonIgnore
+    private Escola escola;
+
+    public TelefoneEscola(String telefone, Escola escola) {
         this.telefone = telefone;
-        this.id_escola = id;
+        this.escola = escola;
+    }
+
+    public void atualizarTelefone(String telefone){
+
+        if (telefone != null){
+            this.telefone = telefone;
+        }
     }
 }

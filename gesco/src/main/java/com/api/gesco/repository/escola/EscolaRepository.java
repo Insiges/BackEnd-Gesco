@@ -36,5 +36,6 @@ public interface EscolaRepository extends JpaRepository<Escola,Long> {
     List<DadosDetalhamentoEscolas> pegarTodosOsDadosDeUmaEscola( @Param("id") Long id);
 
     Escola getEscolaById(Long id);
+    Escola findOneById(Long id);
 }
 

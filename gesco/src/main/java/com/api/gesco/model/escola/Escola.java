@@ -3,6 +3,7 @@ package com.api.gesco.model.escola;
 import com.api.gesco.domain.escola.DadosAtualizarEscola;
 import com.api.gesco.domain.escola.DadosCadastroEscola;
 import com.api.gesco.model.endereco.EnderecoEscola;
+import com.api.gesco.model.professor.Professor;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -34,6 +35,8 @@ public class Escola {
     @OneToMany(mappedBy = "escola", cascade = CascadeType.ALL)
     private List<EnderecoEscola> enderecos;
 
+    @OneToMany(mappedBy = "escola", cascade = CascadeType.ALL)
+    private List<Professor> professores;
 
     public Escola(DadosCadastroEscola dados) {
         this.nome = dados.nome();

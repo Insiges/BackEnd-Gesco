@@ -25,7 +25,7 @@ public class EscolaController {
     @PostMapping
     public ResponseEntity cadastrarEscola(@RequestBody @Valid DadosCadastroEscola dados, UriComponentsBuilder uriBuilder){
         var escola = service.cadastrarEscola(dados, uriBuilder);
-        return escola;
+        return ResponseEntity.ok(escola);
     }
 
     @GetMapping

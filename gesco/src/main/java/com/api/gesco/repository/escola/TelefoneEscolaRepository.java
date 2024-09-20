@@ -5,4 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface TelefoneEscolaRepository extends JpaRepository<TelefoneEscola, Long> {
     TelefoneEscola findOneByTelefone(String telefone);
+    TelefoneEscola findOneById(Long id);
 }

@@ -1,14 +1,16 @@
 package com.api.gesco.model.escola;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
+import java.util.List;
+import java.util.Optional;
 
 @Table(name = "emailescola")
 @Entity(name = "EmailEscola")
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
@@ -18,10 +20,23 @@ public class EmailEscola {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String email;
-    private Long id_escola;
 
-    public EmailEscola(String email, Long id) {
+    @ManyToOne
+    @JoinColumn(name = "id_escola") // Define a chave estrangeira
+    @JsonIgnore
+    private Escola escola;
+
+    public EmailEscola(String email, Escola escola) {
         this.email = email;
-        this.id_escola = id;
+        this.escola = escola;
     }
+
+    public void atualizarEmail(String email) {
+        System.out.println("Atualizando o email para: " + email);
+        if (email != null) {
+            this.email = email;
+        }
+    }
+
+
 }

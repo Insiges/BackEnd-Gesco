@@ -29,7 +29,7 @@ public class EnderecoService {
     private EnderecoEscolaRepository enderecoRepository;
 
     @Autowired
-    private EnderecoProfessorRepository professorRepository;
+    private EnderecoProfessorRepository enderecoProfessorRepository;
 
     public Estado pesquisarEstado(String sigla){
         var estado = repository.findOneBySigla(sigla.toUpperCase());
@@ -71,8 +71,21 @@ public class EnderecoService {
 
     @Transactional
     public EnderecoProfessor cadastrarEnderecoProfessor(DadosEndereco dados, Professor professor, Cidade cidade){
-        var endereco = professorRepository.save(new EnderecoProfessor(dados, professor, cidade));
+        var endereco = enderecoProfessorRepository.save(new EnderecoProfessor(dados, professor, cidade));
 
         return endereco;
+    }
+
+    @Transactional
+    public EnderecoProfessor atualizarEnderecoProfessor(Long id, EnderecoProfessor enderecoProfessor){
+        var endereco = enderecoProfessorRepository.findOneById(id);
+        if (endereco != null) {
+            var cidade = cadastrarCidade(enderecoProfessor.getCidade().getNome(), enderecoProfessor.getCidade().getEstado().getSigla());
+            enderecoProfessor.setCidade(cidade);
+            endereco.atualizarEndereco(enderecoProfessor);
+            return enderecoProfessorRepository.save(endereco);
+        } else {
+            throw new ValidacaoException(String.format("Não foi possível encontrar um email com esse id!"));
+        }
     }
 }

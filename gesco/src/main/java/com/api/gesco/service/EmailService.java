@@ -37,7 +37,7 @@ public class EmailService {
     }
 
     @Transactional
-    public EmailEscola atualizarEmail(Long id, String emailEscola) {
+    public EmailEscola atualizarEmailEscola(Long id, String emailEscola) {
         var email = escolaRepository.findOneById(id);
         if (email != null) {
             email.atualizarEmail(emailEscola);
@@ -61,6 +61,18 @@ public class EmailService {
     public EmailProfessor cadastrarEmailProfessor(String emailProfessor, Professor professor){
         var email = professorRepository.save(new EmailProfessor(emailProfessor, professor));
         return email;
+    }
+
+
+    @Transactional
+    public EmailProfessor atualizarEmailProfessor(Long id, String emailProfessor) {
+        var email = professorRepository.findOneById(id);
+        if (email != null) {
+            email.atualizarEmail(emailProfessor);
+            return professorRepository.save(email);
+        } else {
+            throw new ValidacaoException(String.format("Não foi possível encontrar um email com esse id!"));
+        }
     }
 
 }

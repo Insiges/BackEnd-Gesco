@@ -1,6 +1,7 @@
 package com.api.gesco.model.professor;
 
 
+import com.api.gesco.domain.professor.DadosAtualizarProfessor;
 import com.api.gesco.domain.professor.DadosCadastroProfessor;
 import com.api.gesco.model.endereco.EnderecoProfessor;
 import com.api.gesco.model.escola.Escola;
@@ -61,6 +62,25 @@ public class Professor {
         this.nome = dados.nome();
         this.escola = escola;
         this.sexo = sexo;
+    }
+
+    public void atualizarProfessor(DadosAtualizarProfessor dados, Sexo sexo){
+        if (dados.cpf() != null){
+            this.cpf = dados.cpf();
+        }
+        if (dados.nome() != null){
+            this.nome = dados.nome();
+        }
+        if (dados.foto() != null){
+            this.foto = dados.foto();
+        }
+        if (dados.data_nascimento() != null){
+            this.dataNascimento = dados.data_nascimento();
+
+        }
+        if (sexo != null){
+            this.sexo =  sexo;
+        }
     }
 
 }

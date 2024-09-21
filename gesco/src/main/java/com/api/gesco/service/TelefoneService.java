@@ -58,4 +58,16 @@ public class TelefoneService {
         var telefone = professorRepository.save(new TelefoneProfessor(telefoneProfessor, professor));
         return telefone;
     }
+
+
+    @Transactional
+    public TelefoneProfessor atualizarProfessor(Long id, String telefoneProfessor){
+        var telefone= professorRepository.findOneById(id);
+        if (telefone != null) {
+            telefone.atualizarTelefone(telefoneProfessor);
+            return professorRepository.save(telefone);
+        } else {
+            throw new ValidacaoException(String.format("Não foi possível encontrar um telefone com esse id!"));
+        }
+    }
 }

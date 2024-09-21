@@ -65,11 +65,18 @@ public class EscolaService {
         return ResponseEntity.ok(escolas);
     }
 
+    @Transactional
     public ResponseEntity atualizarEscola(Long id, DadosAtualizarEscola dados){
         var escola = repository.getEscolaById(id);
-        dados.emails().forEach(email -> emailService.atualizarEmail(email.getId(), email.getEmail()));
+        dados.emails().forEach(email -> emailService.atualizarEmailEscola(email.getId(), email.getEmail()));
         dados.telefones().forEach(telefone -> telefoneService.atualizarTelefone(telefone.getId(), telefone.getTelefone()));
         dados.enderecos().forEach(endereco -> enderecoService.atualizarEnderecoEscola(endereco.getId(), endereco));
+
+        if (escola != null){
+            escola.atualizarEscola(dados);
+
+            repository.save(escola);
+        }
 
         return ResponseEntity.ok(escola);
     }

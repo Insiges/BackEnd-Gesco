@@ -42,6 +42,15 @@ public class Diploma {
         this.professor = professor;
     }
 
+    public Diploma(DadosAtualizarDiploma dados, Professor professor){
+
+        this.faculdade = dados.faculdade();
+        this.fim = dados.fim();
+        this.curso = dados.curso();
+        this.inicio = dados.inicio();
+        this.professor = professor;
+    }
+
     public void atualizarDiploma(DadosAtualizarDiploma dados){
         if(dados.faculdade() != null){
             this.faculdade = dados.faculdade();

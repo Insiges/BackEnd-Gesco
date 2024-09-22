@@ -40,6 +40,9 @@ public class ProfessorService {
     @Autowired
     private SexoService sexoService;
 
+    @Autowired
+    private DiplomaService diplomaService;
+
     @Transactional
     public ResponseEntity cadastrarProfessor(DadosCadastroProfessor dados, UriComponentsBuilder uriBuilder){
         //Valida se os emails já estão cadastrados.
@@ -63,12 +66,14 @@ public class ProfessorService {
 
         var telefone = dados.telefones().stream().map(telefoneProfessor -> telefoneService.cadastrarTelefoneProfessor(telefoneProfessor, professor));
 
+        var diploma = dados.diplomas().stream().map(diplomaProfessor -> diplomaService.cadastrarDiplomaPeloProfessor(diplomaProfessor, professor.getId()));
+
         var cidade = enderecoService.cadastrarCidade(dados.endereco().cidade(), estado.getSigla());
 
         var endereco = enderecoService.cadastrarEnderecoProfessor(dados.endereco(), professor, cidade);
 
         var uri = uriBuilder.path("/professor/{id}").buildAndExpand(professor.getId()).toUri();
-        return ResponseEntity.created(uri).body(new DadosRetornoProfessor(professor, email, telefone, endereco));
+        return ResponseEntity.created(uri).body(new DadosRetornoProfessor(professor, email, telefone, endereco, diploma));
     }
 
     public Page<DadosDetalhamentoProfessores> listarProfessoresDaEscola(@PageableDefault(size = 20, sort = {"nome"}) Pageable paginacao, Long id){

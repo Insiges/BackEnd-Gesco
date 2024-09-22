@@ -23,13 +23,13 @@ public class DiplomaService {
     private ProfessorRepository professorRepository;
 
     @Transactional
-    public ResponseEntity cadastrarDiploma(DadosCadastroDiploma dados){
+    public Diploma cadastrarDiploma(DadosCadastroDiploma dados){
         var professor = professorRepository.findOneById(dados.id_professor());
         System.out.println(dados);
 
         var diploma = diplomaRepository.save(new Diploma(dados, professor));
 
-        return ResponseEntity.ok(diploma);
+        return diploma;
     }
 
     public Page<DadosDetalhamentoDiploma> listarDiplomasDeUmProfessor(Pageable page, Long id){
@@ -69,6 +69,14 @@ public class DiplomaService {
         diplomaRepository.deleteById(id);
     }
 
+    public Diploma cadastrarDiplomaPeloProfessor(DadosAtualizarDiploma dados, Long id){
+        var professor = professorRepository.findOneById(id);
+        System.out.println(dados);
+
+        var diploma = diplomaRepository.save(new Diploma(dados, professor));
+
+        return diploma;
+    }
 
 
 }

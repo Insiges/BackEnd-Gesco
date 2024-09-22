@@ -1,5 +1,7 @@
 package com.api.gesco.domain.professor;
 
+import com.api.gesco.domain.diploma.DadosAtualizarDiploma;
+import com.api.gesco.domain.diploma.DadosCadastroDiploma;
 import com.api.gesco.domain.endereco.DadosEndereco;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
@@ -33,6 +35,8 @@ public record DadosCadastroProfessor(
         Long id_escola,
 
         @NotBlank
-        String sexo
+        String sexo,
+
+        @NotNull @Valid List<DadosAtualizarDiploma> diplomas
 ) {
 }

@@ -29,9 +29,9 @@ public class EscolaService {
     public ResponseEntity cadastrarEscola(DadosCadastroEscola dados, UriComponentsBuilder uriBuilder){
 
         //Valida se os emails já estão cadastrados.
-        dados.emails().forEach(emailEscola -> emailService.validarEmail(emailEscola));
+        dados.emails().forEach(emailEscola -> emailService.validarEmailEscola(emailEscola));
         //Valida se os telefones já estão cadastrados.
-        dados.telefones().forEach(telefoneEscola -> telefoneService.validarTelefone(telefoneEscola));
+        dados.telefones().forEach(telefoneEscola -> telefoneService.validarTelefoneEscola(telefoneEscola));
 
         var estado = enderecoService.pesquisarEstado(dados.endereco().estado());
 
@@ -41,9 +41,9 @@ public class EscolaService {
 
         var escola = repository.save(new Escola(dados));
 
-        var email = dados.emails().stream().map(emailEscola -> emailService.cadastrarEmail(emailEscola, escola));
+        var email = dados.emails().stream().map(emailEscola -> emailService.cadastrarEmailEscola(emailEscola, escola));
 
-        var telefone = dados.telefones().stream().map(telefoneEscola -> telefoneService.cadastrarTelefone(telefoneEscola, escola));
+        var telefone = dados.telefones().stream().map(telefoneEscola -> telefoneService.cadastrarTelefoneEscola(telefoneEscola, escola));
 
         var cidade = enderecoService.cadastrarCidade(dados.endereco().cidade(), estado.getSigla());
 
@@ -65,11 +65,18 @@ public class EscolaService {
         return ResponseEntity.ok(escolas);
     }
 
+    @Transactional
     public ResponseEntity atualizarEscola(Long id, DadosAtualizarEscola dados){
         var escola = repository.getEscolaById(id);
-        dados.emails().forEach(email -> emailService.atualizarEmail(email.getId(), email.getEmail()));
+        dados.emails().forEach(email -> emailService.atualizarEmailEscola(email.getId(), email.getEmail()));
         dados.telefones().forEach(telefone -> telefoneService.atualizarTelefone(telefone.getId(), telefone.getTelefone()));
         dados.enderecos().forEach(endereco -> enderecoService.atualizarEnderecoEscola(endereco.getId(), endereco));
+
+        if (escola != null){
+            escola.atualizarEscola(dados);
+
+            repository.save(escola);
+        }
 
         return ResponseEntity.ok(escola);
     }
@@ -77,5 +84,11 @@ public class EscolaService {
     @Transactional
     public void deletarEscola(Long id){
         repository.deleteById(id);
+    }
+
+    public Escola verificarEscola(Long id){
+        var escola = repository.findOneById(id);
+
+        return escola;
     }
 }

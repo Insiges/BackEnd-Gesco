@@ -124,8 +124,8 @@ logradouro varchar(100) not null,
 cep varchar(10) not null,
 bairro varchar(40) not null,
 complemento varchar(20) not null,
+numero varchar(5) not null,
 id_cidade int not null,
-id_estado int not null,
 id_aluno int not null,
 
 CONSTRAINT fk_enderecoAluno
@@ -136,9 +136,6 @@ CONSTRAINT fk_enderecoAluno_Cidade
 FOREIGN KEY (id_cidade) REFERENCES cidade(id)
 ON DELETE CASCADE,
 
-CONSTRAINT fk_enderecoAluno_Estado
-FOREIGN KEY (id_estado) REFERENCES escola(id)
-ON DELETE CASCADE,
 unique index(id)
 );
 
@@ -169,8 +166,7 @@ create table professor(
 id int not null auto_increment primary key,
 nome varchar(100) not null,
 cpf varchar(20) not null unique,
-telefone varchar(20) not null,
-dataNascimento date not null,
+data_nascimento date not null,
 foto varchar(500) not null,
 id_escola int not null,
 id_sexo int not null,
@@ -186,14 +182,38 @@ ON DELETE CASCADE,
 unique index(id)
 );
 
+create table emailProfessor(
+id int not null auto_increment primary key,
+email varchar(255) not null unique,
+id_professor int not null,
+
+CONSTRAINT fk_professorEmail
+FOREIGN KEY (id_professor) REFERENCES professor(id)
+ON DELETE CASCADE,
+
+unique index(id)
+);
+
+create table telefoneProfessor(
+id int not null auto_increment primary key,
+telefone varchar(20) not null unique,
+id_professor int not null,
+
+CONSTRAINT fk_professorTelefone
+FOREIGN KEY (id_professor) REFERENCES professor(id)
+ON DELETE CASCADE,
+
+unique index(id)
+);
+
 create table enderecoProfessor(
 id int not null primary key auto_increment,
 logradouro varchar(100) not null,
 cep varchar(10) not null,
 bairro varchar(40) not null,
 complemento varchar(20) not null,
+numero varchar(5) not null,
 id_cidade int not null,
-id_estado int not null,
 id_professor int not null,
 
 CONSTRAINT fk_enderecoProfessor
@@ -202,10 +222,6 @@ ON DELETE CASCADE,
 
 CONSTRAINT fk_enderecoProfessor_Cidade
 FOREIGN KEY (id_cidade) REFERENCES cidade(id)
-ON DELETE CASCADE,
-
-CONSTRAINT fk_enderecoProfessor_Estado
-FOREIGN KEY (id_estado) REFERENCES escola(id)
 ON DELETE CASCADE,
 
 unique index(id)

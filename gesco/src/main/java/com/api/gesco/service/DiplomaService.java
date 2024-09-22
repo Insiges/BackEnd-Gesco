@@ -1,10 +1,14 @@
 package com.api.gesco.service;
 
+import com.api.gesco.domain.diploma.DadosAtualizarDiploma;
 import com.api.gesco.domain.diploma.DadosCadastroDiploma;
+import com.api.gesco.domain.diploma.DadosDetalhamentoDiploma;
 import com.api.gesco.model.diploma.Diploma;
 import com.api.gesco.repository.diploma.DiplomaRepository;
 import com.api.gesco.repository.professor.ProfessorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,5 +31,44 @@ public class DiplomaService {
 
         return ResponseEntity.ok(diploma);
     }
+
+    public Page<DadosDetalhamentoDiploma> listarDiplomasDeUmProfessor(Pageable page, Long id){
+        var diploma = diplomaRepository.findDiplomasByProfessor(id, page);
+
+        return diploma;
+    }
+
+    public Page<DadosDetalhamentoDiploma> listarTodosOsDiplomas(Pageable page){
+        var diploma = diplomaRepository.findAllDiplomas(page);
+
+        return diploma;
+    }
+
+    public ResponseEntity pegarUmDiploma(Long id){
+        var diploma = diplomaRepository.findOneById(id);
+
+        return  ResponseEntity.ok(diploma);
+    }
+
+    @Transactional
+    public ResponseEntity atualizarDiploma(Long id,DadosAtualizarDiploma dados){
+        var diploma = diplomaRepository.findOneById(id);
+
+        if (diploma != null){
+            diploma.atualizarDiploma(dados);
+
+            diplomaRepository.save(diploma);
+        }
+
+        return ResponseEntity.ok(diploma);
+
+    }
+
+    @Transactional
+    public void deletarDiploma(Long id){
+        diplomaRepository.deleteById(id);
+    }
+
+
 
 }

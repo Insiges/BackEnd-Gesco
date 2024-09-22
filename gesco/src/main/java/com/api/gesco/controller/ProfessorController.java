@@ -1,14 +1,15 @@
 package com.api.gesco.controller;
 
+import com.api.gesco.domain.diploma.DadosDetalhamentoDiploma;
 import com.api.gesco.domain.professor.DadosAtualizarProfessor;
 import com.api.gesco.domain.professor.DadosCadastroProfessor;
 import com.api.gesco.domain.professor.DadosDetalhamentoProfessores;
+import com.api.gesco.service.DiplomaService;
 import com.api.gesco.service.ProfessorService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -19,6 +20,9 @@ public class ProfessorController {
 
     @Autowired
     private ProfessorService service;
+
+    @Autowired
+    private DiplomaService diplomaService;
 
     @PostMapping
     public ResponseEntity cadastrarEscola(@RequestBody @Valid DadosCadastroProfessor dados, UriComponentsBuilder uriBuilder){
@@ -55,5 +59,12 @@ public class ProfessorController {
         service.deleteProfessor(id);
 
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/diploma/{id}")
+    public ResponseEntity<Page<DadosDetalhamentoDiploma>> listarDiplomasDeUmProfessor(Pageable page, @PathVariable("id") Long id){
+        var diplomas = diplomaService.listarDiplomasDeUmProfessor(page, id);
+
+        return ResponseEntity.ok(diplomas);
     }
 }

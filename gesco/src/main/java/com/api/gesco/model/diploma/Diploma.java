@@ -1,5 +1,6 @@
 package com.api.gesco.model.diploma;
 
+import com.api.gesco.domain.diploma.DadosAtualizarDiploma;
 import com.api.gesco.domain.diploma.DadosCadastroDiploma;
 import com.api.gesco.model.professor.Professor;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -39,5 +40,20 @@ public class Diploma {
         this.curso = dados.curso();
         this.inicio = dados.inicio();
         this.professor = professor;
+    }
+
+    public void atualizarDiploma(DadosAtualizarDiploma dados){
+        if(dados.faculdade() != null){
+            this.faculdade = dados.faculdade();
+        }
+        if(dados.fim() != null){
+            this.fim = dados.fim();
+        }
+        if(dados.curso() != null){
+            this.curso = dados.curso();
+        }
+        if(dados.inicio() != null){
+            this.inicio = dados.inicio();
+        }
     }
 }

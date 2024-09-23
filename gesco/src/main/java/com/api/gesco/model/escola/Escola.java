@@ -15,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
-public class Escola {
+public class Escola  {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

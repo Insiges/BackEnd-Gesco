@@ -30,3 +30,13 @@ INSERT INTO estado (nome, sigla) VALUES
 ('São Paulo', 'SP'),
 ('Sergipe', 'SE'),
 ('Tocantins', 'TO');
+
+INSERT INTO semana (dia) VALUES 
+('Segunda-feira'),
+('Terça-feira'),
+('Quarta-feira'),
+('Quinta-feira'),
+('Sexta-feira'),
+('Sábado'),
+('Domingo');
+

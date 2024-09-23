@@ -1,6 +1,7 @@
-package com.api.gesco.model.endereco;
+package com.api.gesco.model.sexo;
 
-import com.api.gesco.domain.escola.DadosCadastroEscola;
+import com.api.gesco.model.endereco.Cidade;
+import com.api.gesco.model.professor.Professor;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -10,13 +11,13 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-@Table(name = "estado")
-@Entity(name = "Estado")
+@Table(name = "sexo")
+@Entity(name = "Sexo")
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
-public class Estado {
+public class Sexo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,7 +25,7 @@ public class Estado {
     private String nome;
     private String sigla;
 
-    @OneToMany(mappedBy = "estado", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "sexo", cascade = CascadeType.ALL)
     @JsonIgnore
-    private List<Cidade> cidades;
+    private List<Professor> professores;
 }

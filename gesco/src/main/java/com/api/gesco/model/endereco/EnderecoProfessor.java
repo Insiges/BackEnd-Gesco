@@ -2,18 +2,19 @@ package com.api.gesco.model.endereco;
 
 import com.api.gesco.domain.endereco.DadosEndereco;
 import com.api.gesco.model.escola.Escola;
+import com.api.gesco.model.professor.Professor;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Table(name = "enderecoescola")
-@Entity(name = "EnderecoEscola")
+@Table(name = "enderecoprofessor")
+@Entity(name = "EnderecoProfessor")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
-public class EnderecoEscola {
+public class EnderecoProfessor {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,21 +30,21 @@ public class EnderecoEscola {
     private Cidade cidade;
 
     @ManyToOne
-    @JoinColumn(name = "id_escola") // Define a chave estrangeira
+    @JoinColumn(name = "id_professor") // Define a chave estrangeira
     @JsonIgnore
-    private Escola escola;
+    private Professor professor;
 
-    public EnderecoEscola(DadosEndereco dados,Escola escola, Cidade cidade) {
+    public EnderecoProfessor(DadosEndereco dados, Professor professor, Cidade cidade) {
         this.logradouro = dados.logradouro();
         this.bairro = dados.bairro();
         this.cep = dados.cep();
         this.numero = dados.numero();
         this.complemento = dados.complemento();
-        this.escola = escola;
+        this.professor = professor;
         this.cidade = cidade;
     }
 
-    public void atualizarEndereco(EnderecoEscola dados){
+    public void atualizarEndereco(EnderecoProfessor dados){
         if (dados.logradouro != null){
             this.logradouro = dados.logradouro;
         }

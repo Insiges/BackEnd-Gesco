@@ -1,8 +1,10 @@
 package com.api.gesco.controller;
 
+import com.api.gesco.domain.alunos.DadosDetalhamentoAluno;
 import com.api.gesco.domain.escola.DadosAtualizarEscola;
 import com.api.gesco.domain.escola.DadosCadastroEscola;
 import com.api.gesco.domain.professor.DadosDetalhamentoProfessores;
+import com.api.gesco.service.AlunoService;
 import com.api.gesco.service.EscolaService;
 import com.api.gesco.service.ProfessorService;
 import jakarta.validation.Valid;
@@ -23,6 +25,9 @@ public class EscolaController {
 
     @Autowired
     private ProfessorService professorService;
+
+    @Autowired
+    private AlunoService alunoService;
 
     @GetMapping("/{id}")
     public ResponseEntity pegarUmaEscola(@PathVariable("id")Long id){
@@ -61,5 +66,12 @@ public class EscolaController {
         var professor = professorService.listarProfessoresDaEscola(paginacao,id);
 
         return  ResponseEntity.ok(professor);
+    }
+
+    @GetMapping("/aluno/{id}")
+    public  ResponseEntity<Page<DadosDetalhamentoAluno>> listarTodosOsAlunosDaEscola(@PageableDefault(size = 10, sort = {"nome"}) Pageable paginacao, @PathVariable("id") Long id){
+        var aluno = alunoService.listarAlunosDaEscola(paginacao,id);
+
+        return  ResponseEntity.ok(aluno);
     }
 }

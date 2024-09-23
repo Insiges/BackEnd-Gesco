@@ -1,10 +1,13 @@
 package com.api.gesco.service;
 
 import com.api.gesco.infra.exception.ValidacaoException;
+import com.api.gesco.model.alunos.Aluno;
+import com.api.gesco.model.alunos.TelefoneAluno;
 import com.api.gesco.model.escola.Escola;
 import com.api.gesco.model.escola.TelefoneEscola;
 import com.api.gesco.model.professor.Professor;
 import com.api.gesco.model.professor.TelefoneProfessor;
+import com.api.gesco.repository.alunos.TelefoneAlunoRepository;
 import com.api.gesco.repository.escola.TelefoneEscolaRepository;
 import com.api.gesco.repository.professor.TelefoneProfessorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +22,9 @@ public class TelefoneService {
 
     @Autowired
     TelefoneProfessorRepository professorRepository;
+
+    @Autowired
+    TelefoneAlunoRepository alunoRepository;
 
     //Escola
     public void validarTelefoneEscola(String telefoneEscola){
@@ -66,6 +72,33 @@ public class TelefoneService {
         if (telefone != null) {
             telefone.atualizarTelefone(telefoneProfessor);
             return professorRepository.save(telefone);
+        } else {
+            throw new ValidacaoException(String.format("Não foi possível encontrar um telefone com esse id!"));
+        }
+    }
+
+    //Aluno
+    public void validarTelefoneAluno(String telefoneAluno){
+        System.out.println("ali");
+        var validacaoTelefone = alunoRepository.findOneByTelefone(telefoneAluno);
+
+        if(validacaoTelefone != null){
+            throw new ValidacaoException(String.format("Este telefone %s, já esta cadastrado!", telefoneAluno));
+        }
+    }
+
+    public TelefoneAluno cadastrarTelefoneAluno(String telefoneProfessor, Aluno aluno){
+        var telefone = alunoRepository.save(new TelefoneAluno(telefoneProfessor, aluno));
+        return telefone;
+    }
+
+
+    @Transactional
+    public TelefoneAluno atualizarAluno(Long id, String telefoneAluno){
+        var telefone= alunoRepository.findOneById(id);
+        if (telefone != null) {
+            telefone.atualizarTelefone(telefoneAluno);
+            return alunoRepository.save(telefone);
         } else {
             throw new ValidacaoException(String.format("Não foi possível encontrar um telefone com esse id!"));
         }

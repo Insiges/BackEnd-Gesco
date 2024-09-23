@@ -99,9 +99,7 @@ id int not null auto_increment primary key,
 nome varchar(100) not null,
 cpf varchar(15) not null unique,
 matricula varchar(20) not null,
-dataNascimento date not null,
-email varchar(255) not null,
-telefone varchar(20) not null unique,
+data_nascimento date not null,
 foto varchar(500) not null,
 id_escola int not null,
 id_sexo int not null,
@@ -112,6 +110,30 @@ ON DELETE CASCADE,
 
 CONSTRAINT fk_alunosEscola
 FOREIGN KEY (id_escola) REFERENCES escola(id)
+ON DELETE CASCADE,
+
+unique index(id)
+);
+
+create table emailAluno(
+id int not null auto_increment primary key,
+email varchar(255) not null unique,
+id_aluno int not null,
+
+CONSTRAINT fk_alunoEmail
+FOREIGN KEY (id_aluno) REFERENCES alunos(id)
+ON DELETE CASCADE,
+
+unique index(id)
+);
+
+create table telefoneAluno(
+id int not null auto_increment primary key,
+telefone varchar(20) not null unique,
+id_aluno int not null,
+
+CONSTRAINT fk_alunoTelefone
+FOREIGN KEY (id_aluno) REFERENCES alunos(id)
 ON DELETE CASCADE,
 
 unique index(id)

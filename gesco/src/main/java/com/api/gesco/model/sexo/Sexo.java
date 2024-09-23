@@ -1,5 +1,6 @@
 package com.api.gesco.model.sexo;
 
+import com.api.gesco.model.alunos.Aluno;
 import com.api.gesco.model.endereco.Cidade;
 import com.api.gesco.model.professor.Professor;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -28,4 +29,8 @@ public class Sexo {
     @OneToMany(mappedBy = "sexo", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Professor> professores;
+
+    @OneToMany(mappedBy = "sexo", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Aluno> alunos;
 }

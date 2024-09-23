@@ -13,8 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.api.gesco.model.evento.Evento;
-import com.api.gesco.service.EventoService;
-
+import com.api.gesco.service.evento.EventoService;
 import java.util.List;
 import java.util.Optional;
 import java.time.LocalDate;

@@ -1,4 +1,4 @@
-package com.api.gesco.service.evento;
+package com.api.gesco.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

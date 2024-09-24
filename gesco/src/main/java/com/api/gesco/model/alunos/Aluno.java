@@ -5,6 +5,7 @@ import com.api.gesco.domain.alunos.DadosAtualizarAluno;
 import com.api.gesco.domain.alunos.DadosCadastroAluno;
 import com.api.gesco.domain.professor.DadosAtualizarProfessor;
 import com.api.gesco.domain.professor.DadosCadastroProfessor;
+import com.api.gesco.model.aluno_responsavel.Aluno_Responsavel;
 import com.api.gesco.model.diploma.Diploma;
 import com.api.gesco.model.endereco.EnderecoAluno;
 import com.api.gesco.model.endereco.EnderecoProfessor;
@@ -46,6 +47,10 @@ public class Aluno {
 
     @OneToMany(mappedBy = "aluno", cascade = CascadeType.ALL)
     private List<EnderecoAluno> enderecos;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "aluno", cascade = CascadeType.ALL)
+    private List<Aluno_Responsavel> alunos_responsaveis;
 
     @ManyToOne
     @JoinColumn(name = "id_escola") // Define a chave estrangeira

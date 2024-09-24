@@ -19,7 +19,7 @@ public class ResponsavelController {
     @PostMapping
     public ResponseEntity cadastrarResponsavel(@RequestBody @Valid DadosCadastroResponsavel dados, UriComponentsBuilder uriBuilder){
 
-        var responsavel = service.cadastrarResponsavel(dados, uriBuilder);
+        var responsavel = service.cadastrarResponsavel(dados);
 
         return ResponseEntity.status(201).body(responsavel);
     }

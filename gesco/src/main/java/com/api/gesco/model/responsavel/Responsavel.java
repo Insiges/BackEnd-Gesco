@@ -5,6 +5,8 @@ import com.api.gesco.domain.alunos.DadosAtualizarAluno;
 import com.api.gesco.domain.alunos.DadosCadastroAluno;
 import com.api.gesco.domain.responsavel.DadosAtualizarResponsavel;
 import com.api.gesco.domain.responsavel.DadosCadastroResponsavel;
+import com.api.gesco.model.aluno_responsavel.Aluno_Responsavel;
+import com.api.gesco.model.alunos.Aluno;
 import com.api.gesco.model.alunos.EmailAluno;
 import com.api.gesco.model.alunos.TelefoneAluno;
 import com.api.gesco.model.endereco.EnderecoAluno;
@@ -46,6 +48,10 @@ public class Responsavel {
     @JoinColumn(name = "id_sexo") // Define a chave estrangeira
     @JsonIgnore
     private Sexo sexo;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "responsavel", cascade = CascadeType.ALL)
+    private List<Aluno_Responsavel> alunos_responsaveis;
 
     public Responsavel(DadosCadastroResponsavel dados, Escola escola, Sexo sexo){
         this.cpf = dados.cpf();

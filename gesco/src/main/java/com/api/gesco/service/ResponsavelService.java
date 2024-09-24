@@ -28,7 +28,7 @@ public class ResponsavelService {
     private SexoService sexoService;
 
     @Transactional
-    public ResponseEntity cadastrarResponsavel(DadosCadastroResponsavel dados, UriComponentsBuilder uriBuilder){
+    public Responsavel cadastrarResponsavel(DadosCadastroResponsavel dados){
 
         var escola = escolaService.verificarEscola(dados.id_escola());
 
@@ -36,8 +36,7 @@ public class ResponsavelService {
 
         var responsavel = repository.save(new Responsavel(dados, escola, sexo));
 
-        var uri = uriBuilder.path("/responsavel/{id}").buildAndExpand(responsavel.getId()).toUri();
-        return ResponseEntity.created(uri).body(new DadosRetornoResponsavel(responsavel));
+        return responsavel;
     }
 
     public ResponseEntity<List<Responsavel>> pegarTodosOsResponsaveis(){

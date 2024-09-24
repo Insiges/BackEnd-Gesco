@@ -1,9 +1,7 @@
 package com.api.gesco.service;
 
-import com.api.gesco.domain.alunos.DadosAtualizarAluno;
-import com.api.gesco.domain.alunos.DadosCadastroAluno;
-import com.api.gesco.domain.alunos.DadosDetalhamentoAluno;
-import com.api.gesco.domain.alunos.DadosRetornoAluno;
+import com.api.gesco.domain.alunos.*;
+import com.api.gesco.domain.alunos_responsavel.DadosCadastroAluno_Responsavel;
 import com.api.gesco.domain.professor.DadosAtualizarProfessor;
 import com.api.gesco.domain.professor.DadosCadastroProfessor;
 import com.api.gesco.domain.professor.DadosDetalhamentoProfessores;
@@ -20,6 +18,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import java.util.stream.Collectors;
 
 @Service
 public class AlunoService {
@@ -41,6 +41,12 @@ public class AlunoService {
 
     @Autowired
     private SexoService sexoService;
+
+    @Autowired
+    private ResponsavelService responsavelService;
+
+    @Autowired
+    private Aluno_ResponsavelService alunoResponsavelService;
 
     @Transactional
     public ResponseEntity cadastrarAluno(DadosCadastroAluno dados, UriComponentsBuilder uriBuilder){
@@ -68,7 +74,29 @@ public class AlunoService {
 
         var endereco = enderecoService.cadastrarEnderecoAluno(dados.endereco(), aluno, cidade);
 
+        if (dados.responsaveis() != null) {
+            var responsaveis = dados.responsaveis().stream()
+                    .map(responsavel -> responsavelService.cadastrarResponsavel(responsavel))
+                    .collect(Collectors.toList());
+
+            responsaveis.forEach(responsavel ->
+                    alunoResponsavelService.cadastrarAlunoResponsavel(
+                            new DadosCadastroAluno_Responsavel(aluno.getId(), responsavel.getId()))
+            );
+
+            var uri = uriBuilder.path("/aluno/{id}").buildAndExpand(aluno.getId()).toUri();
+
+            return ResponseEntity.created(uri)
+                    .body(new DadosRetornoAlunoResponsavel(
+                            aluno,
+                            email,
+                            telefone,
+                            endereco,
+                            responsaveis.stream()));
+        }
+
         var uri = uriBuilder.path("/aluno/{id}").buildAndExpand(aluno.getId()).toUri();
+        System.out.println("Entrou nesse segundo");
         return ResponseEntity.created(uri).body(new DadosRetornoAluno(aluno, email, telefone, endereco));
     }
 

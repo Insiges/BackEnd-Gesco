@@ -10,10 +10,11 @@ import com.api.gesco.model.endereco.EnderecoProfessor;
 import com.api.gesco.model.professor.EmailProfessor;
 import com.api.gesco.model.professor.Professor;
 import com.api.gesco.model.professor.TelefoneProfessor;
+import com.api.gesco.model.responsavel.Responsavel;
 
 import java.util.stream.Stream;
 
-public record DadosRetornoAluno(Long id, String nome, String foto, String cpf, String dataNascimento,String matricula, Stream<String> email, Stream<String> telefone, DadosEnderecoSimplificado dadosEndereco) {
+public record DadosRetornoAluno(Long id, String nome, String foto, String cpf, String dataNascimento, String matricula, Stream<String> email, Stream<String> telefone, DadosEnderecoSimplificado dadosEndereco) {
 
 
     public DadosRetornoAluno(Aluno aluno, Stream<EmailAluno> emails, Stream<TelefoneAluno> telefoneAluno, EnderecoAluno dadosEndereco) {
@@ -29,5 +30,6 @@ public record DadosRetornoAluno(Long id, String nome, String foto, String cpf, S
                 new DadosEnderecoSimplificado(dadosEndereco)
         );
     }
+
 
 }

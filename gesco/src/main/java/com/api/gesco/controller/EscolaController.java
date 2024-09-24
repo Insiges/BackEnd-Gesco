@@ -7,6 +7,7 @@ import com.api.gesco.domain.professor.DadosDetalhamentoProfessores;
 import com.api.gesco.service.AlunoService;
 import com.api.gesco.service.EscolaService;
 import com.api.gesco.service.ProfessorService;
+import com.api.gesco.service.ResponsavelService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -29,10 +30,13 @@ public class EscolaController {
     @Autowired
     private AlunoService alunoService;
 
+    @Autowired
+    private ResponsavelService responsavelService;
+
     @GetMapping("/{id}")
     public ResponseEntity pegarUmaEscola(@PathVariable("id")Long id){
         var escola = service.pegarUmaEscola(id);
-        return  ResponseEntity.ok(escola);
+        return  ResponseEntity.status(201).body(escola);
     }
 
     @PostMapping
@@ -73,5 +77,12 @@ public class EscolaController {
         var aluno = alunoService.listarAlunosDaEscola(paginacao,id);
 
         return  ResponseEntity.ok(aluno);
+    }
+
+    @GetMapping("/responsavel/{id}")
+    public  ResponseEntity pegarResponsavelPeloId(@PathVariable("id") Long id, Pageable page){
+        var responsavel = responsavelService.pegarResponsaveisPeloIdDaEscola(page, id);
+
+        return  ResponseEntity.ok(responsavel);
     }
 }

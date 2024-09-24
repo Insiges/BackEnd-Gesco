@@ -29,7 +29,7 @@ public class ProfessorController {
 
         var professor = service.cadastrarProfessor(dados, uriBuilder);
 
-        return ResponseEntity.ok(professor);
+        return ResponseEntity.status(201).body(professor);
     }
 
     @GetMapping("/{id}")

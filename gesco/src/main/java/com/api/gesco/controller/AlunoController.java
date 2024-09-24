@@ -30,7 +30,7 @@ public class AlunoController {
 
         var aluno = service.cadastrarAluno(dados, uriBuilder);
 
-        return ResponseEntity.ok(aluno);
+        return ResponseEntity.status(201).body(aluno);
     }
 
     @GetMapping("/{id}")

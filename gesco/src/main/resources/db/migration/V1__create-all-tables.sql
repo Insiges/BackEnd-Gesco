@@ -27,6 +27,8 @@ ON DELETE CASCADE,
 unique index(id)
 );
 
+
+
 create table telefoneEscola(
 id int not null auto_increment primary key,
 telefone varchar(20) not null unique,
@@ -454,6 +456,48 @@ horario time not null,
 id_escola int not null,
 
 CONSTRAINT fk_evento_escola
+FOREIGN KEY (id_escola) REFERENCES escola(id)
+ON DELETE CASCADE,
+
+unique index(id)
+);
+
+create table login_aluno(
+id int not null auto_increment primary key,
+email varchar(255) not null,
+senha varchar(255) not null,
+role VARCHAR(45) not null,
+id_aluno int not null,
+
+CONSTRAINT fk_login_aluno
+FOREIGN KEY (id_aluno) REFERENCES alunos(id)
+ON DELETE CASCADE,
+
+unique index(id)
+);
+
+create table login_professor(
+id int not null auto_increment primary key,
+email varchar(255) not null,
+senha varchar(255) not null,
+role VARCHAR(45) not null,
+id_professor int not null,
+
+CONSTRAINT fk_login_professor
+FOREIGN KEY (id_professor) REFERENCES professor(id)
+ON DELETE CASCADE,
+
+unique index(id)
+);
+
+create table login_escola(
+id int not null auto_increment primary key,
+email varchar(255) not null,
+senha varchar(255) not null,
+role VARCHAR(45) not null,
+id_escola int not null,
+
+CONSTRAINT fk_login_escola
 FOREIGN KEY (id_escola) REFERENCES escola(id)
 ON DELETE CASCADE,
 

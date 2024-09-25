@@ -1,6 +1,6 @@
 package com.api.gesco.service;
 
-import com.api.gesco.domain.alunos_responsavel.DadosCadastroAluno_Responsavel;
+import com.api.gesco.domain.alunos_responsavel.DadosCadastroAlunoResponsavel;
 import com.api.gesco.model.aluno_responsavel.Aluno_Responsavel;
 import com.api.gesco.repository.aluno_responsavel.Aluno_ResponsavelRepository;
 import com.api.gesco.repository.alunos.AlunoRepository;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class Aluno_ResponsavelService {
+public class AlunoResponsavelService {
 
     @Autowired
     private AlunoRepository alunoRepository;
@@ -24,7 +24,7 @@ public class Aluno_ResponsavelService {
 
 
     @Transactional
-    public ResponseEntity cadastrarAlunoResponsavel(DadosCadastroAluno_Responsavel dados){
+    public ResponseEntity cadastrarAlunoResponsavel(DadosCadastroAlunoResponsavel dados){
         var aluno = alunoRepository.findOneById(dados.id_aluno());
         var responsavel = responsavelRepository.findOneById(dados.id_responsavel());
 
@@ -38,7 +38,7 @@ public class Aluno_ResponsavelService {
         throw new RuntimeException("Erro: Não foi possível encontrar um aluno ou responsáveis com estes dados.");
     }
 
-    public ResponseEntity atualizarAlunoResponsavel(Long id, DadosCadastroAluno_Responsavel dados){
+    public ResponseEntity atualizarAlunoResponsavel(Long id, DadosCadastroAlunoResponsavel dados){
         var alunoResponsavel = intermediariaRepository.findOneById(id);
         var aluno = alunoRepository.findOneById(dados.id_aluno());
         var responsavel = responsavelRepository.findOneById(dados.id_responsavel());

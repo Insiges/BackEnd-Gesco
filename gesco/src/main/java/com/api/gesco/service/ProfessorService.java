@@ -1,11 +1,10 @@
 package com.api.gesco.service;
 
-import com.api.gesco.domain.escola.DadosRetornoEscola;
+import com.api.gesco.domain.disciplina_professor.DadosCadastroDisciplinaProfessor;
 import com.api.gesco.domain.professor.DadosAtualizarProfessor;
 import com.api.gesco.domain.professor.DadosCadastroProfessor;
 import com.api.gesco.domain.professor.DadosDetalhamentoProfessores;
 import com.api.gesco.domain.professor.DadosRetornoProfessor;
-import com.api.gesco.model.escola.Escola;
 import com.api.gesco.model.professor.Professor;
 import com.api.gesco.repository.professor.ProfessorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.util.UriComponentsBuilder;
-
-import java.util.List;
 
 @Service
 public class ProfessorService {
@@ -43,6 +40,9 @@ public class ProfessorService {
     @Autowired
     private DiplomaService diplomaService;
 
+    @Autowired
+    private DisciplinaProfessorService disciplinaProfessorService;
+
     @Transactional
     public ResponseEntity cadastrarProfessor(DadosCadastroProfessor dados, UriComponentsBuilder uriBuilder){
         //Valida se os emails já estão cadastrados.
@@ -50,6 +50,7 @@ public class ProfessorService {
 
         //Valida se os telefones já estão cadastrados.
         dados.telefones().forEach(telefoneProfessor -> telefoneService.validarTelefoneProfessor(telefoneProfessor));
+
 
         var estado = enderecoService.pesquisarEstado(dados.endereco().estado());
 
@@ -62,6 +63,9 @@ public class ProfessorService {
 
         var professor = repository.save(new Professor(dados, escola, sexo));
 
+        System.out.println("disciplina");
+        var disciplinas = dados.disciplinas().stream().map(it -> disciplinaProfessorService.cadastrarDisciplinaProfessor(new DadosCadastroDisciplinaProfessor(professor.getId(), it)));
+
         var email = dados.emails().stream().map(emailProfessor -> emailService.cadastrarEmailProfessor(emailProfessor, professor));
 
         var telefone = dados.telefones().stream().map(telefoneProfessor -> telefoneService.cadastrarTelefoneProfessor(telefoneProfessor, professor));
@@ -72,8 +76,9 @@ public class ProfessorService {
 
         var endereco = enderecoService.cadastrarEnderecoProfessor(dados.endereco(), professor, cidade);
 
+
         var uri = uriBuilder.path("/professor/{id}").buildAndExpand(professor.getId()).toUri();
-        return ResponseEntity.created(uri).body(new DadosRetornoProfessor(professor, email, telefone, endereco, diploma));
+        return ResponseEntity.created(uri).body(new DadosRetornoProfessor(professor, email, telefone, endereco, diploma, disciplinas));
     }
 
     public Page<DadosDetalhamentoProfessores> listarProfessoresDaEscola(@PageableDefault(size = 20, sort = {"nome"}) Pageable paginacao, Long id){
@@ -101,6 +106,7 @@ public class ProfessorService {
         dados.emails().forEach(email -> emailService.atualizarEmailProfessor(email.getId(),email.getEmail()));
         dados.telefones().forEach(telefone -> telefoneService.atualizarProfessor(telefone.getId(), telefone.getTelefone()));
         dados.enderecos().forEach(endereco -> enderecoService.atualizarEnderecoProfessor(endereco.getId(),endereco));
+        dados.disciplinas().forEach(it -> disciplinaProfessorService.atualizarDisciplinaProfessor(it, new DadosCadastroDisciplinaProfessor(professor.getId(), it)));
 
         if (professor != null){
             professor.atualizarProfessor(dados, sexo);

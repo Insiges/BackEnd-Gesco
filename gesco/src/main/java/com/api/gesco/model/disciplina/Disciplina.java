@@ -3,11 +3,14 @@ package com.api.gesco.model.disciplina;
 import com.api.gesco.domain.disciplina.DadosCadastroDisciplina;
 import com.api.gesco.domain.salas.DadosCadastroSalas;
 import com.api.gesco.model.escola.Escola;
+import com.api.gesco.model.professor.Professor;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Table(name = "disciplina")
 @Entity(name = "Disciplina")

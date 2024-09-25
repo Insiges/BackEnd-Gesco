@@ -29,6 +29,8 @@ public record DadosAtualizarProfessor(
         List<TelefoneProfessor> telefones,
         @NotNull
         List<EmailProfessor> emails,
-        List<EnderecoProfessor> enderecos) {
+        List<EnderecoProfessor> enderecos,
+        List<Long> disciplinas
+) {
 }
 

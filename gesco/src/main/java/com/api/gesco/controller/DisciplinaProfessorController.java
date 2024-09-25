@@ -17,23 +17,23 @@ public class DisciplinaProfessorController {
     @PostMapping
     public ResponseEntity cadastrarDisciplinaProfessor(@RequestBody @Valid DadosCadastroDisciplinaProfessor dados){
 
-        var disciplinaProfessor = disciplinaProfessorService.cadastrarDisciplinaProfessr(dados);
+        var disciplinaProfessor = disciplinaProfessorService.cadastrarDisciplinaProfessor(dados);
 
         return ResponseEntity.status(201).body(disciplinaProfessor);
     }
 
-//    @PutMapping("/{id}")
-//    public ResponseEntity atualizarAlunoResponsavel(@PathVariable("id") Long id, @RequestBody @Valid DadosCadastroAluno_Responsavel dados){
-//
-//        var aluno = service.atualizarAlunoResponsavel(id, dados);
-//
-//        return ResponseEntity.ok(aluno);
-//    }
-//
-//    @DeleteMapping("/{id}")
-//    public ResponseEntity deletarAlunoResponsavel(@PathVariable("id") Long id){
-//        service.deletarAlunoResponsavel(id);
-//
-//        return ResponseEntity.ok().build();
-//    }
+    @PutMapping("/{id}")
+    public ResponseEntity atualizarDisciplinaProfessor(@PathVariable("id") Long id, @RequestBody @Valid DadosCadastroDisciplinaProfessor dados){
+
+        var disciplina = disciplinaProfessorService.atualizarDisciplinaProfessor(id, dados);
+
+        return ResponseEntity.ok(disciplina);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity deletarDisciplinaProfessor(@PathVariable("id") Long id){
+        disciplinaProfessorService.deletarDisciplinaProfessor(id);
+
+        return ResponseEntity.ok().build();
+    }
 }

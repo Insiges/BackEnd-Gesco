@@ -1,10 +1,10 @@
 package com.api.gesco.controller;
 
+import com.api.gesco.domain.alunos.DadosDetalhamentoAluno;
 import com.api.gesco.domain.escola.DadosAtualizarEscola;
 import com.api.gesco.domain.escola.DadosCadastroEscola;
 import com.api.gesco.domain.professor.DadosDetalhamentoProfessores;
-import com.api.gesco.service.EscolaService;
-import com.api.gesco.service.ProfessorService;
+import com.api.gesco.service.*;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -24,10 +24,19 @@ public class EscolaController {
     @Autowired
     private ProfessorService professorService;
 
+    @Autowired
+    private AlunoService alunoService;
+
+    @Autowired
+    private ResponsavelService responsavelService;
+
+    @Autowired
+    private SalaService salaService;
+
     @GetMapping("/{id}")
     public ResponseEntity pegarUmaEscola(@PathVariable("id")Long id){
         var escola = service.pegarUmaEscola(id);
-        return  ResponseEntity.ok(escola);
+        return  ResponseEntity.status(201).body(escola);
     }
 
     @PostMapping
@@ -59,6 +68,27 @@ public class EscolaController {
     @GetMapping("/professor/{id}")
     public  ResponseEntity<Page<DadosDetalhamentoProfessores>> listarTodosOsProfessoresDaEscola(@PageableDefault(size = 10, sort = {"nome"}) Pageable paginacao, @PathVariable("id") Long id){
         var professor = professorService.listarProfessoresDaEscola(paginacao,id);
+
+        return  ResponseEntity.ok(professor);
+    }
+
+    @GetMapping("/aluno/{id}")
+    public  ResponseEntity<Page<DadosDetalhamentoAluno>> listarTodosOsAlunosDaEscola(@PageableDefault(size = 10, sort = {"nome"}) Pageable paginacao, @PathVariable("id") Long id){
+        var aluno = alunoService.listarAlunosDaEscola(paginacao,id);
+
+        return  ResponseEntity.ok(aluno);
+    }
+
+    @GetMapping("/responsavel/{id}")
+    public  ResponseEntity pegarResponsavelPeloId(@PathVariable("id") Long id, Pageable page){
+        var responsavel = responsavelService.pegarResponsaveisPeloIdDaEscola(page, id);
+
+        return  ResponseEntity.ok(responsavel);
+    }
+
+    @GetMapping("/salas/{id}")
+    public  ResponseEntity pegarSalasPeloIdDaEscola(Pageable pageable, @PathVariable("id") Long id){
+        var professor = salaService.pegarSalasPeloIdDaEscola(pageable, id);
 
         return  ResponseEntity.ok(professor);
     }

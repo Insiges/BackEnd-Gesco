@@ -22,7 +22,7 @@ public class DiplomaController {
     public ResponseEntity cadastrarDiploma(@RequestBody @Valid DadosCadastroDiploma dados){
         var diploma = service.cadastrarDiploma(dados);
 
-        return ResponseEntity.ok(diploma);
+        return ResponseEntity.status(201).body(diploma);
     }
 
     @GetMapping

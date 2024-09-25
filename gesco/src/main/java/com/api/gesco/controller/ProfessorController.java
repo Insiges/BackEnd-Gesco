@@ -25,11 +25,11 @@ public class ProfessorController {
     private DiplomaService diplomaService;
 
     @PostMapping
-    public ResponseEntity cadastrarEscola(@RequestBody @Valid DadosCadastroProfessor dados, UriComponentsBuilder uriBuilder){
+    public ResponseEntity cadastrarAluno(@RequestBody @Valid DadosCadastroProfessor dados, UriComponentsBuilder uriBuilder){
 
         var professor = service.cadastrarProfessor(dados, uriBuilder);
 
-        return ResponseEntity.ok(professor);
+        return ResponseEntity.status(201).body(professor);
     }
 
     @GetMapping("/{id}")

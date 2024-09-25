@@ -62,7 +62,7 @@ public class AuthenticationProfessorController {
         String senhaCrypto = new BCryptPasswordEncoder().encode(dados.senha());
 
         LoginProfessor novoProfessor = new LoginProfessor(dados.email(), senhaCrypto, professor.get());
-        novoProfessor.setRole(Roles.PROFESSOR);  
+        novoProfessor.setRole(Roles.ROLE_PROFESSOR);  
 
         loginProfessorRepository.save(novoProfessor);
 

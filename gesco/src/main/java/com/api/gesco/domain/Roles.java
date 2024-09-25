@@ -1,8 +1,8 @@
 package com.api.gesco.domain;
 
 public enum Roles {
-    ESCOLA,
-    PROFESSOR,
-    ALUNO
+    ROLE_ESCOLA,
+    ROLE_PROFESSOR,
+    ROLE_ALUNO
 
 }

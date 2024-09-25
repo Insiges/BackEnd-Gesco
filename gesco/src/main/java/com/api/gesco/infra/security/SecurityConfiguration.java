@@ -29,6 +29,8 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.POST, "/professor/auth/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/eventos/**").hasRole("PROFESSOR") //adionar todos esses para escola tbm
                         .requestMatchers(HttpMethod.GET, "/eventos/**").hasRole("PROFESSOR")
+                        .requestMatchers(HttpMethod.GET, "/eventos/listarEventos").hasRole("PROFESSOR")
+
                         .requestMatchers(HttpMethod.PUT, "/eventos/**").hasRole("PROFESSOR")
                         .requestMatchers(HttpMethod.DELETE, "/eventos/**").hasRole("PROFESSOR")
                         .requestMatchers(HttpMethod.POST, "/diploma/**").hasRole("PROFESSOR")

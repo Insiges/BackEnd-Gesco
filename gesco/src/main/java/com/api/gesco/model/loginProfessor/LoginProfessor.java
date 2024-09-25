@@ -33,14 +33,14 @@ public class LoginProfessor implements UserDetails {
     private Professor professor;
 
     public LoginProfessor() {
-        this.role = Roles.PROFESSOR;
+        this.role = Roles.ROLE_PROFESSOR;
     }
 
     public LoginProfessor(String email, String senha, Professor professor) {
         this.email = email;
         this.senha = senha;
         this.professor = professor;
-        this.role = Roles.PROFESSOR;
+        this.role = Roles.ROLE_PROFESSOR;
     }
 
     @Override

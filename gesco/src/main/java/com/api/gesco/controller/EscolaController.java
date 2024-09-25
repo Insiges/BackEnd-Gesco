@@ -4,10 +4,7 @@ import com.api.gesco.domain.alunos.DadosDetalhamentoAluno;
 import com.api.gesco.domain.escola.DadosAtualizarEscola;
 import com.api.gesco.domain.escola.DadosCadastroEscola;
 import com.api.gesco.domain.professor.DadosDetalhamentoProfessores;
-import com.api.gesco.service.AlunoService;
-import com.api.gesco.service.EscolaService;
-import com.api.gesco.service.ProfessorService;
-import com.api.gesco.service.ResponsavelService;
+import com.api.gesco.service.*;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -32,6 +29,9 @@ public class EscolaController {
 
     @Autowired
     private ResponsavelService responsavelService;
+
+    @Autowired
+    private SalaService salaService;
 
     @GetMapping("/{id}")
     public ResponseEntity pegarUmaEscola(@PathVariable("id")Long id){
@@ -84,5 +84,12 @@ public class EscolaController {
         var responsavel = responsavelService.pegarResponsaveisPeloIdDaEscola(page, id);
 
         return  ResponseEntity.ok(responsavel);
+    }
+
+    @GetMapping("/salas/{id}")
+    public  ResponseEntity pegarSalasPeloIdDaEscola(Pageable pageable, @PathVariable("id") Long id){
+        var professor = salaService.pegarSalasPeloIdDaEscola(pageable, id);
+
+        return  ResponseEntity.ok(professor);
     }
 }

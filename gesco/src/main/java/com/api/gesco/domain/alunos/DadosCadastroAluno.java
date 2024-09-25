@@ -1,10 +1,7 @@
 package com.api.gesco.domain.alunos;
 
-import com.api.gesco.domain.alunos_responsavel.DadosCadastroAluno_Responsavel;
-import com.api.gesco.domain.diploma.DadosAtualizarDiploma;
 import com.api.gesco.domain.endereco.DadosEndereco;
 import com.api.gesco.domain.responsavel.DadosCadastroResponsavel;
-import com.api.gesco.model.responsavel.Responsavel;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

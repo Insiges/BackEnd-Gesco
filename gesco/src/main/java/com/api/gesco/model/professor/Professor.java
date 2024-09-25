@@ -4,6 +4,7 @@ package com.api.gesco.model.professor;
 import com.api.gesco.domain.professor.DadosAtualizarProfessor;
 import com.api.gesco.domain.professor.DadosCadastroProfessor;
 import com.api.gesco.model.diploma.Diploma;
+import com.api.gesco.model.disciplina.Disciplina;
 import com.api.gesco.model.endereco.EnderecoProfessor;
 import com.api.gesco.model.escola.Escola;
 import com.api.gesco.model.sexo.Sexo;

@@ -38,3 +38,4 @@ INSERT INTO semana (dia) VALUES
 ('Sexta-feira'),
 ('Sábado'),
 ('Domingo');
+

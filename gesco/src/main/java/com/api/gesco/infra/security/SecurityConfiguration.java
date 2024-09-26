@@ -26,11 +26,10 @@ public class SecurityConfiguration {
         return http.csrf(csrf -> csrf.disable())
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers(HttpMethod.POST, "/escola/auth/**").permitAll()  
                         .requestMatchers(HttpMethod.POST, "/professor/auth/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/eventos/**").hasRole("PROFESSOR") //adionar todos esses para escola tbm
                         .requestMatchers(HttpMethod.GET, "/eventos/**").hasRole("PROFESSOR")
-                        .requestMatchers(HttpMethod.GET, "/eventos/listarEventos").hasRole("PROFESSOR")
-
                         .requestMatchers(HttpMethod.PUT, "/eventos/**").hasRole("PROFESSOR")
                         .requestMatchers(HttpMethod.DELETE, "/eventos/**").hasRole("PROFESSOR")
                         .requestMatchers(HttpMethod.POST, "/diploma/**").hasRole("PROFESSOR")

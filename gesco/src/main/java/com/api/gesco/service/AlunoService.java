@@ -1,9 +1,15 @@
 package com.api.gesco.service;
 
 import com.api.gesco.domain.alunos.*;
-import com.api.gesco.domain.alunos_responsavel.DadosCadastroAlunoResponsavel;
+import com.api.gesco.domain.alunos_responsavel.DadosCadastroAluno_Responsavel;
+import com.api.gesco.domain.professor.DadosAtualizarProfessor;
+import com.api.gesco.domain.professor.DadosCadastroProfessor;
+import com.api.gesco.domain.professor.DadosDetalhamentoProfessores;
+import com.api.gesco.domain.professor.DadosRetornoProfessor;
 import com.api.gesco.model.alunos.Aluno;
+import com.api.gesco.model.professor.Professor;
 import com.api.gesco.repository.alunos.AlunoRepository;
+import com.api.gesco.repository.professor.ProfessorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -40,7 +46,7 @@ public class AlunoService {
     private ResponsavelService responsavelService;
 
     @Autowired
-    private AlunoResponsavelService alunoResponsavelService;
+    private Aluno_ResponsavelService alunoResponsavelService;
 
     @Transactional
     public ResponseEntity cadastrarAluno(DadosCadastroAluno dados, UriComponentsBuilder uriBuilder){
@@ -75,7 +81,7 @@ public class AlunoService {
 
             responsaveis.forEach(responsavel ->
                     alunoResponsavelService.cadastrarAlunoResponsavel(
-                            new DadosCadastroAlunoResponsavel(aluno.getId(), responsavel.getId()))
+                            new DadosCadastroAluno_Responsavel(aluno.getId(), responsavel.getId()))
             );
 
             var uri = uriBuilder.path("/aluno/{id}").buildAndExpand(aluno.getId()).toUri();

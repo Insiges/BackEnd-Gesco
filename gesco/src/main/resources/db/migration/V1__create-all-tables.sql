@@ -27,6 +27,8 @@ ON DELETE CASCADE,
 unique index(id)
 );
 
+
+
 create table telefoneEscola(
 id int not null auto_increment primary key,
 telefone varchar(20) not null unique,
@@ -342,7 +344,7 @@ ON DELETE CASCADE,
 unique index(id)
 );
 
-create table tipoAtividade(
+create table tipo_atividade(
 id int not null auto_increment primary key,
 nome varchar(50) not null,
 
@@ -355,8 +357,8 @@ id int not null auto_increment primary key,
 nome varchar(50) not null,
 descricao text not null,
 valor float not null,
-dataAtividade date not null,
-id_tipoAtividade int not null,
+data_atividade date not null,
+id_tipo_atividade int not null,
 id_turma int not null,
 id_professor int not null,
 
@@ -365,7 +367,7 @@ FOREIGN KEY (id_professor) REFERENCES professor(id)
 ON DELETE CASCADE,
 
 CONSTRAINT fk_atividadeTipoAtividade
-FOREIGN KEY (id_tipoAtividade) REFERENCES tipoAtividade(id)
+FOREIGN KEY (id_tipo_atividade) REFERENCES tipo_atividade(id)
 ON DELETE CASCADE,
 
 CONSTRAINT fk_atividadeTurma
@@ -477,6 +479,48 @@ horario time not null,
 id_escola int not null,
 
 CONSTRAINT fk_evento_escola
+FOREIGN KEY (id_escola) REFERENCES escola(id)
+ON DELETE CASCADE,
+
+unique index(id)
+);
+
+create table login_aluno(
+id int not null auto_increment primary key,
+email varchar(255) not null,
+senha varchar(255) not null,
+role VARCHAR(45) not null,
+id_aluno int not null,
+
+CONSTRAINT fk_login_aluno
+FOREIGN KEY (id_aluno) REFERENCES alunos(id)
+ON DELETE CASCADE,
+
+unique index(id)
+);
+
+create table login_professor(
+id int not null auto_increment primary key,
+email varchar(255) not null,
+senha varchar(255) not null,
+role VARCHAR(45) not null,
+id_professor int not null,
+
+CONSTRAINT fk_login_professor
+FOREIGN KEY (id_professor) REFERENCES professor(id)
+ON DELETE CASCADE,
+
+unique index(id)
+);
+
+create table login_escola(
+id int not null auto_increment primary key,
+email varchar(255) not null,
+senha varchar(255) not null,
+role VARCHAR(45) not null,
+id_escola int not null,
+
+CONSTRAINT fk_login_escola
 FOREIGN KEY (id_escola) REFERENCES escola(id)
 ON DELETE CASCADE,
 

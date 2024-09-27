@@ -37,8 +37,6 @@ public record DadosCadastroProfessor(
         @NotBlank
         String sexo,
 
-        @NotNull @Valid List<DadosAtualizarDiploma> diplomas,
-
-        List<Long> disciplinas
+        @NotNull @Valid List<DadosAtualizarDiploma> diplomas
 ) {
 }

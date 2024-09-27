@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 
+import com.api.gesco.model.logins.LoginAluno;
 import com.api.gesco.model.logins.LoginEscola;
 import com.api.gesco.model.logins.LoginProfessor;
 import com.auth0.jwt.JWT;
@@ -52,6 +53,24 @@ public class TokenService {
                 .withExpiresAt(generateExpirationDate()) 
                 .sign(algorithm);
             return token;
+        } catch (JWTCreationException exception) {
+            throw new RuntimeException("Error generating JWT token", exception);  
+        }
+    }
+
+    public String gerarTokenAluno(LoginAluno alunoLogin) {
+        try {
+            Algorithm algorithm = Algorithm.HMAC256(secret);
+
+            String token = JWT.create()
+                .withIssuer("gesco")
+                .withSubject(alunoLogin.getEmail())
+                .withClaim("roles", alunoLogin.getAuthorities().stream()
+                    .map(GrantedAuthority::getAuthority)
+                    .collect(Collectors.toList()))
+                .withExpiresAt(generateExpirationDate())
+                .sign(algorithm);
+                return token;
         } catch (JWTCreationException exception) {
             throw new RuntimeException("Error generating JWT token", exception);  
         }

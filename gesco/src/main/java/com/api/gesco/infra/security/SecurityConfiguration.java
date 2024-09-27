@@ -28,6 +28,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/escola/auth/**").permitAll()  
                         .requestMatchers(HttpMethod.POST, "/professor/auth/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/aluno/auth/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/eventos/**").hasAnyRole("PROFESSOR", "ESCOLA")
                         .requestMatchers(HttpMethod.GET, "/eventos/**").hasAnyRole("PROFESSOR", "ESCOLA")
                         .requestMatchers(HttpMethod.PUT, "/eventos/**").hasAnyRole("PROFESSOR", "ESCOLA")
@@ -57,7 +58,6 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.POST, "/aluno-responsavel/**").hasAnyRole("PROFESSOR", "ESCOLA")
                         .requestMatchers(HttpMethod.PUT, "/aluno-responsavel/**").hasAnyRole("PROFESSOR", "ESCOLA")
                         .requestMatchers(HttpMethod.PUT, "/aluno-responsavel/**").hasAnyRole("PROFESSOR", "ESCOLA")
-                        //falta a rota aluno
 
 
                         .anyRequest().authenticated() 

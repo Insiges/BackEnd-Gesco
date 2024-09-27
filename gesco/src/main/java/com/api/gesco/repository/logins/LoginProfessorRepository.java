@@ -5,7 +5,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.api.gesco.model.logins.LoginProfessor;
 
-
 public interface LoginProfessorRepository extends JpaRepository<LoginProfessor, Long> {
     UserDetails findByEmail(String email);
 }

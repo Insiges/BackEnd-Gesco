@@ -66,14 +66,14 @@ public class EscolaController {
     }
 
     @GetMapping("/professor/{id}")
-    public  ResponseEntity<Page<DadosDetalhamentoProfessores>> listarTodosOsProfessoresDaEscola(@PageableDefault(size = 10, sort = {"nome"}) Pageable paginacao, @PathVariable("id") Long id){
+    public  ResponseEntity listarTodosOsProfessoresDaEscola(@PageableDefault(size = 30, sort = {"nome"}) Pageable paginacao, @PathVariable("id") Long id){
         var professor = professorService.listarProfessoresDaEscola(paginacao,id);
 
-        return  ResponseEntity.ok(professor);
+        return  ResponseEntity.ok().body(professor);
     }
 
     @GetMapping("/aluno/{id}")
-    public  ResponseEntity<Page<DadosDetalhamentoAluno>> listarTodosOsAlunosDaEscola(@PageableDefault(size = 10, sort = {"nome"}) Pageable paginacao, @PathVariable("id") Long id){
+    public  ResponseEntity<Page<DadosDetalhamentoAluno>> listarTodosOsAlunosDaEscola(@PageableDefault(size = 30, sort = {"nome"}) Pageable paginacao, @PathVariable("id") Long id){
         var aluno = alunoService.listarAlunosDaEscola(paginacao,id);
 
         return  ResponseEntity.ok(aluno);

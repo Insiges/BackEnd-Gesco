@@ -1,17 +1,14 @@
 package com.api.gesco.model.turmas;
 
 import java.time.Year;
+import java.util.List;
 
 import com.api.gesco.domain.turmas.DadosCadastradosTurmas;
+import com.api.gesco.model.atividade.Atividade;
+import com.api.gesco.model.disciplina_professor.DisciplinaProfesor;
 import com.api.gesco.model.escola.Escola;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -32,6 +29,9 @@ public class Turmas {
     @ManyToOne
     @JoinColumn(name = "id_escola", nullable = false)
     private Escola escola;
+
+    @OneToMany(mappedBy = "turmas", cascade = CascadeType.ALL)
+    private List<Atividade> atividade;
 
     public Turmas(DadosCadastradosTurmas dados, Escola escola) {
         this.nome = dados.nome();

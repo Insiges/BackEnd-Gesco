@@ -344,7 +344,7 @@ ON DELETE CASCADE,
 unique index(id)
 );
 
-create table tipoAtividade(
+create table tipo_atividade(
 id int not null auto_increment primary key,
 nome varchar(50) not null,
 
@@ -357,8 +357,8 @@ id int not null auto_increment primary key,
 nome varchar(50) not null,
 descricao text not null,
 valor float not null,
-dataAtividade date not null,
-id_tipoAtividade int not null,
+data_atividade date not null,
+id_tipo_atividade int not null,
 id_turma int not null,
 id_professor int not null,
 
@@ -367,7 +367,7 @@ FOREIGN KEY (id_professor) REFERENCES professor(id)
 ON DELETE CASCADE,
 
 CONSTRAINT fk_atividadeTipoAtividade
-FOREIGN KEY (id_tipoAtividade) REFERENCES tipoAtividade(id)
+FOREIGN KEY (id_tipo_atividade) REFERENCES tipo_atividade(id)
 ON DELETE CASCADE,
 
 CONSTRAINT fk_atividadeTurma

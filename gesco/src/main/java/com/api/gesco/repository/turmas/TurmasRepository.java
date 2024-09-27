@@ -9,4 +9,5 @@ import com.api.gesco.model.escola.Escola;
 @Repository
 public interface TurmasRepository extends JpaRepository<Turmas, Long> {
     List<Turmas> findByEscola(Escola escola);
+    Turmas findOneById(Long id);
 }

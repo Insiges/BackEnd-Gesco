@@ -12,7 +12,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import com.api.gesco.repository.logins.LoginProfessorRepository;
 import com.api.gesco.repository.logins.LoginEscolaRepository;
 import com.api.gesco.repository.logins.LoginAlunoRepository;
-
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

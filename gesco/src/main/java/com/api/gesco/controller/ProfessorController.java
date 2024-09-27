@@ -33,14 +33,14 @@ public class ProfessorController {
     }
 
     @GetMapping("/{id}")
-    public  ResponseEntity<Page<DadosDetalhamentoProfessores>> pegarProfessorPeloId(Pageable paginacao, @PathVariable("id") Long id){
+    public  ResponseEntity pegarProfessorPeloId(Pageable paginacao, @PathVariable("id") Long id){
         var professor = service.pegarProfessorPeloId(paginacao,id);
 
         return  ResponseEntity.ok(professor);
     }
 
     @GetMapping()
-    public  ResponseEntity<Page<DadosDetalhamentoProfessores>> pegarTodosOsProfessores(Pageable paginacao){
+    public  ResponseEntity pegarTodosOsProfessores(Pageable paginacao){
         var professor = service.pegarTodosOsProfessores(paginacao);
 
         return  ResponseEntity.ok(professor);

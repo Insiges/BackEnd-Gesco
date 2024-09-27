@@ -59,7 +59,6 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.PUT, "/aluno-responsavel/**").hasAnyRole("PROFESSOR", "ESCOLA")
                         .requestMatchers(HttpMethod.PUT, "/aluno-responsavel/**").hasAnyRole("PROFESSOR", "ESCOLA")
 
-
                         .anyRequest().authenticated() 
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)

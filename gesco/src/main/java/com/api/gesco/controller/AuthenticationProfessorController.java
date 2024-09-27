@@ -15,7 +15,7 @@ import com.api.gesco.domain.autenticacao.DadosAutenticacao;
 import com.api.gesco.domain.autenticacao.professor.DadosCadastroLoginProfessor;
 import com.api.gesco.domain.autenticacao.professor.DadosLoginProfessor;
 import com.api.gesco.infra.security.TokenService;
-import com.api.gesco.model.loginProfessor.LoginProfessor;
+import com.api.gesco.model.logins.LoginProfessor;
 import com.api.gesco.repository.logins.LoginProfessorRepository;
 import com.api.gesco.repository.professor.ProfessorRepository;
 

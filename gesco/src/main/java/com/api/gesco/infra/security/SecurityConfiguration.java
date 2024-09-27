@@ -51,14 +51,14 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.PUT, "/responsavel/**").hasRole("ESCOLA")
                         .requestMatchers(HttpMethod.PUT, "/escola/**").hasRole("ESCOLA")
                         .requestMatchers(HttpMethod.GET, "/escola/**").hasRole("ESCOLA")
-                        .requestMatchers(HttpMethod.POST, "/escola/**").hasRole("ESCOLA")
+                        .requestMatchers(HttpMethod.POST, "/escola/**").permitAll()
                         .requestMatchers(HttpMethod.DELETE, "/escola/**").hasRole("ESCOLA")
                         .requestMatchers(HttpMethod.DELETE, "/aluno-responsavel/**").hasAnyRole("PROFESSOR", "ESCOLA")
                         .requestMatchers(HttpMethod.GET, "/aluno-responsavel/**").hasAnyRole("PROFESSOR", "ESCOLA")
                         .requestMatchers(HttpMethod.POST, "/aluno-responsavel/**").hasAnyRole("PROFESSOR", "ESCOLA")
                         .requestMatchers(HttpMethod.PUT, "/aluno-responsavel/**").hasAnyRole("PROFESSOR", "ESCOLA")
                         .requestMatchers(HttpMethod.PUT, "/aluno-responsavel/**").hasAnyRole("PROFESSOR", "ESCOLA")
-                    
+
 
                         .anyRequest().authenticated() 
                 )

@@ -58,7 +58,7 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.POST, "/aluno-responsavel/**").hasAnyRole("PROFESSOR", "ESCOLA")
                         .requestMatchers(HttpMethod.PUT, "/aluno-responsavel/**").hasAnyRole("PROFESSOR", "ESCOLA")
                         .requestMatchers(HttpMethod.PUT, "/aluno-responsavel/**").hasAnyRole("PROFESSOR", "ESCOLA")
-
+                    
 
                         .anyRequest().authenticated() 
                 )

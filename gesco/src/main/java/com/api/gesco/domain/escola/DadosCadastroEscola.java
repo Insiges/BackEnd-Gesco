@@ -1,5 +1,7 @@
 package com.api.gesco.domain.escola;
 
+import com.api.gesco.domain.autenticacao.DadosLogin;
+import com.api.gesco.domain.autenticacao.escola.DadosCadastroEscolaLogin;
 import com.api.gesco.domain.endereco.DadosEndereco;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
@@ -21,6 +23,8 @@ public record DadosCadastroEscola(
         @NotNull
         List<String> telefones,
 
-        @NotNull @Valid DadosEndereco endereco
+        @NotNull @Valid DadosEndereco endereco,
 
-) {}
+        @NotNull @Valid DadosLogin login
+
+        ) {}

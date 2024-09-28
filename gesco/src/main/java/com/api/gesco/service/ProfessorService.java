@@ -1,5 +1,7 @@
 package com.api.gesco.service;
 
+import com.api.gesco.controller.AuthenticationProfessorController;
+import com.api.gesco.domain.autenticacao.professor.DadosCadastroLoginProfessor;
 import com.api.gesco.domain.professor.DadosAtualizarProfessor;
 import com.api.gesco.domain.professor.DadosCadastroProfessor;
 import com.api.gesco.domain.professor.DadosDetalhamentoProfessores;
@@ -39,7 +41,11 @@ public class ProfessorService {
     @Autowired
     private DiplomaService diplomaService;
 
-    @Autowired DisciplinaProfessorService disciplinaProfessorService;
+    @Autowired
+    DisciplinaProfessorService disciplinaProfessorService;
+
+    @Autowired
+    AuthenticationProfessorController authenticationProfessorController;
 
     @Transactional
     public ResponseEntity cadastrarProfessor(DadosCadastroProfessor dados, UriComponentsBuilder uriBuilder){
@@ -69,6 +75,8 @@ public class ProfessorService {
         var cidade = enderecoService.cadastrarCidade(dados.endereco().cidade(), estado.getSigla());
 
         var endereco = enderecoService.cadastrarEnderecoProfessor(dados.endereco(), professor, cidade);
+
+        var login = authenticationProfessorController.cadastrar(new DadosCadastroLoginProfessor(dados.login().email(), dados.login().senha(), professor.getId()));
 
         var uri = uriBuilder.path("/professor/{id}").buildAndExpand(professor.getId()).toUri();
         return ResponseEntity.created(uri).body(new DadosRetornoProfessor(professor, email, telefone, endereco, diploma));

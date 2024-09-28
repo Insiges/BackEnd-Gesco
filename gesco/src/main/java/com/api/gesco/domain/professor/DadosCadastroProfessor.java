@@ -1,5 +1,6 @@
 package com.api.gesco.domain.professor;
 
+import com.api.gesco.domain.autenticacao.DadosLogin;
 import com.api.gesco.domain.diploma.DadosAtualizarDiploma;
 import com.api.gesco.domain.diploma.DadosCadastroDiploma;
 import com.api.gesco.domain.endereco.DadosEndereco;
@@ -37,6 +38,8 @@ public record DadosCadastroProfessor(
         @NotBlank
         String sexo,
 
-        @NotNull @Valid List<DadosAtualizarDiploma> diplomas
-) {
+        @NotNull @Valid List<DadosAtualizarDiploma> diplomas,
+
+        @NotNull @Valid DadosLogin login
+        ) {
 }

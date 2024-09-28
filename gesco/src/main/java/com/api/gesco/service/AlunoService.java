@@ -1,7 +1,9 @@
 package com.api.gesco.service;
 
+import com.api.gesco.controller.AuthenticationControllerLoginAluno;
 import com.api.gesco.domain.alunos.*;
 import com.api.gesco.domain.alunos_responsavel.DadosCadastroAluno_Responsavel;
+import com.api.gesco.domain.autenticacao.aluno.DadosCadastroLoginAluno;
 import com.api.gesco.domain.professor.DadosAtualizarProfessor;
 import com.api.gesco.domain.professor.DadosCadastroProfessor;
 import com.api.gesco.domain.professor.DadosDetalhamentoProfessores;
@@ -47,6 +49,9 @@ public class AlunoService {
 
     @Autowired
     private Aluno_ResponsavelService alunoResponsavelService;
+
+    @Autowired
+    private AuthenticationControllerLoginAluno authenticationControllerLoginAluno;
 
     @Transactional
     public ResponseEntity cadastrarAluno(DadosCadastroAluno dados, UriComponentsBuilder uriBuilder){
@@ -94,6 +99,8 @@ public class AlunoService {
                             endereco,
                             responsaveis.stream()));
         }
+
+        var login = authenticationControllerLoginAluno.cadastrar(new DadosCadastroLoginAluno(dados.login().email(), dados.login().senha(), aluno.getId()));
 
         var uri = uriBuilder.path("/aluno/{id}").buildAndExpand(aluno.getId()).toUri();
         System.out.println("Entrou nesse segundo");

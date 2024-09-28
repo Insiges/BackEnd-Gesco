@@ -1,5 +1,7 @@
 package com.api.gesco.service;
 
+import com.api.gesco.controller.AuthenticationEscolaLogin;
+import com.api.gesco.domain.autenticacao.escola.DadosCadastroEscolaLogin;
 import com.api.gesco.domain.escola.DadosAtualizarEscola;
 import com.api.gesco.domain.escola.DadosCadastroEscola;
 import com.api.gesco.domain.escola.DadosRetornoEscola;
@@ -26,6 +28,9 @@ public class EscolaService {
     @Autowired
     private EnderecoService enderecoService;
 
+    @Autowired
+    private AuthenticationEscolaLogin escolaLogin;
+
     public ResponseEntity cadastrarEscola(DadosCadastroEscola dados, UriComponentsBuilder uriBuilder){
 
         //Valida se os emails já estão cadastrados.
@@ -48,6 +53,8 @@ public class EscolaService {
         var cidade = enderecoService.cadastrarCidade(dados.endereco().cidade(), estado.getSigla());
 
         var endereco = enderecoService.cadastrarEnderecoEscola(dados.endereco(), escola, cidade);
+
+        var login = escolaLogin.cadastrar(new DadosCadastroEscolaLogin(dados.login().email(), dados.login().senha(), escola.getId()));
 
         var uri = uriBuilder.path("/escola/{id}").buildAndExpand(escola.getId()).toUri();
         return ResponseEntity.created(uri).body(new DadosRetornoEscola(escola, email, telefone, endereco));

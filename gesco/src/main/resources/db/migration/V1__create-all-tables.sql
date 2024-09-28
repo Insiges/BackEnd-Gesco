@@ -181,7 +181,7 @@ unique index(id)
 
 create table disciplina(
 id int not null auto_increment primary key,
-nome varchar(20) not null,
+nome varchar(30) not null,
 
 unique index(id)
 );

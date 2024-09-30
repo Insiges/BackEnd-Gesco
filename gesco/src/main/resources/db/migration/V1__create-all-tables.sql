@@ -15,6 +15,7 @@ imagem varchar(500) not null,
 unique index(id)
 );
 
+
 create table emailEscola(
 id int not null auto_increment primary key,
 email varchar(255) not null unique,
@@ -116,6 +117,8 @@ ON DELETE CASCADE,
 
 unique index(id)
 );
+
+
 
 create table emailAluno(
 id int not null auto_increment primary key,

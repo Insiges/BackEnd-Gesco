@@ -13,6 +13,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import java.util.*;;
 
 @Configuration
 @EnableWebSecurity
@@ -23,7 +27,9 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http.csrf(csrf -> csrf.disable())
+        return http
+                .cors(cors -> cors.configurationSource(corsConfigurationSource())) 
+                .csrf(csrf -> csrf.disable())
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/escola/auth/**").permitAll()  
@@ -57,13 +63,25 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.GET, "/aluno-responsavel/**").hasAnyRole("PROFESSOR", "ESCOLA")
                         .requestMatchers(HttpMethod.POST, "/aluno-responsavel/**").hasAnyRole("PROFESSOR", "ESCOLA")
                         .requestMatchers(HttpMethod.PUT, "/aluno-responsavel/**").hasAnyRole("PROFESSOR", "ESCOLA")
-                        .requestMatchers(HttpMethod.PUT, "/aluno-responsavel/**").hasAnyRole("PROFESSOR", "ESCOLA")
                         .requestMatchers(HttpMethod.PUT, "/frequencias/**").hasAnyRole("PROFESSOR", "ESCOLA")
 
                         .anyRequest().authenticated() 
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
+    }
+
+     @Bean
+        public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(List.of("http://localhost:5173"));
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(List.of("*"));
+        configuration.setAllowCredentials(true); 
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 
     @Bean

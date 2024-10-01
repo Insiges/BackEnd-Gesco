@@ -455,7 +455,7 @@ unique index(id)
 create table reserva_sala(
 id int not null auto_increment primary key,
 dia date not null,
-hora time not null,
+turno varchar(20) not null,
 id_sala int not null,
 id_professor int not null,
 

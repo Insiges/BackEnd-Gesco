@@ -29,7 +29,6 @@ public class DisciplinaProfessorService {
 
     @Transactional
     public DisciplinaProfesor cadastrarDisciplinaProfessor(DadosCadastroDisciplinaProfessor dados){
-        System.out.println("Entrou");
         var disciplina = disciplinaRepository.findOneById(dados.id_disciplina());
         var professor = professorRepository.findOneById(dados.id_professor());
 

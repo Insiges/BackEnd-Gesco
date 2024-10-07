@@ -52,11 +52,9 @@ public ResponseEntity<?> login(@RequestBody @Valid DadosAutenticacao dados) {
         Object principal = auth.getPrincipal();
 
         if (principal instanceof LoginEscola) {
+            System.out.println("escola");
             var token = tokenService.gerarTokenEscola((LoginEscola) principal);
             return ResponseEntity.ok(new DadosLoginEscola(token));
-        } else if (principal instanceof LoginProfessor) {
-            var token = tokenService.gerarTokenProfessor((LoginProfessor) principal);
-            return ResponseEntity.ok(new DadosLoginProfessor(token));
         } else {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Usuário não autorizado para esta ação.");
         }

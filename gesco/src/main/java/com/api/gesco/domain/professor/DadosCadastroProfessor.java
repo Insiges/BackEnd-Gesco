@@ -40,6 +40,9 @@ public record DadosCadastroProfessor(
 
         @NotNull @Valid List<DadosAtualizarDiploma> diplomas,
 
+        @NotNull
+        List<Long> disciplinas,
+
         @NotNull @Valid DadosLogin login
         ) {
 }

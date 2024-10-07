@@ -4,6 +4,7 @@ import com.api.gesco.controller.AuthenticationEscolaLogin;
 import com.api.gesco.domain.autenticacao.escola.DadosCadastroEscolaLogin;
 import com.api.gesco.domain.escola.DadosAtualizarEscola;
 import com.api.gesco.domain.escola.DadosCadastroEscola;
+import com.api.gesco.domain.escola.DadosRetornoContadorEscola;
 import com.api.gesco.domain.escola.DadosRetornoEscola;
 import com.api.gesco.model.escola.Escola;
 import com.api.gesco.repository.escola.EscolaRepository;
@@ -97,5 +98,13 @@ public class EscolaService {
         var escola = repository.findOneById(id);
 
         return escola;
+    }
+
+    public ResponseEntity pegarDadosContador(Long id){
+        var eventos = repository.countEventos(id);
+        var alunos = repository.countAlunos(id);
+        var professores = repository.countProfessores(id);
+
+        return ResponseEntity.ok(new DadosRetornoContadorEscola(eventos, alunos, professores));
     }
 }

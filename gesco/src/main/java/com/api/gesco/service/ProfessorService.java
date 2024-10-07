@@ -2,6 +2,7 @@ package com.api.gesco.service;
 
 import com.api.gesco.controller.AuthenticationProfessorController;
 import com.api.gesco.domain.autenticacao.professor.DadosCadastroLoginProfessor;
+import com.api.gesco.domain.disciplina_professor.DadosCadastroDisciplinaProfessor;
 import com.api.gesco.domain.professor.DadosAtualizarProfessor;
 import com.api.gesco.domain.professor.DadosCadastroProfessor;
 import com.api.gesco.domain.professor.DadosDetalhamentoProfessores;
@@ -42,7 +43,7 @@ public class ProfessorService {
     private DiplomaService diplomaService;
 
     @Autowired
-    DisciplinaProfessorService disciplinaProfessorService;
+    private DisciplinaProfessorService disciplinaProfessorService;
 
     @Autowired
     AuthenticationProfessorController authenticationProfessorController;
@@ -66,6 +67,10 @@ public class ProfessorService {
 
         var professor = repository.save(new Professor(dados, escola, sexo));
 
+        System.out.println("Entrou");
+        var disciplinas = dados.disciplinas().stream().map(disciplina -> disciplinaProfessorService.cadastrarDisciplinaProfessor(new DadosCadastroDisciplinaProfessor(professor.getId(),disciplina)));
+        System.out.println("Saiu");
+
         var email = dados.emails().stream().map(emailProfessor -> emailService.cadastrarEmailProfessor(emailProfessor, professor));
 
         var telefone = dados.telefones().stream().map(telefoneProfessor -> telefoneService.cadastrarTelefoneProfessor(telefoneProfessor, professor));
@@ -79,13 +84,11 @@ public class ProfessorService {
         var login = authenticationProfessorController.cadastrar(new DadosCadastroLoginProfessor(dados.login().email(), dados.login().senha(), professor.getId()));
 
         var uri = uriBuilder.path("/professor/{id}").buildAndExpand(professor.getId()).toUri();
-        return ResponseEntity.created(uri).body(new DadosRetornoProfessor(professor, email, telefone, endereco, diploma));
+        return ResponseEntity.created(uri).body(new DadosRetornoProfessor(professor, email, telefone, endereco, diploma, disciplinas));
     }
 
     public ResponseEntity listarProfessoresDaEscola(Pageable paginacao, Long id){
         var page =repository.findProfessoresByEscola(id, paginacao);
-        System.out.println(page.getTotalElements());
-        System.out.println(page);
         var dados = page.stream().map(professor ->
                     new DadosDetalhamentoProfessoresCompleto(professor, disciplinaProfessorService.pegarTodasAsDisciplinasDeUmProfessor(professor.id()))
                 );

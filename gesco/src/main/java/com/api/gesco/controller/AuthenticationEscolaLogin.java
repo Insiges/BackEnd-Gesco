@@ -16,10 +16,8 @@ import com.api.gesco.domain.Roles;
 import com.api.gesco.domain.autenticacao.DadosAutenticacao;
 import com.api.gesco.domain.autenticacao.escola.DadosCadastroEscolaLogin;
 import com.api.gesco.domain.autenticacao.escola.DadosLoginEscola;
-import com.api.gesco.domain.autenticacao.professor.DadosLoginProfessor;
 import com.api.gesco.infra.security.TokenService;
 import com.api.gesco.model.logins.LoginEscola;
-import com.api.gesco.model.logins.LoginProfessor;
 import com.api.gesco.repository.escola.EscolaRepository;
 import com.api.gesco.repository.logins.LoginEscolaRepository;
 
@@ -89,5 +87,4 @@ public ResponseEntity<?> login(@RequestBody @Valid DadosAutenticacao dados) {
         return ResponseEntity.status(201).body("Escola cadastrada com sucesso!");
 
     }
-    
 }

@@ -28,6 +28,7 @@ import lombok.Setter;
 @Setter
 public class LoginEscola implements UserDetails {
 
+    @Getter
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

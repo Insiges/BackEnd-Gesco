@@ -3,6 +3,8 @@ package com.api.gesco.service;
 import java.util.List;
 import java.util.Optional;
 
+import com.api.gesco.components.JwtUtil;
+import com.api.gesco.repository.logins.LoginEscolaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,14 +19,26 @@ import jakarta.persistence.EntityNotFoundException;
 @Service
 public class TurmasService {
 
+    private final JwtUtil jwtUtil;
+
     @Autowired
     TurmasRepository turmasRepository;
 
     @Autowired
     EscolaRepository escolaRepository;
 
-    public Turmas cadastrarTurma(DadosCadastradosTurmas dados) {
-        Escola escola = escolaRepository.findById(dados.id_escola())
+    @Autowired
+    private LoginEscolaRepository loginEscolaRepository;
+
+    public TurmasService(JwtUtil jwtUtil) {
+        this.jwtUtil = jwtUtil;
+    }
+
+    public Turmas cadastrarTurma(DadosCadastradosTurmas dados, String token) {
+        var emailToken = jwtUtil.getEmailFromToken(token);
+        var escolaToken = loginEscolaRepository.findOnlyEscolaIdByEmail(emailToken);
+
+        Escola escola = escolaRepository.findById(escolaToken.getId())
             .orElseThrow(() -> new EntityNotFoundException("Escola não encontrada"));
 
         Turmas novaTurma = new Turmas(dados, escola);

@@ -32,9 +32,6 @@ public record DadosCadastroProfessor(
 
         @NotNull @Valid DadosEndereco endereco,
 
-        @NotNull
-        Long id_escola,
-
         @NotBlank
         String sexo,
 

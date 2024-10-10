@@ -22,7 +22,7 @@ public interface ProfessorRepository extends JpaRepository<Professor, Long> {
             "JOIN Estado e ON c.estado.id = e.id " +
             "JOIN Sexo s ON s.id = p.sexo.id " +
             "WHERE p.escola.id = :idEscola")
-    Page<DadosDetalhamentoProfessores> findProfessoresByEscola(@Param("idEscola") Long idEscola, Pageable paginacao);
+    List<DadosDetalhamentoProfessores> findProfessoresByEscola(@Param("idEscola") Long idEscola);
 
     @Query("SELECT new com.api.gesco.domain.professor.DadosDetalhamentoProfessores(" +
             "p.id, p.nome, p.foto, p.cpf, p.dataNascimento, ep.id, ep.email, tp.id, tp.telefone, s.nome, " +

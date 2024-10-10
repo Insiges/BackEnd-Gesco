@@ -1,7 +1,10 @@
 package com.api.gesco.service;
 
+import com.api.gesco.components.JwtUtil;
 import com.api.gesco.domain.escola.DadosRetornoEventoEscola;
 import com.api.gesco.domain.escola.DadosRetornoEventoEscolaList;
+import com.api.gesco.domain.evento.DadosCadastradosEvento;
+import com.api.gesco.repository.logins.LoginEscolaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -24,8 +27,19 @@ public class EventoService {
     @Autowired
     private EventoRepository eventoRepository;
 
-    public Evento cadastrarEvento(Evento evento) {
-        return eventoRepository.save(evento);
+    @Autowired
+    LoginEscolaRepository loginEscolaRepository;
+
+    private final JwtUtil jwtUtil;
+
+    public EventoService(JwtUtil jwtUtil) {
+        this.jwtUtil = jwtUtil;
+    }
+
+    public Evento cadastrarEvento(DadosCadastradosEvento dados, String token) {
+        var email = jwtUtil.getEmailFromToken(token);
+        var escola = loginEscolaRepository.findOnlyEscolaIdByEmail(email);
+        return eventoRepository.save(new Evento(dados, escola));
     }
 
     public List<Evento> listarEventos() {
@@ -56,8 +70,11 @@ public class EventoService {
         eventoRepository.deleteById(id);
     }
 
-    public ResponseEntity pegarEventosPeloIdDaEscola(Long id){
-        var eventos = eventoRepository.getAllByEscolaId(id);
+    public ResponseEntity pegarEventosPeloIdDaEscola(String token){
+        var email = jwtUtil.getEmailFromToken(token);
+        var escola = loginEscolaRepository.findOnlyEscolaIdByEmail(email);
+
+        var eventos = eventoRepository.getAllByEscolaId(escola.getId());
 
         List<DadosRetornoEventoEscola> eventosDTO = eventos.stream()
                 .map(evento -> new DadosRetornoEventoEscola(

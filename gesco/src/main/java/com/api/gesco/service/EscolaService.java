@@ -1,5 +1,6 @@
 package com.api.gesco.service;
 
+import com.api.gesco.components.JwtUtil;
 import com.api.gesco.controller.AuthenticationEscolaLogin;
 import com.api.gesco.domain.autenticacao.escola.DadosCadastroEscolaLogin;
 import com.api.gesco.domain.escola.DadosAtualizarEscola;
@@ -8,6 +9,7 @@ import com.api.gesco.domain.escola.DadosRetornoContadorEscola;
 import com.api.gesco.domain.escola.DadosRetornoEscola;
 import com.api.gesco.model.escola.Escola;
 import com.api.gesco.repository.escola.EscolaRepository;
+import com.api.gesco.repository.logins.LoginEscolaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 @Service
 public class EscolaService {
+    private final JwtUtil jwtUtil;
 
     @Autowired
     private EscolaRepository repository;
@@ -31,6 +34,13 @@ public class EscolaService {
 
     @Autowired
     private AuthenticationEscolaLogin escolaLogin;
+
+    @Autowired
+    private LoginEscolaRepository loginEscolaRepository;
+
+    public EscolaService(JwtUtil jwtUtil) {
+        this.jwtUtil = jwtUtil;
+    }
 
     public ResponseEntity cadastrarEscola(DadosCadastroEscola dados, UriComponentsBuilder uriBuilder){
 
@@ -67,15 +77,21 @@ public class EscolaService {
         return ResponseEntity.ok(escolas);
     }
 
-    public ResponseEntity pegarUmaEscola(Long id){
-        var escolas = repository.pegarTodosOsDadosDeUmaEscola(id);
+    public ResponseEntity pegarUmaEscola(String token){
+        var emailToken = jwtUtil.getEmailFromToken(token);
+        var escolaToken = loginEscolaRepository.findOnlyEscolaIdByEmail(emailToken);
+
+        var escolas = repository.pegarTodosOsDadosDeUmaEscola(escolaToken.getId());
 
         return ResponseEntity.ok(escolas);
     }
 
     @Transactional
-    public ResponseEntity atualizarEscola(Long id, DadosAtualizarEscola dados){
-        var escola = repository.getEscolaById(id);
+    public ResponseEntity atualizarEscola(String token, DadosAtualizarEscola dados){
+        var emailToken = jwtUtil.getEmailFromToken(token);
+        var escolaToken = loginEscolaRepository.findOnlyEscolaIdByEmail(emailToken);
+
+        var escola = repository.getEscolaById(escolaToken.getId());
         dados.emails().forEach(email -> emailService.atualizarEmailEscola(email.getId(), email.getEmail()));
         dados.telefones().forEach(telefone -> telefoneService.atualizarTelefone(telefone.getId(), telefone.getTelefone()));
         dados.enderecos().forEach(endereco -> enderecoService.atualizarEnderecoEscola(endereco.getId(), endereco));
@@ -100,10 +116,13 @@ public class EscolaService {
         return escola;
     }
 
-    public ResponseEntity pegarDadosContador(Long id){
-        var eventos = repository.countEventos(id);
-        var alunos = repository.countAlunos(id);
-        var professores = repository.countProfessores(id);
+    public ResponseEntity pegarDadosContador(String token){
+        var emailToken = jwtUtil.getEmailFromToken(token);
+        var escolaToken = loginEscolaRepository.findOnlyEscolaIdByEmail(emailToken);
+
+        var eventos = repository.countEventos(escolaToken.getId());
+        var alunos = repository.countAlunos(escolaToken.getId());
+        var professores = repository.countProfessores(escolaToken.getId());
 
         return ResponseEntity.ok(new DadosRetornoContadorEscola(eventos, alunos, professores));
     }

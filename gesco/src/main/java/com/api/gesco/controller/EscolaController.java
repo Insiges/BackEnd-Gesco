@@ -14,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("escola")
 public class EscolaController {
@@ -36,9 +38,9 @@ public class EscolaController {
     @Autowired
     private EventoService eventoService;
 
-    @GetMapping("/{id}")
-    public ResponseEntity pegarUmaEscola(@PathVariable("id") Long id) {
-        var escola = service.pegarUmaEscola(id);
+    @GetMapping("/user")
+    public ResponseEntity pegarUmaEscola(@RequestHeader("Authorization") String token) {
+        var escola = service.pegarUmaEscola(token);
         return ResponseEntity.status(201).body(escola);
     }
 
@@ -54,9 +56,9 @@ public class EscolaController {
         return ResponseEntity.ok(escolas);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity atualizarEscola(@PathVariable("id") Long id, @RequestBody @Valid DadosAtualizarEscola dados) {
-        var escola = service.atualizarEscola(id, dados);
+    @PutMapping()
+    public ResponseEntity atualizarEscola(@RequestHeader("Authorization") String token, @RequestBody @Valid DadosAtualizarEscola dados) {
+        var escola = service.atualizarEscola(token, dados);
 
         return ResponseEntity.ok(escola);
     }
@@ -68,44 +70,44 @@ public class EscolaController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/professor/{id}")
-    public ResponseEntity listarTodosOsProfessoresDaEscola(@PageableDefault(size = 30, sort = {"nome"}) Pageable paginacao, @PathVariable("id") Long id) {
-        var professor = professorService.listarProfessoresDaEscola(paginacao, id);
+    @GetMapping("/professor")
+    public ResponseEntity listarTodosOsProfessoresDaEscola(@RequestHeader("Authorization") String token) {
+        var professor = professorService.listarProfessoresDaEscola(token);
 
         return ResponseEntity.ok().body(professor);
     }
 
-    @GetMapping("/aluno/{id}")
-    public ResponseEntity<Page<DadosDetalhamentoAluno>> listarTodosOsAlunosDaEscola(@PageableDefault(size = 30, sort = {"nome"}) Pageable paginacao, @PathVariable("id") Long id) {
-        var aluno = alunoService.listarAlunosDaEscola(paginacao, id);
+    @GetMapping("/aluno")
+    public ResponseEntity<List<DadosDetalhamentoAluno>> listarTodosOsAlunosDaEscola(@RequestHeader("Authorization") String token) {
+        var aluno = alunoService.listarAlunosDaEscola(token);
 
         return ResponseEntity.ok(aluno);
     }
 
-    @GetMapping("/responsavel/{id}")
-    public ResponseEntity pegarResponsavelPeloId(@PathVariable("id") Long id, Pageable page) {
-        var responsavel = responsavelService.pegarResponsaveisPeloIdDaEscola(page, id);
+    @GetMapping("/responsavel")
+    public ResponseEntity pegarResponsavelPeloId(@RequestHeader("Authorization") String token) {
+        var responsavel = responsavelService.pegarResponsaveisPeloIdDaEscola(token);
 
         return ResponseEntity.ok(responsavel);
     }
 
-    @GetMapping("/salas/{id}")
-    public ResponseEntity pegarSalasPeloIdDaEscola(Pageable pageable, @PathVariable("id") Long id) {
-        var professor = salaService.pegarSalasPeloIdDaEscola(pageable, id);
+    @GetMapping("/salas")
+    public ResponseEntity pegarSalasPeloIdDaEscola(@RequestHeader("Authorization")String token) {
+        var professor = salaService.pegarSalasPeloIdDaEscola(token);
 
         return ResponseEntity.ok(professor);
     }
 
-    @GetMapping("contador/{id}")
-    public ResponseEntity pegarDadosContador(@PathVariable("id") Long id) {
-        var dados = service.pegarDadosContador(id);
+    @GetMapping("contador")
+    public ResponseEntity pegarDadosContador(@RequestHeader("Authorization") String token) {
+        var dados = service.pegarDadosContador(token);
 
         return ResponseEntity.ok(dados);
     }
 
-    @GetMapping("eventos/{id}")
-    public ResponseEntity pegarEventos(@PathVariable("id") Long id) {
-        var dados = eventoService.pegarEventosPeloIdDaEscola(id);
+    @GetMapping("eventos")
+    public ResponseEntity pegarEventos(@RequestHeader("Authorization") String token) {
+        var dados = eventoService.pegarEventosPeloIdDaEscola(token);
 
         return ResponseEntity.ok(dados);
     }

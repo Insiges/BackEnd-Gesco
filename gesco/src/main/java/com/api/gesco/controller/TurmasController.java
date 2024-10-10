@@ -3,14 +3,7 @@ package com.api.gesco.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.api.gesco.domain.turmas.DadosCadastradosTurmas;
 import com.api.gesco.model.turmas.Turmas;
@@ -27,9 +20,9 @@ public class TurmasController {
     private TurmasService turmasService;
 
     @PostMapping("/novaTurma")
-    public ResponseEntity cadastrarTurma(@RequestBody @Valid DadosCadastradosTurmas dados) {
+    public ResponseEntity cadastrarTurma(@RequestBody @Valid DadosCadastradosTurmas dados,  @RequestHeader("Authorization") String token){
         try {        
-            var turma = turmasService.cadastrarTurma(dados);
+            var turma = turmasService.cadastrarTurma(dados, token);
 
             return ResponseEntity.ok(turma);
         } catch (Exception e) {

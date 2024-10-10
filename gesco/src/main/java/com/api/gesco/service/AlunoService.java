@@ -1,5 +1,6 @@
 package com.api.gesco.service;
 
+import com.api.gesco.components.JwtUtil;
 import com.api.gesco.controller.AuthenticationControllerLoginAluno;
 import com.api.gesco.domain.alunos.*;
 import com.api.gesco.domain.alunos_responsavel.DadosCadastroAluno_Responsavel;
@@ -11,6 +12,7 @@ import com.api.gesco.domain.professor.DadosRetornoProfessor;
 import com.api.gesco.model.alunos.Aluno;
 import com.api.gesco.model.professor.Professor;
 import com.api.gesco.repository.alunos.AlunoRepository;
+import com.api.gesco.repository.logins.LoginEscolaRepository;
 import com.api.gesco.repository.professor.ProfessorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -21,10 +23,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class AlunoService {
+    private final JwtUtil jwtUtil;
 
     @Autowired
     private AlunoRepository repository;
@@ -53,8 +57,17 @@ public class AlunoService {
     @Autowired
     private AuthenticationControllerLoginAluno authenticationControllerLoginAluno;
 
+    @Autowired
+    private LoginEscolaRepository loginEscolaRepository;
+
+    public AlunoService(JwtUtil jwtUtil) {
+        this.jwtUtil = jwtUtil;
+    }
+
     @Transactional
-    public ResponseEntity cadastrarAluno(DadosCadastroAluno dados, UriComponentsBuilder uriBuilder){
+    public ResponseEntity cadastrarAluno(DadosCadastroAluno dados, UriComponentsBuilder uriBuilder, String token){
+        var emailToken = jwtUtil.getEmailFromToken(token);
+        var escolaToken = loginEscolaRepository.findOnlyEscolaIdByEmail(emailToken);
         //Valida se os emails já estão cadastrados.
         dados.emails().forEach(emailAluno -> emailService.validarEmailAluno(emailAluno));
 
@@ -66,7 +79,7 @@ public class AlunoService {
         if (estado == null){
             return ResponseEntity.badRequest().body("Erro: estado inválido!");
         }
-        var escola = escolaService.verificarEscola(dados.id_escola());
+        var escola = escolaService.verificarEscola(escolaToken.getId());
 
         var sexo = sexoService.pesquisarSexo(dados.sexo().toUpperCase());
 
@@ -107,8 +120,10 @@ public class AlunoService {
         return ResponseEntity.created(uri).body(new DadosRetornoAluno(aluno, email, telefone, endereco));
     }
 
-    public Page<DadosDetalhamentoAluno> listarAlunosDaEscola(@PageableDefault(size = 20, sort = {"nome"}) Pageable paginacao, Long id){
-        var page =repository.findAlunosByEscola(id, paginacao);
+    public List<DadosDetalhamentoAluno> listarAlunosDaEscola(String token){
+        var emailToken = jwtUtil.getEmailFromToken(token);
+        var escolaToken = loginEscolaRepository.findOnlyEscolaIdByEmail(emailToken);
+        var page =repository.findAlunosByEscola(escolaToken.getId());
 
         return page;
     }

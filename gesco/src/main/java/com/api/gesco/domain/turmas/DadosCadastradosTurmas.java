@@ -10,9 +10,6 @@ public record DadosCadastradosTurmas (
     String nome,
 
     @NotNull
-    Year ano,
-
-    @NotNull 
-    Long id_escola
+    Year ano
 
 ) {}

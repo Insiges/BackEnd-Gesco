@@ -5,6 +5,7 @@ import com.api.gesco.model.alunos.Aluno;
 import com.api.gesco.model.disciplina.Disciplina;
 import com.api.gesco.model.professor.Professor;
 import com.api.gesco.model.responsavel.Responsavel;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -28,6 +29,7 @@ public class DisciplinaProfesor {
     private Disciplina disciplina;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "id_professor") // Define a chave estrangeira
     private Professor professor;
 

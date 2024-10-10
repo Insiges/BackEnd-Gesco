@@ -1,9 +1,11 @@
 package com.api.gesco.service;
 
+import com.api.gesco.components.JwtUtil;
 import com.api.gesco.domain.salas.DadosCadastroSalas;
 import com.api.gesco.domain.salas.DadosDetalhamentoSalas;
 import com.api.gesco.model.salas.Salas;
 import com.api.gesco.repository.escola.EscolaRepository;
+import com.api.gesco.repository.logins.LoginEscolaRepository;
 import com.api.gesco.repository.salas.SalasRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -12,14 +14,24 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class SalaService {
+    private final JwtUtil jwtUtil;
 
     @Autowired
     private SalasRepository repository;
 
     @Autowired
     private EscolaRepository escolaRepository;
+
+    @Autowired
+    private LoginEscolaRepository loginEscolaRepository;
+
+    public SalaService(JwtUtil jwtUtil) {
+        this.jwtUtil = jwtUtil;
+    }
 
     @Transactional
     public Salas cadastrarSala(DadosCadastroSalas dados){
@@ -37,8 +49,10 @@ public class SalaService {
         return page;
     }
 
-    public Page<Salas> pegarSalasPeloIdDaEscola(Pageable pageable, Long id){
-        var page =repository.findAllByEscolaId(pageable,id);
+    public List<Salas> pegarSalasPeloIdDaEscola(String token){
+        var emailToken = jwtUtil.getEmailFromToken(token);
+        var escolaToken = loginEscolaRepository.findOnlyEscolaIdByEmail(emailToken);
+        var page =repository.findAllByEscolaId(escolaToken.getId());
 
         return page;
     }

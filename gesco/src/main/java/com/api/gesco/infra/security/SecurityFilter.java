@@ -41,11 +41,13 @@ public class SecurityFilter extends OncePerRequestFilter {
             if (email != null) {
                 UserDetails professor = loginProfessorRepository.findByEmail(email);
                 if (professor != null) {
+                    System.out.println("Autenticado como Professor: " + email);
                     var authentication = new UsernamePasswordAuthenticationToken(professor, null, professor.getAuthorities());
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 } else {
                     UserDetails escola = loginEscolaRepository.findByEmail(email);
                     if (escola != null) {
+                        System.out.println("Autenticado como Escola: " + email);
                         var authentication = new UsernamePasswordAuthenticationToken(escola, null, escola.getAuthorities());
                         SecurityContextHolder.getContext().setAuthentication(authentication);
                     } else {

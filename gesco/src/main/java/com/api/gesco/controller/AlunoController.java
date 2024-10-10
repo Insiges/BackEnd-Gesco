@@ -26,9 +26,9 @@ public class AlunoController {
     private AlunoService service;
 
     @PostMapping
-    public ResponseEntity cadastrarAluno(@RequestBody @Valid DadosCadastroAluno dados, UriComponentsBuilder uriBuilder){
+    public ResponseEntity cadastrarAluno(@RequestBody @Valid DadosCadastroAluno dados, UriComponentsBuilder uriBuilder, @RequestHeader("Authorization") String token){
 
-        var aluno = service.cadastrarAluno(dados, uriBuilder);
+        var aluno = service.cadastrarAluno(dados, uriBuilder, token);
 
         return ResponseEntity.status(201).body(aluno);
     }

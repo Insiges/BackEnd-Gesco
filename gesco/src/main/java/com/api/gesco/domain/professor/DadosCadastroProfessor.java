@@ -32,13 +32,13 @@ public record DadosCadastroProfessor(
 
         @NotNull @Valid DadosEndereco endereco,
 
-        @NotNull
-        Long id_escola,
-
         @NotBlank
         String sexo,
 
         @NotNull @Valid List<DadosAtualizarDiploma> diplomas,
+
+        @NotNull
+        List<Long> disciplinas,
 
         @NotNull @Valid DadosLogin login
         ) {

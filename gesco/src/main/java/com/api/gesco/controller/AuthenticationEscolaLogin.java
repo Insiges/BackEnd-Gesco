@@ -16,10 +16,8 @@ import com.api.gesco.domain.Roles;
 import com.api.gesco.domain.autenticacao.DadosAutenticacao;
 import com.api.gesco.domain.autenticacao.escola.DadosCadastroEscolaLogin;
 import com.api.gesco.domain.autenticacao.escola.DadosLoginEscola;
-import com.api.gesco.domain.autenticacao.professor.DadosLoginProfessor;
 import com.api.gesco.infra.security.TokenService;
 import com.api.gesco.model.logins.LoginEscola;
-import com.api.gesco.model.logins.LoginProfessor;
 import com.api.gesco.repository.escola.EscolaRepository;
 import com.api.gesco.repository.logins.LoginEscolaRepository;
 
@@ -52,11 +50,9 @@ public ResponseEntity<?> login(@RequestBody @Valid DadosAutenticacao dados) {
         Object principal = auth.getPrincipal();
 
         if (principal instanceof LoginEscola) {
+            System.out.println("escola");
             var token = tokenService.gerarTokenEscola((LoginEscola) principal);
             return ResponseEntity.ok(new DadosLoginEscola(token));
-        } else if (principal instanceof LoginProfessor) {
-            var token = tokenService.gerarTokenProfessor((LoginProfessor) principal);
-            return ResponseEntity.ok(new DadosLoginProfessor(token));
         } else {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Usuário não autorizado para esta ação.");
         }
@@ -91,5 +87,4 @@ public ResponseEntity<?> login(@RequestBody @Valid DadosAutenticacao dados) {
         return ResponseEntity.status(201).body("Escola cadastrada com sucesso!");
 
     }
-    
 }

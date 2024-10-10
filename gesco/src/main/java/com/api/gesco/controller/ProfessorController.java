@@ -14,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("professor")
 public class ProfessorController {
@@ -25,16 +27,16 @@ public class ProfessorController {
     private DiplomaService diplomaService;
 
     @PostMapping
-    public ResponseEntity cadastrarAluno(@RequestBody @Valid DadosCadastroProfessor dados, UriComponentsBuilder uriBuilder){
+    public ResponseEntity cadastrarAluno(@RequestBody @Valid DadosCadastroProfessor dados, UriComponentsBuilder uriBuilder, @RequestHeader("Authorization") String token){
 
-        var professor = service.cadastrarProfessor(dados, uriBuilder);
+        var professor = service.cadastrarProfessor(dados, uriBuilder, token);
 
         return ResponseEntity.status(201).body(professor);
     }
 
-    @GetMapping("/{id}")
-    public  ResponseEntity pegarProfessorPeloId(Pageable paginacao, @PathVariable("id") Long id){
-        var professor = service.pegarProfessorPeloId(paginacao,id);
+    @GetMapping("/user")
+    public  ResponseEntity pegarProfessorPeloId(@RequestHeader("Authorization") String token){
+        var professor = service.pegarProfessorPeloId(token);
 
         return  ResponseEntity.ok(professor);
     }
@@ -62,8 +64,8 @@ public class ProfessorController {
     }
 
     @GetMapping("/diploma/{id}")
-    public ResponseEntity<Page<DadosDetalhamentoDiploma>> listarDiplomasDeUmProfessor(Pageable page, @PathVariable("id") Long id){
-        var diplomas = diplomaService.listarDiplomasDeUmProfessor(page, id);
+    public ResponseEntity<List<DadosDetalhamentoDiploma>> listarDiplomasDeUmProfessor(Pageable page, @PathVariable("id") Long id){
+        var diplomas = diplomaService.listarDiplomasDeUmProfessor(id);
 
         return ResponseEntity.ok(diplomas);
     }

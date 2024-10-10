@@ -5,8 +5,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+
 public interface SalasRepository extends JpaRepository<Salas,Long> {
     Salas findOneById(Long id);
-    Page<Salas> findAllByEscolaId(Pageable page, Long id);
+    List<Salas> findAllByEscolaId(Long id);
 
 }

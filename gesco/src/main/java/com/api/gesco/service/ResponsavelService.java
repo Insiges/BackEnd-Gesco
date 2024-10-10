@@ -1,9 +1,11 @@
 package com.api.gesco.service;
 
+import com.api.gesco.components.JwtUtil;
 import com.api.gesco.domain.responsavel.DadosAtualizarResponsavel;
 import com.api.gesco.domain.responsavel.DadosCadastroResponsavel;
 import com.api.gesco.domain.responsavel.DadosRetornoResponsavel;
 import com.api.gesco.model.responsavel.Responsavel;
+import com.api.gesco.repository.logins.LoginEscolaRepository;
 import com.api.gesco.repository.responsavel.ResponsavelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,6 +19,7 @@ import java.util.List;
 
 @Service
 public class ResponsavelService {
+    private final JwtUtil jwtUtil;
 
     @Autowired
     private ResponsavelRepository repository;
@@ -26,6 +29,14 @@ public class ResponsavelService {
 
     @Autowired
     private SexoService sexoService;
+
+    @Autowired
+    private LoginEscolaRepository loginEscolaRepository;
+
+
+    public ResponsavelService(JwtUtil jwtUtil) {
+        this.jwtUtil = jwtUtil;
+    }
 
     @Transactional
     public Responsavel cadastrarResponsavel(DadosCadastroResponsavel dados){
@@ -51,8 +62,11 @@ public class ResponsavelService {
         return page;
     }
 
-    public List<Responsavel> pegarResponsaveisPeloIdDaEscola(Pageable pageable, Long id){
-        var page =repository.findAllByEscolaId(id, pageable);
+    public List<Responsavel> pegarResponsaveisPeloIdDaEscola(String token){
+        var emailToken = jwtUtil.getEmailFromToken(token);
+        var escolaToken = loginEscolaRepository.findOnlyEscolaIdByEmail(emailToken);
+
+        var page =repository.findAllByEscolaId(escolaToken.getId());
 
         return page;
     }

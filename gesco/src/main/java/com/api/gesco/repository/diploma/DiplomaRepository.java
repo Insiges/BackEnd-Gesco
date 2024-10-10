@@ -16,7 +16,7 @@ public interface DiplomaRepository extends JpaRepository<Diploma,Long> {
             "FROM Diploma d " +
             "JOIN d.professor p " +
             "WHERE p.id = :idProfessor")
-    Page<DadosDetalhamentoDiploma> findDiplomasByProfessor(@Param("idProfessor") Long idProfessor, Pageable page);
+    List<DadosDetalhamentoDiploma> findDiplomasByProfessor(@Param("idProfessor") Long idProfessor);
 
     @Query("SELECT new com.api.gesco.domain.diploma.DadosDetalhamentoDiploma (d.id, d.curso, d.faculdade, d.inicio, d.fim, p.nome) " +
             "FROM Diploma d " +

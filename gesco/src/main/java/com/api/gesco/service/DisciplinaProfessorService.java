@@ -29,12 +29,14 @@ public class DisciplinaProfessorService {
 
     @Transactional
     public DisciplinaProfesor cadastrarDisciplinaProfessor(DadosCadastroDisciplinaProfessor dados){
+        System.out.println("disciplina");
         var disciplina = disciplinaRepository.findOneById(dados.id_disciplina());
         var professor = professorRepository.findOneById(dados.id_professor());
 
         if (disciplina != null && professor != null){
 
             var disciplinaProfessor = disciplinaProfessorRepository.save(new DisciplinaProfesor(disciplina, professor));
+            System.out.println(disciplinaProfessor);
 
             return disciplinaProfessor;
         }
@@ -44,7 +46,6 @@ public class DisciplinaProfessorService {
 
     public List<DadosDisciplina> pegarTodasAsDisciplinasDeUmProfessor(Long id){
         var disciplina = disciplinaProfessorRepository.findDisciplinasByProfessorId(id);
-
         return disciplina;
     }
 

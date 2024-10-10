@@ -11,6 +11,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface AlunoRepository extends JpaRepository<Aluno, Long> {
     Aluno findOneById(Long id);
@@ -26,7 +28,7 @@ public interface AlunoRepository extends JpaRepository<Aluno, Long> {
             "JOIN Estado e ON c.estado.id = e.id " +
             "JOIN Sexo s ON s.id = a.sexo.id " +
             "WHERE a.escola.id = :idEscola")
-    Page<DadosDetalhamentoAluno> findAlunosByEscola(@Param("idEscola") Long idEscola, Pageable paginacao);
+    List<DadosDetalhamentoAluno> findAlunosByEscola(@Param("idEscola") Long idEscola);
 
     @Query("SELECT new com.api.gesco.domain.alunos.DadosDetalhamentoAluno(" +
             "a.id, a.nome, a.foto, a.cpf, a.dataNascimento, a.matricula, eal.id, eal.email, " +

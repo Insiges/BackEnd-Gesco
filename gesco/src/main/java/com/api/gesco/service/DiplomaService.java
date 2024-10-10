@@ -13,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class DiplomaService {
 
@@ -32,8 +34,8 @@ public class DiplomaService {
         return diploma;
     }
 
-    public Page<DadosDetalhamentoDiploma> listarDiplomasDeUmProfessor(Pageable page, Long id){
-        var diploma = diplomaRepository.findDiplomasByProfessor(id, page);
+    public List<DadosDetalhamentoDiploma> listarDiplomasDeUmProfessor( Long id){
+        var diploma = diplomaRepository.findDiplomasByProfessor(id);
 
         return diploma;
     }

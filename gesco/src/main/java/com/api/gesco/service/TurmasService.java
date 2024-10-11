@@ -71,8 +71,11 @@ public class TurmasService {
         turmasRepository.deleteById(id);
     }
 
-    public List<Turmas> listarTurmasPorEscola(Long idEscola) {
-        Escola escola = escolaRepository.findById(idEscola)
+    public List<Turmas> listarTurmasPorEscola(String token) {
+        var emailToken = jwtUtil.getEmailFromToken(token);
+        var escolaToken = loginEscolaRepository.findOnlyEscolaIdByEmail(emailToken);
+
+        Escola escola = escolaRepository.findById(escolaToken.getId())
             .orElseThrow(() -> new EntityNotFoundException("Escola não encontrada"));
         return turmasRepository.findByEscola(escola);
     }

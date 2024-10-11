@@ -31,10 +31,10 @@ public class TurmasController {
         }
     }
 
-    @GetMapping("/listarTurmas/{idEscola}")
-    public ResponseEntity listarTurmasPorEscola(@PathVariable Long idEscola) {
+    @GetMapping("/listarTurmas")
+    public ResponseEntity listarTurmasPorEscola(@RequestHeader("Authorization") String token){
         try {
-            var turmas = turmasService.listarTurmasPorEscola(idEscola);
+            var turmas = turmasService.listarTurmasPorEscola(token);
             return ResponseEntity.ok(turmas);
         } catch (EntityNotFoundException  e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Escola não encontrada.");

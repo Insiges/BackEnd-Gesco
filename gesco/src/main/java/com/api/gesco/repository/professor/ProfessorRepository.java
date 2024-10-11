@@ -21,7 +21,8 @@ public interface ProfessorRepository extends JpaRepository<Professor, Long> {
             "JOIN Cidade c ON epf.cidade.id = c.id " +
             "JOIN Estado e ON c.estado.id = e.id " +
             "JOIN Sexo s ON s.id = p.sexo.id " +
-            "WHERE p.escola.id = :idEscola")
+            "WHERE p.escola.id = :idEscola " +
+            "ORDER BY p.nome")
     List<DadosDetalhamentoProfessores> findProfessoresByEscola(@Param("idEscola") Long idEscola);
 
     @Query("SELECT new com.api.gesco.domain.professor.DadosDetalhamentoProfessores(" +

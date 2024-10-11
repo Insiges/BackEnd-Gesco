@@ -48,4 +48,11 @@ public class GradeHorarioController {
 
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity pegarGradePeloId(@PathVariable("id") Long id){
+        var grade = service.pegarGradePeloId(id);
+
+        return  ResponseEntity.ok(grade);
+    }
 }

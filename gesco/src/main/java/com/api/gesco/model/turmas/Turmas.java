@@ -8,6 +8,7 @@ import com.api.gesco.model.atividade.Atividade;
 import com.api.gesco.model.disciplina_professor.DisciplinaProfesor;
 import com.api.gesco.model.escola.Escola;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,6 +28,7 @@ public class Turmas {
     private Year ano;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "id_escola", nullable = false)
     private Escola escola;
 

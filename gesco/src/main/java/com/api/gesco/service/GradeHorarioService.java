@@ -1,6 +1,8 @@
 package com.api.gesco.service;
 
 import com.api.gesco.domain.grade_horario.DadosCadastroGrade;
+import com.api.gesco.domain.grade_horario.DadosDetalhamentoGradeHorario;
+import com.api.gesco.domain.grade_horario.DadosDetalhamentoGradeHorarioUnico;
 import com.api.gesco.model.frequencia.GradeHorario;
 import com.api.gesco.repository.disciplina.DisciplinaRepository;
 import com.api.gesco.repository.frequencia.GradeHorarioRepository;
@@ -81,4 +83,9 @@ public class GradeHorarioService {
         repository.deleteById(id);
     }
 
+    public ResponseEntity pegarGradePeloId(Long id){
+        var grade = repository.findOneById(id);
+
+        return ResponseEntity.ok(new DadosDetalhamentoGradeHorarioUnico(grade));
+    }
 }

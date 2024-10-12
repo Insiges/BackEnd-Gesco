@@ -11,9 +11,7 @@ public record DadosAtualizarDiploma(
         @NotBlank
         String faculdade,
 
-        @NotBlank
-        String inicio,
+        @NotNull
+        Long id_tipo_graduacao
 
-        @NotBlank
-        String fim
 ) {}

@@ -15,13 +15,9 @@ public record DadosCadastroDiploma(
         @NotBlank
         String faculdade,
 
-        @NotBlank
-        String inicio,
-
-        @NotBlank
-        String fim,
+        @NotNull
+        Long id_professor,
 
         @NotNull
-        Long id_professor
-
+        Long id_tipo_graduacao
 ) {}

@@ -75,7 +75,7 @@ public class DiplomaService {
         var professor = professorRepository.findOneById(id);
         System.out.println(dados);
 
-        var diploma = diplomaRepository.save(new Diploma(dados, professor));
+        var diploma = diplomaRepository.save(new Diploma(dados, professor, graduacao ));
 
         return diploma;
     }

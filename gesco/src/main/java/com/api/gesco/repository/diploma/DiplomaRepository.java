@@ -12,13 +12,13 @@ import java.util.List;
 
 public interface DiplomaRepository extends JpaRepository<Diploma,Long> {
 
-    @Query("SELECT new com.api.gesco.domain.diploma.DadosDetalhamentoDiploma (d.id, d.curso, d.faculdade, d.inicio, d.fim, p.nome) " +
+    @Query("SELECT new com.api.gesco.domain.diploma.DadosDetalhamentoDiploma (d.id, d.curso, d.faculdade, p.nome) " +
             "FROM Diploma d " +
             "JOIN d.professor p " +
             "WHERE p.id = :idProfessor")
     List<DadosDetalhamentoDiploma> findDiplomasByProfessor(@Param("idProfessor") Long idProfessor);
 
-    @Query("SELECT new com.api.gesco.domain.diploma.DadosDetalhamentoDiploma (d.id, d.curso, d.faculdade, d.inicio, d.fim, p.nome) " +
+    @Query("SELECT new com.api.gesco.domain.diploma.DadosDetalhamentoDiploma (d.id, d.curso, d.faculdade, p.nome) " +
             "FROM Diploma d " +
             "JOIN d.professor p ")
     Page<DadosDetalhamentoDiploma> findAllDiplomas(Pageable page);

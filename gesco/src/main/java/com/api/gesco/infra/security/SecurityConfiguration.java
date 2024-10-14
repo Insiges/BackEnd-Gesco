@@ -104,7 +104,7 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.DELETE, "/aluno/**").hasRole("ESCOLA")
                         .requestMatchers(HttpMethod.POST, "/aluno/**").hasRole("ESCOLA")
                         .requestMatchers(HttpMethod.PUT, "/aluno/**").hasRole("ESCOLA")
-                        .requestMatchers(HttpMethod.GET, "/aluno/**").hasAnyRole("PROFESSOR", "ESCOLA")
+                        .requestMatchers(HttpMethod.GET, "/aluno/**").hasAnyRole("PROFESSOR", "ESCOLA", "ALUNO")
                         .requestMatchers(HttpMethod.GET, "/professor/**").hasAnyRole("PROFESSOR", "ESCOLA")
                         .requestMatchers(HttpMethod.DELETE, "/professor/**").hasRole("ESCOLA")
                         .requestMatchers(HttpMethod.POST, "/professor/**").hasRole("ESCOLA")

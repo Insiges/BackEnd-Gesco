@@ -2,6 +2,7 @@ package com.api.gesco.repository.responsavel;
 
 import com.api.gesco.domain.alunos.DadosDetalhamentoAluno;
 import com.api.gesco.model.alunos.Aluno;
+import com.api.gesco.model.escola.Escola;
 import com.api.gesco.model.responsavel.Responsavel;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,5 +16,6 @@ import java.util.List;
 @Repository
 public interface ResponsavelRepository extends JpaRepository<Responsavel, Long> {
     Responsavel findOneById(Long id);
+    Responsavel findOneByCpfAndEscola(String cpf, Escola escola);
     List<Responsavel> findAllByEscolaId(Long id);
 }

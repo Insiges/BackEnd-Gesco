@@ -45,10 +45,16 @@ public class ResponsavelService {
 
         var sexo = sexoService.pesquisarSexo(dados.sexo().toUpperCase());
 
-        var responsavel = repository.save(new Responsavel(dados, escola, sexo));
+        var existe = repository.findOneByCpfAndEscola(dados.cpf(), escola);
 
-        return responsavel;
-    }
+        if (existe != null){
+            return  existe;
+        }else{
+            var responsavel = repository.save(new Responsavel(dados, escola, sexo));
+
+            return responsavel;
+        }
+     }
 
     public ResponseEntity<List<Responsavel>> pegarTodosOsResponsaveis(){
         var page =repository.findAll();

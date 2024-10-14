@@ -21,4 +21,5 @@ public interface Disciplina_ProfessorRepository extends JpaRepository<Disciplina
             "WHERE p.id = :idProfessor")
     List<DadosDisciplina> findDisciplinasByProfessorId(@Param("idProfessor") Long idProfessor);
 
+    void deleteByProfessorId(Long id);
 }

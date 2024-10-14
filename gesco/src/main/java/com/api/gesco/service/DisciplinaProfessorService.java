@@ -26,10 +26,8 @@ public class DisciplinaProfessorService {
     @Autowired
     private Disciplina_ProfessorRepository disciplinaProfessorRepository;
 
-
     @Transactional
     public DisciplinaProfesor cadastrarDisciplinaProfessor(DadosCadastroDisciplinaProfessor dados){
-        System.out.println("disciplina");
         var disciplina = disciplinaRepository.findOneById(dados.id_disciplina());
         var professor = professorRepository.findOneById(dados.id_professor());
 
@@ -67,6 +65,11 @@ public class DisciplinaProfessorService {
     @Transactional
     public void deletarDisciplinaProfessor(Long id){
         disciplinaProfessorRepository.deleteById(id);
+    }
+
+    @Transactional
+    public void deletarDisciplinaProfessorByProfessor(Long id){
+        disciplinaProfessorRepository.deleteByProfessorId(id);
     }
 
 }

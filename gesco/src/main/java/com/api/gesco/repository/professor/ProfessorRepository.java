@@ -13,7 +13,7 @@ import java.util.List;
 public interface ProfessorRepository extends JpaRepository<Professor, Long> {
     @Query("SELECT new com.api.gesco.domain.professor.DadosDetalhamentoProfessores(" +
             "p.id, p.nome, p.foto, p.cpf, p.dataNascimento, ep.id, ep.email, tp.id, tp.telefone, s.nome, " +
-            "epf.logradouro, epf.cep, epf.bairro, epf.numero, epf.complemento, c.id, c.nome, e.sigla) " +
+            "epf.id, epf.logradouro, epf.cep, epf.bairro, epf.numero, epf.complemento, c.id, c.nome, e.sigla, e.id, e.nome) " +
             "FROM Professor p " +
             "JOIN EmailProfessor ep ON p.id = ep.professor.id " +
             "JOIN TelefoneProfessor tp ON p.id = tp.professor.id " +
@@ -27,7 +27,7 @@ public interface ProfessorRepository extends JpaRepository<Professor, Long> {
 
     @Query("SELECT new com.api.gesco.domain.professor.DadosDetalhamentoProfessores(" +
             "p.id, p.nome, p.foto, p.cpf, p.dataNascimento, ep.id, ep.email, tp.id, tp.telefone, s.nome, " +
-            "epf.logradouro, epf.cep, epf.bairro, epf.numero, epf.complemento, c.id, c.nome, e.sigla) " +
+            "epf.id, epf.logradouro, epf.cep, epf.bairro, epf.numero, epf.complemento, c.id, c.nome,  e.sigla, e.id, e.nome) " +
             "FROM Professor p " +
             "JOIN EmailProfessor ep ON p.id = ep.professor.id " +
             "JOIN TelefoneProfessor tp ON p.id = tp.professor.id " +
@@ -40,7 +40,7 @@ public interface ProfessorRepository extends JpaRepository<Professor, Long> {
 
     @Query("SELECT new com.api.gesco.domain.professor.DadosDetalhamentoProfessores(" +
             "p.id, p.nome, p.foto, p.cpf, p.dataNascimento, ep.id, ep.email, tp.id, tp.telefone, s.nome, " +
-            "epf.logradouro, epf.cep, epf.bairro, epf.numero, epf.complemento, c.id, c.nome, e.sigla) " +
+            "epf.id, epf.logradouro, epf.cep, epf.bairro, epf.numero, epf.complemento, c.id, c.nome,  e.sigla, e.id, e.nome) " +
             "FROM Professor p " +
             "JOIN EmailProfessor ep ON p.id = ep.professor.id " +
             "JOIN TelefoneProfessor tp ON p.id = tp.professor.id " +

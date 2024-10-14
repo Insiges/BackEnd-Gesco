@@ -30,6 +30,7 @@ public class DiplomaService {
 
     @Transactional
     public Diploma cadastrarDiploma(DadosCadastroDiploma dados){
+        System.out.println(dados);
         var professor = professorRepository.findOneById(dados.id_professor());
         var graduacao = graduacaoRepository.findOneById(dados.id_tipo_graduacao());
 
@@ -85,5 +86,9 @@ public class DiplomaService {
         return diploma;
     }
 
+    @Transactional
+    public void deletarDiplomaProfessor(Long id){
+        diplomaRepository.deleteByProfessorId(id);
+    }
 
 }

@@ -1,11 +1,8 @@
 package com.api.gesco.repository.alunos;
 
 import com.api.gesco.domain.alunos.DadosDetalhamentoAluno;
-<<<<<<< Updated upstream
 import com.api.gesco.domain.professor.DadosDetalhamentoProfessores;
-=======
 import com.api.gesco.domain.alunos.DadosDetalhamentoAlunoCompleto;
->>>>>>> Stashed changes
 import com.api.gesco.model.alunos.Aluno;
 import com.api.gesco.model.evento.Evento;
 import org.springframework.data.domain.Page;
@@ -60,9 +57,6 @@ public interface AlunoRepository extends JpaRepository<Aluno, Long> {
             "JOIN Estado e ON c.estado.id = e.id " +
             "JOIN Sexo s ON s.id = a.sexo.id " +
             "WHERE a.escola.id = :idAluno")
-<<<<<<< Updated upstream
-    DadosDetalhamentoAluno findAlunosById(@Param("idAluno") Long idAluno);
-=======
     DadosDetalhamentoAluno findAlunosByIdEscola(@Param("idAluno") Long idAluno);
 
     @Query("SELECT new com.api.gesco.domain.alunos.DadosDetalhamentoAlunoCompleto(" +
@@ -81,5 +75,4 @@ public interface AlunoRepository extends JpaRepository<Aluno, Long> {
             "JOIN Escola es ON es.id = a.escola.id " +
             "WHERE a.id = :idAluno and t.ano = :data")
     DadosDetalhamentoAlunoCompleto findAlunoById(@Param("idAluno") Long idAluno,@Param("data") Year data);
->>>>>>> Stashed changes
 }

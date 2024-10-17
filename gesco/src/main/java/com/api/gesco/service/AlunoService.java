@@ -5,19 +5,13 @@ import com.api.gesco.controller.AuthenticationControllerLoginAluno;
 import com.api.gesco.domain.alunos.*;
 import com.api.gesco.domain.alunos_responsavel.DadosCadastroAluno_Responsavel;
 import com.api.gesco.domain.autenticacao.aluno.DadosCadastroLoginAluno;
-import com.api.gesco.domain.professor.DadosAtualizarProfessor;
-import com.api.gesco.domain.professor.DadosCadastroProfessor;
-import com.api.gesco.domain.professor.DadosDetalhamentoProfessores;
-import com.api.gesco.domain.professor.DadosRetornoProfessor;
 import com.api.gesco.model.alunos.Aluno;
-import com.api.gesco.model.professor.Professor;
 import com.api.gesco.repository.alunos.AlunoRepository;
+import com.api.gesco.repository.logins.LoginAlunoRepository;
 import com.api.gesco.repository.logins.LoginEscolaRepository;
-import com.api.gesco.repository.professor.ProfessorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -62,6 +56,9 @@ public class AlunoService {
     @Autowired
     private LoginEscolaRepository loginEscolaRepository;
 
+    @Autowired
+    private LoginAlunoRepository loginAlunoRepository;
+
     public AlunoService(JwtUtil jwtUtil) {
         this.jwtUtil = jwtUtil;
     }
@@ -105,6 +102,7 @@ public class AlunoService {
             );
 
             var uri = uriBuilder.path("/aluno/{id}").buildAndExpand(aluno.getId()).toUri();
+            var login = authenticationControllerLoginAluno.cadastrar(new DadosCadastroLoginAluno(dados.login().email(), dados.login().senha(), aluno.getId()));
 
             return ResponseEntity.created(uri)
                     .body(new DadosRetornoAlunoResponsavel(
@@ -118,7 +116,6 @@ public class AlunoService {
         var login = authenticationControllerLoginAluno.cadastrar(new DadosCadastroLoginAluno(dados.login().email(), dados.login().senha(), aluno.getId()));
 
         var uri = uriBuilder.path("/aluno/{id}").buildAndExpand(aluno.getId()).toUri();
-        System.out.println("Entrou nesse segundo");
         return ResponseEntity.created(uri).body(new DadosRetornoAluno(aluno, email, telefone, endereco));
     }
 
@@ -131,13 +128,11 @@ public class AlunoService {
     }
 
     public DadosDetalhamentoAluno pegarAlunoPeloId(Long id){
-        var page =repository.findAlunosById(id);
+        var page =repository.findAlunosByIdEscola(id);
 
         return page;
     }
-
-<<<<<<< Updated upstream
-=======
+  
     public DadosDetalhamentoAlunoCompleto pegarAlunoPeloToken(String token){
         var emailToken = jwtUtil.getEmailFromToken(token);
         var alunoToken = loginAlunoRepository.findOnlyAlunoIdByEmail(emailToken);
@@ -148,7 +143,6 @@ public class AlunoService {
         return aluno;
     }
 
->>>>>>> Stashed changes
     public Page<DadosDetalhamentoAluno> pegarTodosOsAlunos(Pageable paginacao){
         var page =repository.findAllAluno(paginacao);
 

@@ -3,12 +3,10 @@ package com.api.gesco.controller;
 import com.api.gesco.domain.diploma.DadosDetalhamentoDiploma;
 import com.api.gesco.domain.professor.DadosAtualizarProfessor;
 import com.api.gesco.domain.professor.DadosCadastroProfessor;
-import com.api.gesco.domain.professor.DadosDetalhamentoProfessores;
 import com.api.gesco.service.DiplomaService;
 import com.api.gesco.service.ProfessorService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -35,10 +33,17 @@ public class ProfessorController {
     }
 
     @GetMapping("/user")
-    public  ResponseEntity pegarProfessorPeloId(@RequestHeader("Authorization") String token){
-        var professor = service.pegarProfessorPeloId(token);
+    public  ResponseEntity pegarProfessorPeloToken(@RequestHeader("Authorization") String token){
+        var professor = service.pegarProfessorPeloToken(token);
 
         return  ResponseEntity.ok(professor);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity pegarprofessorPeloId(@PathVariable("id")Long id){
+        var professor = service.pegarProfessorPeloId(id);
+
+        return ResponseEntity.ok(professor);
     }
 
     @GetMapping()
@@ -50,6 +55,7 @@ public class ProfessorController {
 
     @PutMapping("/{id}")
     public ResponseEntity atualizarProfessor(@PathVariable("id") Long id, @RequestBody @Valid DadosAtualizarProfessor dados){
+        System.out.println(dados);
 
         var professor = service.atualizarProfessor(id, dados);
 

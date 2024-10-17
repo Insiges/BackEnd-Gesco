@@ -24,4 +24,3 @@ ADD COLUMN id_tipo_graduacao INT NOT NULL,
 ADD CONSTRAINT fk_diplomaTipoGraduacao
 FOREIGN KEY (id_tipo_graduacao) REFERENCES tipo_graduacao(id)
 ON DELETE CASCADE;
-

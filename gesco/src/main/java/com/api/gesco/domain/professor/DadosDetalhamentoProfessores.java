@@ -3,13 +3,13 @@ package com.api.gesco.domain.professor;
 public record DadosDetalhamentoProfessores(
         Long id, String nome, String foto,String cpf, String data_nascimento, Long id_email,
         String email,Long id_telefone, String telefone, String sexo,
-        String logradouro, String cep, String bairro, String numero, String complemento,
-        Long id_cidade, String cidade, String estado) {
+        Long id_endereco, String logradouro, String cep, String bairro, String numero, String complemento,
+        Long id_cidade, String cidade, String sigla_estado, Long id_estado,  String nome_estado) {
 
     public DadosDetalhamentoProfessores(Long id, String nome, String foto,String cpf, String data_nascimento, Long id_email, String email, Long id_telefone,
                                         String telefone, String sexo,
-                                        String logradouro, String cep, String bairro, String numero, String complemento,
-                                        Long id_cidade, String cidade, String estado) {
+                                        Long id_endereco,String logradouro, String cep, String bairro, String numero, String complemento,
+                                        Long id_cidade, String cidade, String sigla_estado, Long id_estado, String nome_estado) {
         this.id = id;
         this.nome = nome;
         this.foto = foto;
@@ -20,6 +20,7 @@ public record DadosDetalhamentoProfessores(
         this.id_telefone = id_telefone;
         this.telefone = telefone;
         this.sexo = sexo;
+        this.id_endereco = id_endereco;
         this.logradouro = logradouro;
         this.cep = cep;
         this.bairro = bairro;
@@ -27,6 +28,8 @@ public record DadosDetalhamentoProfessores(
         this.complemento = complemento;
         this.id_cidade = id_cidade;
         this.cidade = cidade;
-        this.estado = estado;
+        this.sigla_estado = sigla_estado;
+        this.id_estado = id_estado;
+        this.nome_estado = nome_estado;
     }
 }

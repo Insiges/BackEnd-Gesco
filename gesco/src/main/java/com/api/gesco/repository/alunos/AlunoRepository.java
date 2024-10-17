@@ -4,7 +4,6 @@ import com.api.gesco.domain.alunos.DadosDetalhamentoAluno;
 import com.api.gesco.domain.professor.DadosDetalhamentoProfessores;
 import com.api.gesco.domain.alunos.DadosDetalhamentoAlunoCompleto;
 import com.api.gesco.model.alunos.Aluno;
-import com.api.gesco.model.evento.Evento;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

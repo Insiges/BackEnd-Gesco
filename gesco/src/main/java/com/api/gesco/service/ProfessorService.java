@@ -3,6 +3,7 @@ package com.api.gesco.service;
 import com.api.gesco.components.JwtUtil;
 import com.api.gesco.controller.AuthenticationProfessorController;
 import com.api.gesco.domain.autenticacao.professor.DadosCadastroLoginProfessor;
+import com.api.gesco.domain.diploma.DadosCadastroDiploma;
 import com.api.gesco.domain.disciplina_professor.DadosCadastroDisciplinaProfessor;
 import com.api.gesco.domain.professor.DadosAtualizarProfessor;
 import com.api.gesco.domain.professor.DadosCadastroProfessor;
@@ -118,7 +119,7 @@ public class ProfessorService {
         return ResponseEntity.ok(dados);
     }
 
-    public DadosDetalhamentoProfessoresCompleto pegarProfessorPeloId(String token){
+    public DadosDetalhamentoProfessoresCompleto pegarProfessorPeloToken(String token){
         var emailToken = jwtUtil.getEmailFromToken(token);
         var professorToken = loginProfessorRepository.findOnlyProfessorIdByEmail(emailToken);
         var page =repository.findProfessorById(professorToken.getId());
@@ -126,6 +127,15 @@ public class ProfessorService {
         var diploma = diplomaService.listarDiplomasDeUmProfessor(professorToken.getId());
 
         return new DadosDetalhamentoProfessoresCompleto(page, disciplina, diploma);
+    }
+
+    public DadosDetalhamentoProfessoresCompleto pegarProfessorPeloId(Long id){
+        var professor = repository.findProfessorById(id);
+        var disciplina = disciplinaProfessorService.pegarTodasAsDisciplinasDeUmProfessor(id);
+        var diploma = diplomaService.listarDiplomasDeUmProfessor(id);
+
+        return new DadosDetalhamentoProfessoresCompleto(professor, disciplina, diploma);
+
     }
 
     public Page<DadosDetalhamentoProfessores> pegarTodosOsProfessores(Pageable paginacao){
@@ -137,16 +147,24 @@ public class ProfessorService {
     public ResponseEntity atualizarProfessor(Long id, DadosAtualizarProfessor dados){
         var professor = repository.findOneById(id);
         var sexo = sexoService.pesquisarSexo(dados.sexo());
+        diplomaService.deletarDiplomaProfessor(professor.getId());
+        dados.diplomas().forEach((dip) -> diplomaService.cadastrarDiploma(new DadosCadastroDiploma(
+              dip.curso(),
+                dip.faculdade(),
+                professor.getId(),
+                dip.id_tipo_graduacao()
+        )));
+
+        disciplinaProfessorService.deletarDisciplinaProfessorByProfessor(professor.getId());
+        dados.disciplinas().forEach((disc) -> disciplinaProfessorService.cadastrarDisciplinaProfessor(new DadosCadastroDisciplinaProfessor(professor.getId(), disc)));
 
         dados.emails().forEach(email -> emailService.atualizarEmailProfessor(email.getId(),email.getEmail()));
         dados.telefones().forEach(telefone -> telefoneService.atualizarProfessor(telefone.getId(), telefone.getTelefone()));
         dados.enderecos().forEach(endereco -> enderecoService.atualizarEnderecoProfessor(endereco.getId(),endereco));
 
-        if (professor != null){
-            professor.atualizarProfessor(dados, sexo);
+        professor.atualizarProfessor(dados, sexo);
 
-            repository.save(professor);
-        }
+        repository.save(professor);
 
         return ResponseEntity.ok(professor);
     }

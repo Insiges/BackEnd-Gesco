@@ -44,6 +44,13 @@ public class AlunoController {
         return  ResponseEntity.ok(professor);
     }
 
+    @GetMapping("/user")
+    public ResponseEntity pegarAlunoPeloToken(@RequestHeader("Authorization") String token){
+        var aluno = service.pegarAlunoPeloToken(token);
+
+        return ResponseEntity.ok(aluno);
+    }
+
     @GetMapping()
     public  ResponseEntity<Page<DadosDetalhamentoAluno>> pegarTodosOsAlunos(Pageable paginacao){
         var professor = service.pegarTodosOsAlunos(paginacao);

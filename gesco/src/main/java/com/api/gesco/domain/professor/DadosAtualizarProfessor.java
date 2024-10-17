@@ -1,5 +1,8 @@
 package com.api.gesco.domain.professor;
 
+import com.api.gesco.domain.diploma.DadosAtualizarDiploma;
+import com.api.gesco.domain.diploma.DadosCadastroDiploma;
+import com.api.gesco.domain.disciplina_professor.DadosCadastroDisciplinaProfessor;
 import com.api.gesco.model.endereco.EnderecoEscola;
 import com.api.gesco.model.endereco.EnderecoProfessor;
 import com.api.gesco.model.escola.EmailEscola;
@@ -29,6 +32,12 @@ public record DadosAtualizarProfessor(
         List<TelefoneProfessor> telefones,
         @NotNull
         List<EmailProfessor> emails,
-        List<EnderecoProfessor> enderecos) {
+
+        List<EnderecoProfessor> enderecos,
+
+        List<DadosAtualizarDiploma> diplomas,
+
+        List<Long> disciplinas
+) {
 }
 

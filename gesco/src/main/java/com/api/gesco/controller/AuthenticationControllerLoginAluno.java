@@ -50,6 +50,7 @@ public class AuthenticationControllerLoginAluno {
     @Transactional
     @PostMapping("/cadastro")
     public ResponseEntity<?> cadastrar(@RequestBody @Valid DadosCadastroLoginAluno dados) {
+        System.out.println("entrou");
         if (this.loginAlunoRepository.findByEmail(dados.email()) != null) {
             return ResponseEntity.badRequest().body("E-mail já cadastrado");
         }

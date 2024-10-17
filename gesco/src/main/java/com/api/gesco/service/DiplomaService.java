@@ -5,6 +5,7 @@ import com.api.gesco.domain.diploma.DadosCadastroDiploma;
 import com.api.gesco.domain.diploma.DadosDetalhamentoDiploma;
 import com.api.gesco.model.diploma.Diploma;
 import com.api.gesco.repository.diploma.DiplomaRepository;
+import com.api.gesco.repository.graduacao.TipoGraduacaoRepository;
 import com.api.gesco.repository.professor.ProfessorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -24,12 +25,16 @@ public class DiplomaService {
     @Autowired
     private ProfessorRepository professorRepository;
 
+    @Autowired
+    private TipoGraduacaoRepository graduacaoRepository;
+
     @Transactional
     public Diploma cadastrarDiploma(DadosCadastroDiploma dados){
-        var professor = professorRepository.findOneById(dados.id_professor());
         System.out.println(dados);
+        var professor = professorRepository.findOneById(dados.id_professor());
+        var graduacao = graduacaoRepository.findOneById(dados.id_tipo_graduacao());
 
-        var diploma = diplomaRepository.save(new Diploma(dados, professor));
+        var diploma = diplomaRepository.save(new Diploma(dados, professor, graduacao));
 
         return diploma;
     }
@@ -55,9 +60,10 @@ public class DiplomaService {
     @Transactional
     public ResponseEntity atualizarDiploma(Long id,DadosAtualizarDiploma dados){
         var diploma = diplomaRepository.findOneById(id);
+        var graduacao = graduacaoRepository.findOneById(dados.id_tipo_graduacao());
 
         if (diploma != null){
-            diploma.atualizarDiploma(dados);
+            diploma.atualizarDiploma(dados, graduacao);
 
             diplomaRepository.save(diploma);
         }
@@ -73,12 +79,16 @@ public class DiplomaService {
 
     public Diploma cadastrarDiplomaPeloProfessor(DadosAtualizarDiploma dados, Long id){
         var professor = professorRepository.findOneById(id);
-        System.out.println(dados);
+        var graduacao = graduacaoRepository.findOneById(dados.id_tipo_graduacao());
 
         var diploma = diplomaRepository.save(new Diploma(dados, professor, graduacao ));
 
         return diploma;
     }
 
+    @Transactional
+    public void deletarDiplomaProfessor(Long id){
+        diplomaRepository.deleteByProfessorId(id);
+    }
 
 }

@@ -89,7 +89,7 @@ public class EnderecoService {
             endereco.atualizarEndereco(enderecoProfessor);
             return enderecoProfessorRepository.save(endereco);
         } else {
-            throw new ValidacaoException(String.format("Não foi possível encontrar um email com esse id!"));
+            throw new ValidacaoException(String.format("Não foi possível encontrar um endereco com esse id!"));
         }
     }
 

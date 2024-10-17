@@ -3,13 +3,9 @@ package com.api.gesco.controller;
 import com.api.gesco.domain.alunos.DadosDetalhamentoAluno;
 import com.api.gesco.domain.escola.DadosAtualizarEscola;
 import com.api.gesco.domain.escola.DadosCadastroEscola;
-import com.api.gesco.domain.professor.DadosDetalhamentoProfessores;
 import com.api.gesco.service.*;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -107,7 +103,7 @@ public class EscolaController {
 
     @GetMapping("eventos")
     public ResponseEntity pegarEventos(@RequestHeader("Authorization") String token) {
-        var dados = eventoService.pegarEventosPeloIdDaEscola(token);
+        var dados = eventoService.pegarEventosPeloTokenDaEscola(token);
 
         return ResponseEntity.ok(dados);
     }

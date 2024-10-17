@@ -27,15 +27,15 @@ public class Frequencia {
     private LocalDate dia;
 
     @ManyToOne
-    @JoinColumn(name = "id_aluno", nullable = false, foreignKey = @ForeignKey(name = "fk_frequenciaAluno"))
+    @JoinColumn(name = "id_aluno")
     private Aluno aluno;
 
     @ManyToOne
-    @JoinColumn(name = "id_disciplina", nullable = false, foreignKey = @ForeignKey(name = "fk_frequenciaDisciplina"))
+    @JoinColumn(name = "id_disciplina")
     private Disciplina disciplina;
 
     @ManyToOne
-    @JoinColumn(name = "id_professor", nullable = false, foreignKey = @ForeignKey(name = "fk_frequenciaProfessor"))
+    @JoinColumn(name = "id_professor")
     private Professor professor;
 
     @Enumerated(EnumType.STRING)

@@ -17,7 +17,6 @@ import jakarta.persistence.EntityNotFoundException;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 
@@ -70,7 +69,7 @@ public class EventoService {
         eventoRepository.deleteById(id);
     }
 
-    public ResponseEntity pegarEventosPeloIdDaEscola(String token){
+    public ResponseEntity pegarEventosPeloTokenDaEscola(String token){
         var email = jwtUtil.getEmailFromToken(token);
         var escola = loginEscolaRepository.findOnlyEscolaIdByEmail(email);
 
@@ -88,5 +87,22 @@ public class EventoService {
 
         return ResponseEntity.ok(new DadosRetornoEventoEscolaList(eventosDTO));
     }
-    
+
+    public ResponseEntity pegarEventosPeloIdDaEscola(Long id){
+        var eventos = eventoRepository.getAllByEscolaId(id);
+
+        List<DadosRetornoEventoEscola> eventosDTO = eventos.stream()
+                .map(evento -> new DadosRetornoEventoEscola(
+                        evento.getId(),
+                        evento.getNome(),
+                        evento.getDescricao(),
+                        evento.getDia(),
+                        evento.getHorario()
+                ))
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(new DadosRetornoEventoEscolaList(eventosDTO));
+    }
+
+
 }

@@ -291,7 +291,7 @@ dia date not null,
 id_aluno int not null,
 id_disciplina int not null,
 id_professor int not null,
-presenca ENUM('Presente', 'Ausente'),
+presenca ENUM('PRESENTE', 'AUSENTE'),
 
 
 CONSTRAINT fk_frequenciaProfessor
@@ -303,7 +303,7 @@ FOREIGN KEY (id_aluno) REFERENCES alunos(id)
 ON DELETE CASCADE,
 
 CONSTRAINT fk_frequenciaDisciplina
-FOREIGN KEY (id_disciplina) REFERENCES escola(id)
+FOREIGN KEY (id_disciplina) REFERENCES disciplina(id)
 ON DELETE CASCADE,
 
 unique index(id)

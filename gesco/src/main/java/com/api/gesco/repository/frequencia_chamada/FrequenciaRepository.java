@@ -2,6 +2,7 @@ package com.api.gesco.repository.frequencia_chamada;
 
 
 import com.api.gesco.domain.frequencia.Presenca;
+import com.api.gesco.model.disciplina.Disciplina;
 import com.api.gesco.model.frequencia.Frequencia;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -29,4 +30,11 @@ public interface FrequenciaRepository extends JpaRepository<Frequencia, Long> {
 
     void deleteByAlunoId(Long alunoId);
     void deleteByDisciplinaId(Long disciplinaId);
+
+    @Query(value = "SELECT * FROM frequencia WHERE id_aluno = :alunoId AND id_disciplina = :disciplina", nativeQuery = true)
+    List<Frequencia> findFrequenciaByAlunoAndDisciplina(@Param("alunoId") Long alunoId, @Param("disciplina") Long disciplina);
+
+    @Query(value = "SELECT id_disciplina FROM frequencia WHERE id_aluno = :alunoId", nativeQuery = true)
+    List<Long> findDisciplinasByAluno(@Param("alunoId") Long alunoId);
 }
+

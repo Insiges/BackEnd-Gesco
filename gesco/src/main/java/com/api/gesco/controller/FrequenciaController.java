@@ -56,8 +56,7 @@ public ResponseEntity<Frequencia> adicionarFrequencia(@RequestBody FrequenciaReq
     
     Aluno aluno = alunoRepository.findById(frequenciaRequest.getIdAluno())
         .orElseThrow(() -> new EntityNotFoundException("Aluno não encontrado"));
-    Disciplina disciplina = disciplinaRepository.findById(frequenciaRequest.getDisciplinaId())
-        .orElseThrow(() -> new EntityNotFoundException("Disciplina não encontrada"));
+    Disciplina disciplina = disciplinaRepository.findOneById(frequenciaRequest.getDisciplinaId());
     Professor professor = professorRepository.findById(frequenciaRequest.getProfessorId())
         .orElseThrow(() -> new EntityNotFoundException("Professor não encontrado"));
 
@@ -133,9 +132,9 @@ public ResponseEntity<Frequencia> adicionarFrequencia(@RequestBody FrequenciaReq
         return ResponseEntity.ok(frequencias);
     }
 
-    @GetMapping("/aluno/{alunoId}")
-    public ResponseEntity<List<Frequencia>> buscarPorAluno(@PathVariable Long alunoId) {
-        List<Frequencia> frequencias = frequenciaService.buscarPorAluno(alunoId);
+    @GetMapping("/aluno/{id}")
+    public ResponseEntity buscarPorAluno(@PathVariable("id") Long id) {
+        var frequencias = frequenciaService.buscarPorAluno(id);
         return ResponseEntity.ok(frequencias);
     }
 
@@ -189,6 +188,5 @@ public ResponseEntity<Frequencia> adicionarFrequencia(@RequestBody FrequenciaReq
         Long count = frequenciaService.contarPorDisciplina(disciplinaId);
         return ResponseEntity.ok(count);
     }
-
 
 }

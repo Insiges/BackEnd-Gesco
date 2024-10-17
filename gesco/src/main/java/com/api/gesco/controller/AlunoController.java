@@ -7,9 +7,7 @@ import com.api.gesco.domain.diploma.DadosDetalhamentoDiploma;
 import com.api.gesco.domain.professor.DadosAtualizarProfessor;
 import com.api.gesco.domain.professor.DadosCadastroProfessor;
 import com.api.gesco.domain.professor.DadosDetalhamentoProfessores;
-import com.api.gesco.service.AlunoService;
-import com.api.gesco.service.DiplomaService;
-import com.api.gesco.service.ProfessorService;
+import com.api.gesco.service.*;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -24,6 +22,12 @@ public class AlunoController {
 
     @Autowired
     private AlunoService service;
+
+    @Autowired
+    private EventoService eventosService;
+
+    @Autowired
+    private FrequenciaService frequenciaService;
 
     @PostMapping
     public ResponseEntity cadastrarAluno(@RequestBody @Valid DadosCadastroAluno dados, UriComponentsBuilder uriBuilder, @RequestHeader("Authorization") String token){
@@ -60,5 +64,26 @@ public class AlunoController {
         service.deletarAluno(id);
 
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("eventos/{id}")
+    public ResponseEntity pegarEventosPeloId(@PathVariable("id") Long id){
+        var eventos = eventosService.pegarEventosPeloIdDaEscola(id);
+
+        return ResponseEntity.ok(eventos);
+    }
+
+    @GetMapping("/{id}/frequencia/{disciplina}")
+    public ResponseEntity pegarFrequencia(@PathVariable("id") Long id, @PathVariable("disciplina") Long disciplina){
+        var frequencia = frequenciaService.buscarPorAlunoEDisciplina(id, disciplina);
+
+        return ResponseEntity.ok(frequencia);
+    }
+
+    @GetMapping("/disciplina/{id}")
+    public ResponseEntity pegarDisciplinasPeloAluno(@PathVariable("id") Long id){
+        var frequencia = frequenciaService.buscarDisciplinaPeloAluno(id);
+
+        return ResponseEntity.ok(frequencia);
     }
 }

@@ -1,14 +1,17 @@
 package com.api.gesco.service;
 
+import com.api.gesco.domain.frequencia.DadosRetornoFrequencia;
 import com.api.gesco.domain.frequencia.Presenca;
+import com.api.gesco.model.disciplina.Disciplina;
 import com.api.gesco.model.frequencia.Frequencia;
+import com.api.gesco.repository.disciplina.DisciplinaRepository;
 import com.api.gesco.repository.frequencia_chamada.FrequenciaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class FrequenciaService {
@@ -19,6 +22,9 @@ public class FrequenciaService {
     public FrequenciaService(FrequenciaRepository frequenciaRepository) {
         this.frequenciaRepository = frequenciaRepository;
     }
+
+    @Autowired
+    private DisciplinaRepository disciplinaRepository;
 
     public List<Frequencia> listarTodas() {
         return frequenciaRepository.findAll();
@@ -40,8 +46,12 @@ public class FrequenciaService {
         return frequenciaRepository.findByDia(dia);
     }
 
-    public List<Frequencia> buscarPorAluno(Long alunoId) {
-        return frequenciaRepository.findByAlunoId(alunoId);
+    public ResponseEntity buscarPorAluno(Long alunoId) {
+        var frequencia = frequenciaRepository.findByAlunoId(alunoId);
+
+        var retorno = frequencia.stream().map(DadosRetornoFrequencia::new);
+
+        return ResponseEntity.ok(retorno);
     }
 
     public List<Frequencia> buscarPorDisciplina(Long disciplinaId) {
@@ -76,6 +86,21 @@ public class FrequenciaService {
         return frequenciaRepository.countByDisciplinaId(disciplinaId);
     }
 
+    public ResponseEntity buscarPorAlunoEDisciplina(Long aluno, Long disciplina){
+        var frequencia = frequenciaRepository.findFrequenciaByAlunoAndDisciplina(aluno, disciplina);
 
-    
+        var retorno = frequencia.stream().map(DadosRetornoFrequencia::new);
+
+        return ResponseEntity.ok(retorno);
+    }
+
+    public ResponseEntity buscarDisciplinaPeloAluno(Long aluno){
+        var frequencia = frequenciaRepository.findDisciplinasByAluno(aluno);
+
+        Set<Long> uniqueNumbers = new LinkedHashSet<>(frequencia);
+
+        var disciplina = disciplinaRepository.findAllById(uniqueNumbers);
+
+        return ResponseEntity.ok(disciplina);
+    }
 }

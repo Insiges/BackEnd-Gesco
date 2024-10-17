@@ -23,6 +23,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.time.LocalDate;
+import java.time.Year;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -134,6 +136,19 @@ public class AlunoService {
         return page;
     }
 
+<<<<<<< Updated upstream
+=======
+    public DadosDetalhamentoAlunoCompleto pegarAlunoPeloToken(String token){
+        var emailToken = jwtUtil.getEmailFromToken(token);
+        var alunoToken = loginAlunoRepository.findOnlyAlunoIdByEmail(emailToken);
+
+        var data = Year.now();
+        var aluno =repository.findAlunoById(alunoToken.getId(), data);
+
+        return aluno;
+    }
+
+>>>>>>> Stashed changes
     public Page<DadosDetalhamentoAluno> pegarTodosOsAlunos(Pageable paginacao){
         var page =repository.findAllAluno(paginacao);
 

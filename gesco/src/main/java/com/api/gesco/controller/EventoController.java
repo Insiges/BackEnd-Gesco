@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import com.api.gesco.model.evento.Evento;
 import com.api.gesco.service.EventoService;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,8 +41,15 @@ public class EventoController {
         }
     }
 
+    @GetMapping("/params")
+    public ResponseEntity listarEventosPeladata(@RequestParam("data") LocalDate data) {
+        var eventos = eventoService.buscarEventoPelaData(data);
+
+        return ResponseEntity.ok(eventos);
+    }
+
     @GetMapping("/{id}")
-    public ResponseEntity<?> procurarEventoporId(@PathVariable Long id) {
+    public ResponseEntity<?> procurarEventoporId(@PathVariable("{id}") Long id) {
         try {
             Optional<Evento> evento = eventoService.buscarPorId(id);
             return ResponseEntity.ok(evento);

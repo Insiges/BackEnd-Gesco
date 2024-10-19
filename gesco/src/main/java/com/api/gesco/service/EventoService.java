@@ -15,6 +15,7 @@ import com.api.gesco.repository.evento.EventoRepository;
 
 import jakarta.persistence.EntityNotFoundException;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -102,6 +103,12 @@ public class EventoService {
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(new DadosRetornoEventoEscolaList(eventosDTO));
+    }
+
+    public ResponseEntity buscarEventoPelaData(LocalDate data){
+        var eventos = eventoRepository.getAllByDia(data);
+
+        return ResponseEntity.ok(eventos);
     }
 
 

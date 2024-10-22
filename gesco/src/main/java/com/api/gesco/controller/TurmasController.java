@@ -64,18 +64,11 @@ public class TurmasController {
     }
 
     @PutMapping("/atualizarTurma/{id}") 
-    public ResponseEntity<?> atualizarTurma(@PathVariable Long id, @RequestBody Turmas turmaAtualizada) {
-        try {
-            var turmaAtualizacao = turmasService.atualizarTurma(id, turmaAtualizada);
-    
-            if (turmaAtualizacao.isPresent()) {
-                return ResponseEntity.ok(turmaAtualizacao.get());
-            } else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Turma não encontrada com ID: " + id);
-            }
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao atualizar a turma. Por favor, tente novamente.");
-        }
+    public ResponseEntity<Turmas> atualizarTurma(@PathVariable Long id, @RequestBody @Valid DadosCadastradosTurmas dados) {
+
+        var turma = turmasService.atualizarTurma(id, dados);
+
+        return ResponseEntity.ok(turma);
     }
     
 

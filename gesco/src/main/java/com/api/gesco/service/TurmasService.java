@@ -45,19 +45,16 @@ public class TurmasService {
         return turmasRepository.save(novaTurma);
     }
 
-    public Optional<Turmas> atualizarTurma(Long id, Turmas turmaAtualizada) {
-        Optional<Turmas> turmaExistente = turmasRepository.findById(id);
+    public Turmas atualizarTurma(Long id,DadosCadastradosTurmas dados) {
+        var turmaExistente = turmasRepository.findOneById(id);
 
-        if (turmaExistente.isPresent()) {
-            Turmas turma = turmaExistente.get();
-            turma.setNome(turmaAtualizada.getNome());
-            turma.setAno(turmaAtualizada.getAno());
-            turma.setEscola(turmaAtualizada.getEscola()); 
-            turmasRepository.save(turma);
-            return Optional.of(turma);
-        } else {
-            return Optional.empty();
+        if (turmaExistente != null){
+            turmaExistente.atualizarTurma(dados);
+
+            turmasRepository.save(turmaExistente);
         }
+        return turmaExistente;
+
     }
 
     public Optional<Turmas> buscarTurmaPorId(Long id) {

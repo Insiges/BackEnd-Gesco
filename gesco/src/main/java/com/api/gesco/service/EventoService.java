@@ -111,5 +111,10 @@ public class EventoService {
         return ResponseEntity.ok(eventos);
     }
 
+    public ResponseEntity buscarEventoPeloMes(Integer mes){
+        var eventos = eventoRepository.getAllByMes(mes);
+
+        return ResponseEntity.ok(eventos);
+    }
 
 }

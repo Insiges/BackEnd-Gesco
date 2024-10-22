@@ -42,8 +42,14 @@ public class EventoController {
     }
 
     @GetMapping("/params")
-    public ResponseEntity listarEventosPeladata(@RequestParam("data") LocalDate data) {
-        var eventos = eventoService.buscarEventoPelaData(data);
+    public ResponseEntity listarEventosPeladata(@RequestParam(value = "data", required = false) LocalDate data,@RequestParam(value = "mes", required = false) Integer mes) {
+        ResponseEntity eventos = null;
+        if (data != null){
+            eventos = eventoService.buscarEventoPelaData(data);
+        } else if (mes != null) {
+            eventos = eventoService.buscarEventoPeloMes(mes);
+
+        }
 
         return ResponseEntity.ok(eventos);
     }

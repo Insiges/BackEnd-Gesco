@@ -26,6 +26,7 @@ public class Turmas {
     private Long id;
     private String nome;
     private Year ano;
+    private String serie;
 
     @ManyToOne
     @JsonIgnore
@@ -37,7 +38,14 @@ public class Turmas {
 
     public Turmas(DadosCadastradosTurmas dados, Escola escola) {
         this.nome = dados.nome();
+        this.serie = dados.serie();
         this.ano = dados.ano();
         this.escola = escola;
-    }   
+    }
+
+    public void atualizarTurma(DadosCadastradosTurmas turma){
+        this.nome = turma.nome();
+        this.serie = turma.serie();
+        this.ano = turma.ano();
+    }
 }

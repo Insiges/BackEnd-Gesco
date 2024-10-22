@@ -87,6 +87,7 @@ unique index(id)
 create table turmas(
 id int not null auto_increment primary key,
 nome varchar(20) not null,
+serie varchar(10) not null,
 ano year not null,
 id_escola int not null,
 

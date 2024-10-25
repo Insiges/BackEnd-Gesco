@@ -59,7 +59,6 @@ public class Aluno {
 
     @ManyToOne
     @JoinColumn(name = "id_sexo") // Define a chave estrangeira
-    @JsonIgnore
     private Sexo sexo;
 
     public Aluno(DadosCadastroAluno dados, Escola escola, Sexo sexo){

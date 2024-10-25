@@ -46,7 +46,6 @@ public class Responsavel {
 
     @ManyToOne
     @JoinColumn(name = "id_sexo") // Define a chave estrangeira
-    @JsonIgnore
     private Sexo sexo;
 
     @JsonIgnore
@@ -64,7 +63,7 @@ public class Responsavel {
         this.email = dados.email();
     }
 
-    public void atualizarResponsavel(DadosAtualizarResponsavel dados, Sexo sexo){
+    public void atualizarResponsavel(DadosCadastroResponsavel dados, Sexo sexo){
         if (dados.cpf() != null){
             this.cpf = dados.cpf();
         }

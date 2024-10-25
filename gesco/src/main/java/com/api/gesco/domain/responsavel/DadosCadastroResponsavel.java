@@ -22,9 +22,6 @@ public record DadosCadastroResponsavel(
         @NotBlank
         String telefone,
 
-        @NotNull
-        Long id_escola,
-
         @NotBlank
         String sexo
 ) {

@@ -1,7 +1,9 @@
 package com.api.gesco.controller;
 
+import com.api.gesco.components.JwtUtil;
 import com.api.gesco.domain.responsavel.DadosAtualizarResponsavel;
 import com.api.gesco.domain.responsavel.DadosCadastroResponsavel;
+import com.api.gesco.repository.logins.LoginEscolaRepository;
 import com.api.gesco.service.ResponsavelService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +18,22 @@ public class ResponsavelController {
     @Autowired
     private ResponsavelService service;
 
-    @PostMapping
-    public ResponseEntity cadastrarResponsavel(@RequestBody @Valid DadosCadastroResponsavel dados, UriComponentsBuilder uriBuilder){
+    private final JwtUtil jwtUtil;
 
-        var responsavel = service.cadastrarResponsavel(dados);
+    public ResponsavelController(JwtUtil jwtUtil) {
+        this.jwtUtil = jwtUtil;
+    }
+
+
+    @Autowired
+    private LoginEscolaRepository loginEscolaRepository;
+
+    @PostMapping
+    public ResponseEntity cadastrarResponsavel(@RequestBody @Valid DadosCadastroResponsavel dados, @RequestHeader("Authorization") String token){
+        var emailToken = jwtUtil.getEmailFromToken(token);
+        var escolaToken = loginEscolaRepository.findOnlyEscolaIdByEmail(emailToken);
+
+        var responsavel = service.cadastrarResponsavel(dados, escolaToken.getId());
 
         return ResponseEntity.status(201).body(responsavel);
     }
@@ -41,7 +55,7 @@ public class ResponsavelController {
 
 
     @PutMapping("/{id}")
-    public ResponseEntity atualizarResponsavel(@PathVariable("id") Long id, @RequestBody @Valid DadosAtualizarResponsavel dados){
+    public ResponseEntity atualizarResponsavel(@PathVariable("id") Long id, @RequestBody @Valid DadosCadastroResponsavel dados){
 
         var aluno = service.atualizarResponsavel(id, dados);
 

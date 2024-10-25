@@ -39,9 +39,9 @@ public class ResponsavelService {
     }
 
     @Transactional
-    public Responsavel cadastrarResponsavel(DadosCadastroResponsavel dados){
+    public Responsavel cadastrarResponsavel(DadosCadastroResponsavel dados, Long id_escola){
 
-        var escola = escolaService.verificarEscola(dados.id_escola());
+        var escola = escolaService.verificarEscola(id_escola);
 
         var sexo = sexoService.pesquisarSexo(dados.sexo().toUpperCase());
 
@@ -77,7 +77,7 @@ public class ResponsavelService {
         return page;
     }
 
-    public ResponseEntity atualizarResponsavel(Long id, DadosAtualizarResponsavel dados){
+    public ResponseEntity atualizarResponsavel(Long id, DadosCadastroResponsavel dados){
         var responsavel = repository.findOneById(id);
         var sexo = sexoService.pesquisarSexo(dados.sexo());
 
@@ -95,4 +95,21 @@ public class ResponsavelService {
         repository.deleteById(id);
     }
 
+
+    @Transactional
+    public Responsavel atualizarResponsavelPeloCpf(DadosCadastroResponsavel dados, Long id_escola){
+        var responsavel = repository.findOneByCpf(dados.cpf());
+        var sexo = sexoService.pesquisarSexo(dados.sexo());
+
+        if (responsavel != null){
+            responsavel.atualizarResponsavel(dados, sexo);
+
+            repository.save(responsavel);
+            return responsavel;
+
+        }else{
+            return cadastrarResponsavel(dados, id_escola);
+        }
+
+    }
 }

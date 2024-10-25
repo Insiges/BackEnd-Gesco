@@ -65,6 +65,7 @@ public class AlunoService {
 
     @Transactional
     public ResponseEntity cadastrarAluno(DadosCadastroAluno dados, UriComponentsBuilder uriBuilder, String token){
+        System.out.println(dados);
         var emailToken = jwtUtil.getEmailFromToken(token);
         var escolaToken = loginEscolaRepository.findOnlyEscolaIdByEmail(emailToken);
         //Valida se os emails já estão cadastrados.
@@ -93,7 +94,7 @@ public class AlunoService {
 
         if (dados.responsaveis() != null) {
             var responsaveis = dados.responsaveis().stream()
-                    .map(responsavel -> responsavelService.cadastrarResponsavel(responsavel))
+                    .map(responsavel -> responsavelService.cadastrarResponsavel(responsavel, aluno.getEscola().getId()))
                     .collect(Collectors.toList());
 
             responsaveis.forEach(responsavel ->
@@ -127,10 +128,11 @@ public class AlunoService {
         return page;
     }
 
-    public DadosDetalhamentoAluno pegarAlunoPeloId(Long id){
-        var page =repository.findAlunosByIdEscola(id);
+    public DadosRetornoAlunoCompleto pegarAlunoPeloId(Long id){
+        var aluno =repository.findOneById(id);
+        var responsaveis = alunoResponsavelService.pegarResponsaveisByAluno(id);
 
-        return page;
+        return  new DadosRetornoAlunoCompleto(aluno, responsaveis);
     }
   
     public DadosDetalhamentoAlunoCompleto pegarAlunoPeloToken(String token){
@@ -152,7 +154,9 @@ public class AlunoService {
     public ResponseEntity atualizarAluno(Long id, DadosAtualizarAluno dados){
         var aluno = repository.findOneById(id);
         var sexo = sexoService.pesquisarSexo(dados.sexo());
+        var responsaveis = dados.responsaveis().stream().map(resp-> responsavelService.atualizarResponsavelPeloCpf(resp, aluno.getEscola().getId()));
 
+        responsaveis.forEach(responsavel -> alunoResponsavelService.verificarECadastrarAlunoResponsavel(new DadosCadastroAluno_Responsavel(aluno.getId(), responsavel.getId())));
         dados.emails().forEach(email -> emailService.atualizarEmailAluno(email.getId(),email.getEmail()));
         dados.telefones().forEach(telefone -> telefoneService.atualizarAluno(telefone.getId(), telefone.getTelefone()));
         dados.enderecos().forEach(endereco -> enderecoService.atualizarEnderecoAluno(endereco.getId(),endereco));

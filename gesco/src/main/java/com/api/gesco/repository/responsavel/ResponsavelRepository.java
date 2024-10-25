@@ -16,6 +16,7 @@ import java.util.List;
 @Repository
 public interface ResponsavelRepository extends JpaRepository<Responsavel, Long> {
     Responsavel findOneById(Long id);
+    Responsavel findOneByCpf(String cpf);
     Responsavel findOneByCpfAndEscola(String cpf, Escola escola);
     List<Responsavel> findAllByEscolaId(Long id);
 }

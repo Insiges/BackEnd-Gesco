@@ -38,7 +38,8 @@ public class AlunoController {
     }
 
     @GetMapping("/{id}")
-    public  ResponseEntity<DadosDetalhamentoAluno> pegarAlunoPeloId(@PathVariable("id") Long id){
+    public  ResponseEntity pegarAlunoPeloId(@PathVariable("id") Long id){
+        System.out.println("entrou");
         var professor = service.pegarAlunoPeloId(id);
 
         return  ResponseEntity.ok(professor);

@@ -3,8 +3,10 @@ package com.api.gesco.controller;
 import com.api.gesco.domain.diploma.DadosDetalhamentoDiploma;
 import com.api.gesco.domain.professor.DadosAtualizarProfessor;
 import com.api.gesco.domain.professor.DadosCadastroProfessor;
+import com.api.gesco.repository.turmas.TurmasRepository;
 import com.api.gesco.service.DiplomaService;
 import com.api.gesco.service.ProfessorService;
+import com.api.gesco.service.TurmasService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -23,6 +25,9 @@ public class ProfessorController {
 
     @Autowired
     private DiplomaService diplomaService;
+
+    @Autowired
+    private TurmasService turmasService;
 
     @PostMapping
     public ResponseEntity cadastrarAluno(@RequestBody @Valid DadosCadastroProfessor dados, UriComponentsBuilder uriBuilder, @RequestHeader("Authorization") String token){
@@ -74,5 +79,13 @@ public class ProfessorController {
         var diplomas = diplomaService.listarDiplomasDeUmProfessor(id);
 
         return ResponseEntity.ok(diplomas);
+    }
+
+    @GetMapping("turmas")
+    public ResponseEntity pegarTurmas(UriComponentsBuilder uriBuilder, @RequestHeader("Authorization") String token){
+
+        var professor = turmasService.pegarTurmasPeloProfessor(token);
+
+        return ResponseEntity.ok(professor);
     }
 }

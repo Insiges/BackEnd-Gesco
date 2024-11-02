@@ -1,5 +1,6 @@
 package com.api.gesco.service;
 
+import com.api.gesco.domain.atividade.Atividades;
 import com.api.gesco.domain.atividade.DadosAtualizarAtividade;
 import com.api.gesco.domain.atividade.DadosCadastroAtividade;
 import com.api.gesco.domain.atividade.DadosCadastroTipoAtividade;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class AtividadeService {
@@ -100,7 +102,8 @@ public class AtividadeService {
     public  ResponseEntity pegarAtividadePeloIdDaTurma(Long id){
         var atividade = atividadeRepository.findAllByTurmasId(id);
 
-        return ResponseEntity.ok(atividade);
+        var atividades = atividade.stream().map(Atividades::new).toList();
+        return ResponseEntity.ok(atividades);
     }
 
     public  ResponseEntity pegarAtividadePeloIdDoProfessor(Long id){

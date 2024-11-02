@@ -1,11 +1,16 @@
 package com.api.gesco.service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import com.api.gesco.components.JwtUtil;
+import com.api.gesco.domain.turmas.DadosRetornoTurmas;
 import com.api.gesco.repository.logins.LoginEscolaRepository;
+import com.api.gesco.repository.logins.LoginProfessorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.api.gesco.domain.turmas.DadosCadastradosTurmas;
@@ -29,6 +34,9 @@ public class TurmasService {
 
     @Autowired
     private LoginEscolaRepository loginEscolaRepository;
+
+    @Autowired
+    LoginProfessorRepository loginProfessorRepository;
 
     public TurmasService(JwtUtil jwtUtil) {
         this.jwtUtil = jwtUtil;
@@ -76,5 +84,15 @@ public class TurmasService {
             .orElseThrow(() -> new EntityNotFoundException("Escola não encontrada"));
         return turmasRepository.findByEscola(escola);
     }
+
+    public ResponseEntity<List<DadosRetornoTurmas>> pegarTurmasPeloProfessor(String token){
+        var emailToken = jwtUtil.getEmailFromToken(token);
+        var professorToken = loginProfessorRepository.findOnlyProfessorIdByEmail(emailToken);
+
+        var listaTurmas = new HashSet<>(turmasRepository.findTurmasByProfessor(professorToken.getId()));
+
+        return ResponseEntity.ok(List.copyOf(listaTurmas));
+    }
+
 }
 

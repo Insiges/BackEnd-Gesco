@@ -74,4 +74,7 @@ public interface AlunoRepository extends JpaRepository<Aluno, Long> {
             "JOIN Escola es ON es.id = a.escola.id " +
             "WHERE a.id = :idAluno and t.ano = :data")
     DadosDetalhamentoAlunoCompleto findAlunoById(@Param("idAluno") Long idAluno,@Param("data") Year data);
+
+    @Query("SELECT a FROM Aluno a WHERE a.id NOT IN (SELECT at.aluno.id FROM Alunos_turmas at)")
+    List<Aluno> findAlunosSemTurma();
 }

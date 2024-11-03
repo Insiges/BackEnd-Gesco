@@ -44,7 +44,7 @@ public class TurmasController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity buscarTurmaPorId(@PathVariable Long id) {
+    public ResponseEntity buscarTurmaPorId(@PathVariable("id") Long id) {
         try {
             var turma = turmasService.buscarTurmaPorId(id);
             return ResponseEntity.ok(turma);
@@ -54,7 +54,7 @@ public class TurmasController {
     }
 
     @DeleteMapping("/deletarTurma/{id}")
-    public ResponseEntity deletarTurma(@PathVariable Long id) {
+    public ResponseEntity deletarTurma(@PathVariable("id") Long id) {
         try {
             turmasService.deletarTurma(id);
             return ResponseEntity.noContent().build();
@@ -64,13 +64,22 @@ public class TurmasController {
     }
 
     @PutMapping("/atualizarTurma/{id}") 
-    public ResponseEntity<Turmas> atualizarTurma(@PathVariable Long id, @RequestBody @Valid DadosCadastradosTurmas dados) {
+    public ResponseEntity<Turmas> atualizarTurma(@PathVariable("id") Long id, @RequestBody @Valid DadosCadastradosTurmas dados) {
 
         var turma = turmasService.atualizarTurma(id, dados);
 
         return ResponseEntity.ok(turma);
     }
-    
+
+    @GetMapping("alunos/{id}")
+    public ResponseEntity buscarAlunosPelaTurma(@PathVariable("id") Long id) {
+        try {
+            var turma = turmasService.pegarAlunosDaTurma(id);
+            return ResponseEntity.ok(turma);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao procurar turma.");
+        }
+    }
 
     
 }

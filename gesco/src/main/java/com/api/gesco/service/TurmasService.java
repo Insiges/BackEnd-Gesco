@@ -94,5 +94,11 @@ public class TurmasService {
         return ResponseEntity.ok(List.copyOf(listaTurmas));
     }
 
+    public ResponseEntity pegarAlunosDaTurma(Long turma){
+        var alunos = turmasRepository.findAlunosByTurma(turma);
+
+        return ResponseEntity.ok(alunos);
+    }
+
 }
 

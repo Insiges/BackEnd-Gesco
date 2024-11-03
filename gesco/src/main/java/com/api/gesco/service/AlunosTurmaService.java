@@ -1,5 +1,6 @@
 package com.api.gesco.service;
 
+import com.api.gesco.domain.alunos_turma.DadosCadastroVariosAlunosTurmas;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -58,5 +59,20 @@ public class AlunosTurmaService {
     public void deletarAlunoDeTurma(Long id) {
         alunosTurmasRepository.deleteById(id);
     }
-    
+
+    @Transactional
+    public ResponseEntity cadastrarAlunosEmTurma(DadosCadastroVariosAlunosTurmas dados) {
+        var alunos = dados.alunos().stream().map(aluno -> alunoRepository.findOneById(aluno));
+
+        var turma = turmasRepository.findOneById(dados.turma());
+
+        if (turma != null) {
+            var alunosTurma = alunos.map(aluno -> alunosTurmasRepository.save(new Alunos_turmas( aluno, turma)));
+
+            return ResponseEntity.ok(alunosTurma);
+        }
+
+        throw new RuntimeException("Erro: Não foi possível encontrar um aluno ou turma com estes dados.");
+
+    }
 }

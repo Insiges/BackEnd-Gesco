@@ -94,4 +94,11 @@ public class AlunoController {
 
         return ResponseEntity.ok(frequencia);
     }
+
+    @GetMapping("/turmas")
+    public ResponseEntity pegarAlunosSemTurma(){
+        var alunos = service.alunosSemTurma();
+
+        return ResponseEntity.ok(alunos);
+    }
 }

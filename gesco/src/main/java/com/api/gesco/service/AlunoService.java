@@ -15,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.time.LocalDate;
@@ -173,6 +174,13 @@ public class AlunoService {
     @Transactional
     public void deletarAluno(Long id){
         repository.deleteById(id);
+    }
+
+    @GetMapping("turma")
+    public ResponseEntity alunosSemTurma(){
+        var alunos = repository.findAlunosSemTurma();
+
+        return ResponseEntity.ok(alunos);
     }
 
 }

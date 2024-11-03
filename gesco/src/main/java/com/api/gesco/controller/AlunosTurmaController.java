@@ -1,5 +1,6 @@
 package com.api.gesco.controller;
 
+import com.api.gesco.domain.alunos_turma.DadosCadastroVariosAlunosTurmas;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -43,5 +44,13 @@ public class AlunosTurmaController {
         return ResponseEntity.ok().build();
 
     }
+
+    @PostMapping("/lista")
+    public ResponseEntity cadastrarVariosAlunosTurma(@RequestBody @Valid DadosCadastroVariosAlunosTurmas dados){
+        var aluno =  alunosTurmaService.cadastrarAlunosEmTurma(dados);
+
+        return ResponseEntity.status(201).body(aluno);
+    }
+
 
 }

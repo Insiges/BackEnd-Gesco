@@ -41,5 +41,14 @@ public class Frequencia {
     @Enumerated(EnumType.STRING)
     @Column(nullable = true)
     private Presenca presenca;
+
+    public Frequencia(LocalDate dia, Aluno aluno, Disciplina disciplina, Professor professor, Presenca presenca){
+        this.dia = dia;
+        this.aluno = aluno;
+        this.disciplina = disciplina;
+        this.professor = professor;
+        this.presenca = presenca;
+    }
+
 }
     

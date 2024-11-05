@@ -1,5 +1,6 @@
 package com.api.gesco.controller;
 
+import com.api.gesco.domain.frequencia.DadosCadastroFrequencia;
 import com.api.gesco.domain.frequencia.FrequenciaRequest;
 import com.api.gesco.domain.frequencia.Presenca;
 import com.api.gesco.model.alunos.Aluno;
@@ -51,73 +52,49 @@ public class FrequenciaController {
     }
 
     @PostMapping
-public ResponseEntity<Frequencia> adicionarFrequencia(@RequestBody FrequenciaRequest frequenciaRequest) {
-    Frequencia frequencia = new Frequencia();
-    
-    Aluno aluno = alunoRepository.findById(frequenciaRequest.getIdAluno())
-        .orElseThrow(() -> new EntityNotFoundException("Aluno não encontrado"));
-    Disciplina disciplina = disciplinaRepository.findOneById(frequenciaRequest.getDisciplinaId());
-    Professor professor = professorRepository.findById(frequenciaRequest.getProfessorId())
-        .orElseThrow(() -> new EntityNotFoundException("Professor não encontrado"));
-
-    frequencia.setAluno(aluno);
-    frequencia.setDisciplina(disciplina);
-    frequencia.setProfessor(professor);
-    frequencia.setDia(frequenciaRequest.getDia());
-
-    if (frequenciaRequest.getPresenca() != null) {
-        String presenca = frequenciaRequest.getPresenca().toUpperCase().trim();
-        try {
-            frequencia.setPresenca(Presenca.valueOf(presenca));
-        } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException("Valor de presença inválido: " + presenca);
-        }
-    } else {
-        throw new IllegalArgumentException("Presença não pode ser nula");
+    public void adicionarFrequencia(@RequestBody DadosCadastroFrequencia dados) {
+        System.out.println(dados);
+        frequenciaService.cadastrarFrequencia(dados);
     }
 
-    Frequencia savedFrequencia = frequenciaService.salvarFrequencia(frequencia);
-    return ResponseEntity.ok(savedFrequencia);
-}
-
-    @PutMapping("/{id}")
-    public ResponseEntity<Frequencia> atualizarFrequencia(@PathVariable Long id, @RequestBody FrequenciaRequest frequenciaRequest) {
-        System.out.println("ID recebido: " + id);
-        System.out.println("Aluno ID recebido: " + frequenciaRequest.getIdAluno());
-        System.out.println("Disciplina ID recebido: " + frequenciaRequest.getDisciplinaId());
-        System.out.println("Professor ID recebido: " + frequenciaRequest.getProfessorId());
-    
-        Frequencia frequenciaExistente = frequenciaService.buscarPorId(id)
-            .orElseThrow(() -> new EntityNotFoundException("Frequência não encontrada com ID: " + id));
-    
-
-    Aluno aluno = alunoRepository.findById(frequenciaRequest.getIdAluno())
-            .orElseThrow(() -> new EntityNotFoundException("Aluno não encontrado com ID: " + frequenciaRequest.getIdAluno()));
-    Disciplina disciplina = disciplinaRepository.findById(frequenciaRequest.getDisciplinaId())
-            .orElseThrow(() -> new EntityNotFoundException("Disciplina não encontrada com ID: " + frequenciaRequest.getDisciplinaId()));
-    Professor professor = professorRepository.findById(frequenciaRequest.getProfessorId())
-            .orElseThrow(() -> new EntityNotFoundException("Professor não encontrado com ID: " + frequenciaRequest.getProfessorId()));
-
-    frequenciaExistente.setAluno(aluno);
-    frequenciaExistente.setDisciplina(disciplina);
-    frequenciaExistente.setProfessor(professor);
-    frequenciaExistente.setDia(frequenciaRequest.getDia());
-
-    String presenca = frequenciaRequest.getPresenca();
-    if (presenca != null) {
-        presenca = presenca.toUpperCase().trim();
-        try {
-            frequenciaExistente.setPresenca(Presenca.valueOf(presenca));
-        } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException("Valor de presença inválido: " + presenca);
-        }
-    } else {
-        throw new IllegalArgumentException("Presença não pode ser nula");
-    }
-
-    Frequencia frequenciaAtualizada = frequenciaService.salvarFrequencia(frequenciaExistente);
-    return ResponseEntity.ok(frequenciaAtualizada); 
-}
+//    @PutMapping("/{id}")
+//    public ResponseEntity<Frequencia> atualizarFrequencia(@PathVariable Long id, @RequestBody FrequenciaRequest frequenciaRequest) {
+//        System.out.println("ID recebido: " + id);
+//        System.out.println("Aluno ID recebido: " + frequenciaRequest.getIdAluno());
+//        System.out.println("Disciplina ID recebido: " + frequenciaRequest.getDisciplinaId());
+//        System.out.println("Professor ID recebido: " + frequenciaRequest.getProfessorId());
+//
+//        Frequencia frequenciaExistente = frequenciaService.buscarPorId(id)
+//            .orElseThrow(() -> new EntityNotFoundException("Frequência não encontrada com ID: " + id));
+//
+//
+//    Aluno aluno = alunoRepository.findById(frequenciaRequest.getIdAluno())
+//            .orElseThrow(() -> new EntityNotFoundException("Aluno não encontrado com ID: " + frequenciaRequest.getIdAluno()));
+//    Disciplina disciplina = disciplinaRepository.findById(frequenciaRequest.getDisciplinaId())
+//            .orElseThrow(() -> new EntityNotFoundException("Disciplina não encontrada com ID: " + frequenciaRequest.getDisciplinaId()));
+//    Professor professor = professorRepository.findById(frequenciaRequest.getProfessorId())
+//            .orElseThrow(() -> new EntityNotFoundException("Professor não encontrado com ID: " + frequenciaRequest.getProfessorId()));
+//
+//    frequenciaExistente.setAluno(aluno);
+//    frequenciaExistente.setDisciplina(disciplina);
+//    frequenciaExistente.setProfessor(professor);
+//    frequenciaExistente.setDia(frequenciaRequest.getDia());
+//
+//    String presenca = frequenciaRequest.getPresenca();
+//    if (presenca != null) {
+//        presenca = presenca.toUpperCase().trim();
+//        try {
+//            frequenciaExistente.setPresenca(Presenca.valueOf(presenca));
+//        } catch (IllegalArgumentException e) {
+//            throw new IllegalArgumentException("Valor de presença inválido: " + presenca);
+//        }
+//    } else {
+//        throw new IllegalArgumentException("Presença não pode ser nula");
+//    }
+//
+//    Frequencia frequenciaAtualizada = frequenciaService.salvarFrequencia(frequenciaExistente);
+//    return ResponseEntity.ok(frequenciaAtualizada);
+//}
     
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletarFrequencia(@PathVariable Long id) {

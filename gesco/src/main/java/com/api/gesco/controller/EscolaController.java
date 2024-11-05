@@ -34,6 +34,9 @@ public class EscolaController {
     @Autowired
     private EventoService eventoService;
 
+    @Autowired
+    private SexoService sexoService;
+
     @GetMapping("/user")
     public ResponseEntity pegarUmaEscola(@RequestHeader("Authorization") String token) {
         var escola = service.pegarUmaEscola(token);
@@ -104,6 +107,13 @@ public class EscolaController {
     @GetMapping("eventos")
     public ResponseEntity pegarEventos(@RequestHeader("Authorization") String token) {
         var dados = eventoService.pegarEventosPeloTokenDaEscola(token);
+
+        return ResponseEntity.ok(dados);
+    }
+
+    @GetMapping("sexo")
+    public ResponseEntity quantidadeSecxo(@RequestHeader("Authorization") String token) {
+        var dados = sexoService.quantidadeTotal(token);
 
         return ResponseEntity.ok(dados);
     }

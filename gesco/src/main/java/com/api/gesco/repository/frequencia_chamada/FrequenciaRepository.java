@@ -1,6 +1,7 @@
 package com.api.gesco.repository.frequencia_chamada;
 
 
+import com.api.gesco.domain.frequencia.DadosRetornoFrequenciaTotal;
 import com.api.gesco.domain.frequencia.Presenca;
 import com.api.gesco.model.disciplina.Disciplina;
 import com.api.gesco.model.frequencia.Frequencia;
@@ -36,5 +37,16 @@ public interface FrequenciaRepository extends JpaRepository<Frequencia, Long> {
 
     @Query(value = "SELECT id_disciplina FROM frequencia WHERE id_aluno = :alunoId", nativeQuery = true)
     List<Long> findDisciplinasByAluno(@Param("alunoId") Long alunoId);
+
+    @Query("SELECT new com.api.gesco.domain.frequencia.DadosRetornoFrequenciaTotal( " +
+            "SUM(CASE WHEN f.presenca = PRESENTE THEN 1 ELSE 0 END), " +
+            "SUM(CASE WHEN f.presenca = AUSENTE THEN 1 ELSE 0 END), " +
+            "COUNT(f)) " +
+            "FROM Frequencia f " +
+            "WHERE f.presenca IN (PRESENTE,AUSENTE) AND f.aluno.id = :id AND f.disciplina.id = :disciplina")
+    List<DadosRetornoFrequenciaTotal> contarFrequenciasPorPresenca(@Param("id") Long alunoId, @Param("disciplina") Long disciplina);
+
+
+
 }
 

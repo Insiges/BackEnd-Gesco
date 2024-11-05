@@ -1,11 +1,19 @@
 package com.api.gesco.service;
 
+import com.api.gesco.components.JwtUtil;
+import com.api.gesco.domain.alunos.DadosRetornoAlunoTurma;
+import com.api.gesco.domain.frequencia.DadosCadastroFrequencia;
 import com.api.gesco.domain.frequencia.DadosRetornoFrequencia;
+import com.api.gesco.domain.frequencia.FrequenciaRequest;
 import com.api.gesco.domain.frequencia.Presenca;
 import com.api.gesco.model.disciplina.Disciplina;
 import com.api.gesco.model.frequencia.Frequencia;
+import com.api.gesco.repository.alunos.AlunoRepository;
 import com.api.gesco.repository.disciplina.DisciplinaRepository;
 import com.api.gesco.repository.frequencia_chamada.FrequenciaRepository;
+import com.api.gesco.repository.logins.LoginAlunoRepository;
+import com.api.gesco.repository.professor.ProfessorRepository;
+import com.api.gesco.repository.turmas.TurmasRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -15,16 +23,30 @@ import java.util.*;
 
 @Service
 public class FrequenciaService {
+    private final JwtUtil jwtUtil;
 
     private final FrequenciaRepository frequenciaRepository;
 
     @Autowired
-    public FrequenciaService(FrequenciaRepository frequenciaRepository) {
+    public FrequenciaService(JwtUtil jwtUtil, FrequenciaRepository frequenciaRepository) {
+        this.jwtUtil = jwtUtil;
         this.frequenciaRepository = frequenciaRepository;
     }
 
     @Autowired
+    private LoginAlunoRepository loginAlunoRepository;
+
+    @Autowired
     private DisciplinaRepository disciplinaRepository;
+
+    @Autowired
+    private TurmasRepository turmasRepository;
+
+    @Autowired
+    private ProfessorRepository professorRepository;
+
+    @Autowired
+    private AlunoRepository alunoRepository;
 
     public List<Frequencia> listarTodas() {
         return frequenciaRepository.findAll();
@@ -103,4 +125,27 @@ public class FrequenciaService {
 
         return ResponseEntity.ok(disciplina);
     }
+
+    public ResponseEntity buscarDadosFrequencia(String token, Long disciplina){
+        var emailToken = jwtUtil.getEmailFromToken(token);
+        var alunoToken = loginAlunoRepository.findOnlyAlunoIdByEmail(emailToken);
+
+        var frequencia = frequenciaRepository.contarFrequenciasPorPresenca(alunoToken.getId(), disciplina);
+
+        return ResponseEntity.ok(frequencia);
+    }
+
+    public void cadastrarFrequencia(DadosCadastroFrequencia dados){
+        var turma = turmasRepository.findAlunosByTurma(dados.turma());
+        var professor = professorRepository.findOneById(dados.professor());
+        var disciplina = disciplinaRepository.findOneById(dados.disciplina());
+        var ausentes = new ArrayList<>(turma.stream().map(DadosRetornoAlunoTurma::id).toList());
+        ausentes.removeAll(dados.alunos());
+        var alunosPresentes = dados.alunos().stream().map(al -> alunoRepository.findOneById(al));
+        var alunosAusentes = ausentes.stream().map(ausente -> alunoRepository.findOneById(ausente));
+
+        alunosAusentes.forEach(aluno -> frequenciaRepository.save(new Frequencia(dados.dia(),aluno,disciplina, professor, dados.presenca() )));
+        alunosPresentes.forEach(aluno -> frequenciaRepository.save(new Frequencia(dados.dia(),aluno,disciplina, professor, dados.presenca() )));
+    }
+
 }

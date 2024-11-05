@@ -8,4 +8,5 @@ import com.api.gesco.model.alunos_turmas.Alunos_turmas;
 @Repository
 public interface AlunosTurmasRepository extends JpaRepository<Alunos_turmas, Long> {
     Alunos_turmas findOneById(Long id);
+    void deleteByAlunoIdAndTurmaId(Long aluno, Long turma);
 }

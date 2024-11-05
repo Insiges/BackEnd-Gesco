@@ -32,5 +32,5 @@ public interface TurmasRepository extends JpaRepository<Turmas, Long> {
             "JOIN Alunos_turmas alt on alt.aluno.id = a.id " +
             "JOIN Turmas t on t.id = alt.turma.id " +
             "WHERE t.id = :turma")
-    List<DadosRetornoAlunoTurma> findAlunosByTurma(@Param("turma") Long professor);
+    List<DadosRetornoAlunoTurma> findAlunosByTurma(@Param("turma") Long turma);
 }

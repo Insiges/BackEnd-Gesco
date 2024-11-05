@@ -75,4 +75,10 @@ public class AlunosTurmaService {
         throw new RuntimeException("Erro: Não foi possível encontrar um aluno ou turma com estes dados.");
 
     }
+
+    @Transactional
+    public void deletarAlunoDeTurmaPeloIdDoAluno(Long aluno, Long turma) {
+
+        alunosTurmasRepository.deleteByAlunoIdAndTurmaId(aluno, turma);
+    }
 }

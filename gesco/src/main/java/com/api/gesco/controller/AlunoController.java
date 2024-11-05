@@ -101,4 +101,11 @@ public class AlunoController {
 
         return ResponseEntity.ok(alunos);
     }
+
+    @GetMapping("frequencia/{id}")
+    public ResponseEntity pegarFrequenciaData(@RequestHeader("Authorization") String token, @PathVariable("id") Long disciplina){
+        var frequencia = frequenciaService.buscarDadosFrequencia(token, disciplina);
+
+        return ResponseEntity.ok(frequencia);
+    }
 }

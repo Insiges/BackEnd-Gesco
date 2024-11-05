@@ -52,5 +52,13 @@ public class AlunosTurmaController {
         return ResponseEntity.status(201).body(aluno);
     }
 
+    @DeleteMapping("/aluno/{aluno}/turma/{turma}")
+    public ResponseEntity deletarAluno(@PathVariable("aluno") Long aluno, @PathVariable("turma") Long turma){
+        alunosTurmaService.deletarAlunoDeTurmaPeloIdDoAluno(aluno, turma);
+
+        return ResponseEntity.ok().build();
+
+    }
+
 
 }

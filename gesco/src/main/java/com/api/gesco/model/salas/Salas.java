@@ -25,23 +25,14 @@ public class Salas {
     private Long id;
     private String nome;
 
-    @ManyToOne
-    @JsonIgnore
-    @JoinColumn(name = "id_escola") // Define a chave estrangeira
-    private Escola escola;
-
-    public Salas(DadosCadastroSalas dados, Escola escola){
+    public Salas(DadosCadastroSalas dados){
 
         this.nome = dados.nome();
-        this.escola = escola;
     }
 
-    public void atualizarSala(DadosCadastroSalas dados, Escola escola){
+    public void atualizarSala(DadosCadastroSalas dados){
         if(dados.nome() != null){
             this.nome = dados.nome();
-        }
-        if (escola != null){
-            this.escola = escola;
         }
     }
 }

@@ -36,9 +36,7 @@ public class SalaService {
     @Transactional
     public Salas cadastrarSala(DadosCadastroSalas dados){
 
-        var escola = escolaRepository.findOneById(dados.id_escola());
-
-        var sala = repository.save(new Salas(dados, escola));
+        var sala = repository.save(new Salas(dados));
 
         return sala;
     }
@@ -49,33 +47,24 @@ public class SalaService {
         return page;
     }
 
-    public List<Salas> pegarSalasPeloIdDaEscola(String token){
-        var emailToken = jwtUtil.getEmailFromToken(token);
-        var escolaToken = loginEscolaRepository.findOnlyEscolaIdByEmail(emailToken);
-        var page =repository.findAllByEscolaId(escolaToken.getId());
-
-        return page;
-    }
-
     public DadosDetalhamentoSalas pegarUmaSalaPeloId(Long id){
         var sala =repository.findOneById(id);
 
-        var dados = new DadosDetalhamentoSalas(sala, sala.getEscola());
+        var dados = new DadosDetalhamentoSalas(sala);
 
         return dados;
     }
 
     public DadosDetalhamentoSalas atualizarSala(Long id, DadosCadastroSalas dados){
-        var escola = escolaRepository.findOneById(dados.id_escola());
         var sala = repository.findOneById(id);
 
         if (sala != null){
-            sala.atualizarSala(dados, escola);
+            sala.atualizarSala(dados);
 
             repository.save(sala);
         }
 
-        return new DadosDetalhamentoSalas(sala, escola);
+        return new DadosDetalhamentoSalas(sala);
     }
 
     @Transactional

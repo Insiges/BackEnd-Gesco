@@ -14,7 +14,7 @@ public record DadosCadastroReservaSala(
     Long id_professor,
 
     @NotNull
-    Long id_sala,
+    String sala,
 
     @NotBlank
     String turno

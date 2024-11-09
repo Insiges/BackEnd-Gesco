@@ -9,6 +9,6 @@ import java.util.List;
 
 public interface SalasRepository extends JpaRepository<Salas,Long> {
     Salas findOneById(Long id);
-    List<Salas> findAllByEscolaId(Long id);
+    Salas findOneByNome(String nome);
 
 }

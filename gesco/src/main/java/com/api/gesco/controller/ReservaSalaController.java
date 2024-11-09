@@ -26,9 +26,9 @@ public class ReservaSalaController {
         return ResponseEntity.status(201).body(reserva);
     }
 
-    @GetMapping("/sala/{id}")
-    public ResponseEntity listarTodasAsReservasDeUmaSala(@PathVariable("id") Long id, @RequestParam(required = false)String dia){
-        var reserva = reservaSalaService.pegarTodasAsReservasDeUmaSalaEmUmDia(id, dia);
+    @GetMapping("/{sala}")
+    public ResponseEntity listarTodasAsReservasDeUmaSala(@PathVariable("sala") String nome){
+        var reserva = reservaSalaService.pegarTodasAsReservasDeUmaSalaPeloNome(nome);
 
         return ResponseEntity.ok(reserva);
     }

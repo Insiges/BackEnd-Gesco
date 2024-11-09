@@ -90,12 +90,12 @@ public class EscolaController {
         return ResponseEntity.ok(responsavel);
     }
 
-    @GetMapping("/salas")
-    public ResponseEntity pegarSalasPeloIdDaEscola(@RequestHeader("Authorization")String token) {
-        var professor = salaService.pegarSalasPeloIdDaEscola(token);
-
-        return ResponseEntity.ok(professor);
-    }
+//    @GetMapping("/salas")
+//    public ResponseEntity pegarSalasPeloIdDaEscola(@RequestHeader("Authorization")String token) {
+//        var professor = salaService.pegarSalasPeloIdDaEscola(token);
+//
+//        return ResponseEntity.ok(professor);
+//    }
 
     @GetMapping("contador")
     public ResponseEntity pegarDadosContador(@RequestHeader("Authorization") String token) {

@@ -16,6 +16,7 @@ import java.util.List;
 public interface ReservaSalaRepository extends JpaRepository<ReservaSala, Long> {
     ReservaSala findOneById(Long id);
     List<ReservaSala> findAllBySalaId(Long id);
+    List<ReservaSala> findAllBySalaNome(String nome);
     List<ReservaSala> findAllByDiaAndSalaId(LocalDate dia, Long id);
 //
 //    @Query("SELECT new com.api.gesco.domain.disciplina.DadosDisciplina(d.id, d.nome) " +

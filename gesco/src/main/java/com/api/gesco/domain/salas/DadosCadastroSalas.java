@@ -7,9 +7,6 @@ import java.time.Year;
 
 public record DadosCadastroSalas(
     @NotBlank
-    String nome,
-
-    @NotNull
-    Long id_escola
+    String nome
 
 ) {}

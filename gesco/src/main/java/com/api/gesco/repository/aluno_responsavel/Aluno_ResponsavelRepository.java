@@ -11,4 +11,6 @@ import java.util.List;
 @Repository
 public interface Aluno_ResponsavelRepository extends JpaRepository<Aluno_Responsavel, Long> {
     Aluno_Responsavel findOneById(Long id);
+    List<Aluno_Responsavel> findByAlunoId(Long id);
+    Aluno_Responsavel findByAlunoIdAndResponsavelId(Long id_aluno, Long id_responsavel);
 }

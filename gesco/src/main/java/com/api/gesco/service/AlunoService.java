@@ -1,28 +1,31 @@
 package com.api.gesco.service;
 
+import com.api.gesco.components.JwtUtil;
+import com.api.gesco.controller.AuthenticationControllerLoginAluno;
 import com.api.gesco.domain.alunos.*;
 import com.api.gesco.domain.alunos_responsavel.DadosCadastroAluno_Responsavel;
-import com.api.gesco.domain.professor.DadosAtualizarProfessor;
-import com.api.gesco.domain.professor.DadosCadastroProfessor;
-import com.api.gesco.domain.professor.DadosDetalhamentoProfessores;
-import com.api.gesco.domain.professor.DadosRetornoProfessor;
+import com.api.gesco.domain.autenticacao.aluno.DadosCadastroLoginAluno;
 import com.api.gesco.model.alunos.Aluno;
-import com.api.gesco.model.professor.Professor;
 import com.api.gesco.repository.alunos.AlunoRepository;
-import com.api.gesco.repository.professor.ProfessorRepository;
+import com.api.gesco.repository.logins.LoginAlunoRepository;
+import com.api.gesco.repository.logins.LoginEscolaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.time.LocalDate;
+import java.time.Year;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class AlunoService {
+    private final JwtUtil jwtUtil;
 
     @Autowired
     private AlunoRepository repository;
@@ -48,8 +51,24 @@ public class AlunoService {
     @Autowired
     private Aluno_ResponsavelService alunoResponsavelService;
 
+    @Autowired
+    private AuthenticationControllerLoginAluno authenticationControllerLoginAluno;
+
+    @Autowired
+    private LoginEscolaRepository loginEscolaRepository;
+
+    @Autowired
+    private LoginAlunoRepository loginAlunoRepository;
+
+    public AlunoService(JwtUtil jwtUtil) {
+        this.jwtUtil = jwtUtil;
+    }
+
     @Transactional
-    public ResponseEntity cadastrarAluno(DadosCadastroAluno dados, UriComponentsBuilder uriBuilder){
+    public ResponseEntity cadastrarAluno(DadosCadastroAluno dados, UriComponentsBuilder uriBuilder, String token){
+        System.out.println(dados);
+        var emailToken = jwtUtil.getEmailFromToken(token);
+        var escolaToken = loginEscolaRepository.findOnlyEscolaIdByEmail(emailToken);
         //Valida se os emails já estão cadastrados.
         dados.emails().forEach(emailAluno -> emailService.validarEmailAluno(emailAluno));
 
@@ -61,7 +80,7 @@ public class AlunoService {
         if (estado == null){
             return ResponseEntity.badRequest().body("Erro: estado inválido!");
         }
-        var escola = escolaService.verificarEscola(dados.id_escola());
+        var escola = escolaService.verificarEscola(escolaToken.getId());
 
         var sexo = sexoService.pesquisarSexo(dados.sexo().toUpperCase());
 
@@ -76,7 +95,7 @@ public class AlunoService {
 
         if (dados.responsaveis() != null) {
             var responsaveis = dados.responsaveis().stream()
-                    .map(responsavel -> responsavelService.cadastrarResponsavel(responsavel))
+                    .map(responsavel -> responsavelService.cadastrarResponsavel(responsavel, aluno.getEscola().getId()))
                     .collect(Collectors.toList());
 
             responsaveis.forEach(responsavel ->
@@ -85,6 +104,7 @@ public class AlunoService {
             );
 
             var uri = uriBuilder.path("/aluno/{id}").buildAndExpand(aluno.getId()).toUri();
+            var login = authenticationControllerLoginAluno.cadastrar(new DadosCadastroLoginAluno(dados.login().email(), dados.login().senha(), aluno.getId()));
 
             return ResponseEntity.created(uri)
                     .body(new DadosRetornoAlunoResponsavel(
@@ -95,21 +115,35 @@ public class AlunoService {
                             responsaveis.stream()));
         }
 
+        var login = authenticationControllerLoginAluno.cadastrar(new DadosCadastroLoginAluno(dados.login().email(), dados.login().senha(), aluno.getId()));
+
         var uri = uriBuilder.path("/aluno/{id}").buildAndExpand(aluno.getId()).toUri();
-        System.out.println("Entrou nesse segundo");
         return ResponseEntity.created(uri).body(new DadosRetornoAluno(aluno, email, telefone, endereco));
     }
 
-    public Page<DadosDetalhamentoAluno> listarAlunosDaEscola(@PageableDefault(size = 20, sort = {"nome"}) Pageable paginacao, Long id){
-        var page =repository.findAlunosByEscola(id, paginacao);
+    public List<DadosDetalhamentoAluno> listarAlunosDaEscola(String token){
+        var emailToken = jwtUtil.getEmailFromToken(token);
+        var escolaToken = loginEscolaRepository.findOnlyEscolaIdByEmail(emailToken);
+        var page =repository.findAlunosByEscola(escolaToken.getId());
 
         return page;
     }
 
-    public DadosDetalhamentoAluno pegarAlunoPeloId(Long id){
-        var page =repository.findAlunosById(id);
+    public DadosRetornoAlunoCompleto pegarAlunoPeloId(Long id){
+        var aluno =repository.findOneById(id);
+        var responsaveis = alunoResponsavelService.pegarResponsaveisByAluno(id);
 
-        return page;
+        return  new DadosRetornoAlunoCompleto(aluno, responsaveis);
+    }
+  
+    public DadosDetalhamentoAlunoCompleto pegarAlunoPeloToken(String token){
+        var emailToken = jwtUtil.getEmailFromToken(token);
+        var alunoToken = loginAlunoRepository.findOnlyAlunoIdByEmail(emailToken);
+
+        var data = Year.now();
+        var aluno =repository.findAlunoById(alunoToken.getId(), data);
+
+        return aluno;
     }
 
     public Page<DadosDetalhamentoAluno> pegarTodosOsAlunos(Pageable paginacao){
@@ -121,7 +155,9 @@ public class AlunoService {
     public ResponseEntity atualizarAluno(Long id, DadosAtualizarAluno dados){
         var aluno = repository.findOneById(id);
         var sexo = sexoService.pesquisarSexo(dados.sexo());
+        var responsaveis = dados.responsaveis().stream().map(resp-> responsavelService.atualizarResponsavelPeloCpf(resp, aluno.getEscola().getId()));
 
+        responsaveis.forEach(responsavel -> alunoResponsavelService.verificarECadastrarAlunoResponsavel(new DadosCadastroAluno_Responsavel(aluno.getId(), responsavel.getId())));
         dados.emails().forEach(email -> emailService.atualizarEmailAluno(email.getId(),email.getEmail()));
         dados.telefones().forEach(telefone -> telefoneService.atualizarAluno(telefone.getId(), telefone.getTelefone()));
         dados.enderecos().forEach(endereco -> enderecoService.atualizarEnderecoAluno(endereco.getId(),endereco));
@@ -138,6 +174,13 @@ public class AlunoService {
     @Transactional
     public void deletarAluno(Long id){
         repository.deleteById(id);
+    }
+
+    @GetMapping("turma")
+    public ResponseEntity alunosSemTurma(){
+        var alunos = repository.findAlunosSemTurma();
+
+        return ResponseEntity.ok(alunos);
     }
 
 }

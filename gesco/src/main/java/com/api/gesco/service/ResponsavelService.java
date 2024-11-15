@@ -1,9 +1,11 @@
 package com.api.gesco.service;
 
+import com.api.gesco.components.JwtUtil;
 import com.api.gesco.domain.responsavel.DadosAtualizarResponsavel;
 import com.api.gesco.domain.responsavel.DadosCadastroResponsavel;
 import com.api.gesco.domain.responsavel.DadosRetornoResponsavel;
 import com.api.gesco.model.responsavel.Responsavel;
+import com.api.gesco.repository.logins.LoginEscolaRepository;
 import com.api.gesco.repository.responsavel.ResponsavelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,6 +19,7 @@ import java.util.List;
 
 @Service
 public class ResponsavelService {
+    private final JwtUtil jwtUtil;
 
     @Autowired
     private ResponsavelRepository repository;
@@ -27,17 +30,31 @@ public class ResponsavelService {
     @Autowired
     private SexoService sexoService;
 
-    @Transactional
-    public Responsavel cadastrarResponsavel(DadosCadastroResponsavel dados){
+    @Autowired
+    private LoginEscolaRepository loginEscolaRepository;
 
-        var escola = escolaService.verificarEscola(dados.id_escola());
+
+    public ResponsavelService(JwtUtil jwtUtil) {
+        this.jwtUtil = jwtUtil;
+    }
+
+    @Transactional
+    public Responsavel cadastrarResponsavel(DadosCadastroResponsavel dados, Long id_escola){
+
+        var escola = escolaService.verificarEscola(id_escola);
 
         var sexo = sexoService.pesquisarSexo(dados.sexo().toUpperCase());
 
-        var responsavel = repository.save(new Responsavel(dados, escola, sexo));
+        var existe = repository.findOneByCpfAndEscola(dados.cpf(), escola);
 
-        return responsavel;
-    }
+        if (existe != null){
+            return  existe;
+        }else{
+            var responsavel = repository.save(new Responsavel(dados, escola, sexo));
+
+            return responsavel;
+        }
+     }
 
     public ResponseEntity<List<Responsavel>> pegarTodosOsResponsaveis(){
         var page =repository.findAll();
@@ -51,13 +68,16 @@ public class ResponsavelService {
         return page;
     }
 
-    public List<Responsavel> pegarResponsaveisPeloIdDaEscola(Pageable pageable, Long id){
-        var page =repository.findAllByEscolaId(id, pageable);
+    public List<Responsavel> pegarResponsaveisPeloIdDaEscola(String token){
+        var emailToken = jwtUtil.getEmailFromToken(token);
+        var escolaToken = loginEscolaRepository.findOnlyEscolaIdByEmail(emailToken);
+
+        var page =repository.findAllByEscolaId(escolaToken.getId());
 
         return page;
     }
 
-    public ResponseEntity atualizarResponsavel(Long id, DadosAtualizarResponsavel dados){
+    public ResponseEntity atualizarResponsavel(Long id, DadosCadastroResponsavel dados){
         var responsavel = repository.findOneById(id);
         var sexo = sexoService.pesquisarSexo(dados.sexo());
 
@@ -75,4 +95,21 @@ public class ResponsavelService {
         repository.deleteById(id);
     }
 
+
+    @Transactional
+    public Responsavel atualizarResponsavelPeloCpf(DadosCadastroResponsavel dados, Long id_escola){
+        var responsavel = repository.findOneByCpf(dados.cpf());
+        var sexo = sexoService.pesquisarSexo(dados.sexo());
+
+        if (responsavel != null){
+            responsavel.atualizarResponsavel(dados, sexo);
+
+            repository.save(responsavel);
+            return responsavel;
+
+        }else{
+            return cadastrarResponsavel(dados, id_escola);
+        }
+
+    }
 }

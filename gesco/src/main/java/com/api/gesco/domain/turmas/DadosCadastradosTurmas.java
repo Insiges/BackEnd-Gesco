@@ -12,7 +12,7 @@ public record DadosCadastradosTurmas (
     @NotNull
     Year ano,
 
-    @NotNull 
-    Long id_escola
+    @NotBlank
+    String serie
 
 ) {}

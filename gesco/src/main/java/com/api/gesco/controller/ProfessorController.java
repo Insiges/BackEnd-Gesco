@@ -3,16 +3,18 @@ package com.api.gesco.controller;
 import com.api.gesco.domain.diploma.DadosDetalhamentoDiploma;
 import com.api.gesco.domain.professor.DadosAtualizarProfessor;
 import com.api.gesco.domain.professor.DadosCadastroProfessor;
-import com.api.gesco.domain.professor.DadosDetalhamentoProfessores;
+import com.api.gesco.repository.turmas.TurmasRepository;
 import com.api.gesco.service.DiplomaService;
 import com.api.gesco.service.ProfessorService;
+import com.api.gesco.service.TurmasService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("professor")
@@ -24,23 +26,33 @@ public class ProfessorController {
     @Autowired
     private DiplomaService diplomaService;
 
-    @PostMapping
-    public ResponseEntity cadastrarAluno(@RequestBody @Valid DadosCadastroProfessor dados, UriComponentsBuilder uriBuilder){
+    @Autowired
+    private TurmasService turmasService;
 
-        var professor = service.cadastrarProfessor(dados, uriBuilder);
+    @PostMapping
+    public ResponseEntity cadastrarAluno(@RequestBody @Valid DadosCadastroProfessor dados, UriComponentsBuilder uriBuilder, @RequestHeader("Authorization") String token){
+
+        var professor = service.cadastrarProfessor(dados, uriBuilder, token);
 
         return ResponseEntity.status(201).body(professor);
     }
 
-    @GetMapping("/{id}")
-    public  ResponseEntity<Page<DadosDetalhamentoProfessores>> pegarProfessorPeloId(Pageable paginacao, @PathVariable("id") Long id){
-        var professor = service.pegarProfessorPeloId(paginacao,id);
+    @GetMapping("/user")
+    public  ResponseEntity pegarProfessorPeloToken(@RequestHeader("Authorization") String token){
+        var professor = service.pegarProfessorPeloToken(token);
 
         return  ResponseEntity.ok(professor);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity pegarprofessorPeloId(@PathVariable("id")Long id){
+        var professor = service.pegarProfessorPeloId(id);
+
+        return ResponseEntity.ok(professor);
+    }
+
     @GetMapping()
-    public  ResponseEntity<Page<DadosDetalhamentoProfessores>> pegarTodosOsProfessores(Pageable paginacao){
+    public  ResponseEntity pegarTodosOsProfessores(Pageable paginacao){
         var professor = service.pegarTodosOsProfessores(paginacao);
 
         return  ResponseEntity.ok(professor);
@@ -48,6 +60,7 @@ public class ProfessorController {
 
     @PutMapping("/{id}")
     public ResponseEntity atualizarProfessor(@PathVariable("id") Long id, @RequestBody @Valid DadosAtualizarProfessor dados){
+        System.out.println(dados);
 
         var professor = service.atualizarProfessor(id, dados);
 
@@ -62,9 +75,17 @@ public class ProfessorController {
     }
 
     @GetMapping("/diploma/{id}")
-    public ResponseEntity<Page<DadosDetalhamentoDiploma>> listarDiplomasDeUmProfessor(Pageable page, @PathVariable("id") Long id){
-        var diplomas = diplomaService.listarDiplomasDeUmProfessor(page, id);
+    public ResponseEntity<List<DadosDetalhamentoDiploma>> listarDiplomasDeUmProfessor(Pageable page, @PathVariable("id") Long id){
+        var diplomas = diplomaService.listarDiplomasDeUmProfessor(id);
 
         return ResponseEntity.ok(diplomas);
+    }
+
+    @GetMapping("turmas")
+    public ResponseEntity pegarTurmas(UriComponentsBuilder uriBuilder, @RequestHeader("Authorization") String token){
+
+        var professor = turmasService.pegarTurmasPeloProfessor(token);
+
+        return ResponseEntity.ok(professor);
     }
 }

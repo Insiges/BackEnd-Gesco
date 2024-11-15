@@ -1,4 +1,4 @@
-package com.api.gesco.model.loginProfessor;
+package com.api.gesco.model.logins;
 
 import com.api.gesco.domain.Roles;
 import com.api.gesco.model.professor.Professor;

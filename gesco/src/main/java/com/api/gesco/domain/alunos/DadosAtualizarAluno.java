@@ -1,5 +1,6 @@
 package com.api.gesco.domain.alunos;
 
+import com.api.gesco.domain.responsavel.DadosCadastroResponsavel;
 import com.api.gesco.model.alunos.EmailAluno;
 import com.api.gesco.model.alunos.TelefoneAluno;
 import com.api.gesco.model.endereco.EnderecoAluno;
@@ -32,6 +33,12 @@ public record DadosAtualizarAluno(
         List<TelefoneAluno> telefones,
         @NotNull
         List<EmailAluno> emails,
-        List<EnderecoAluno> enderecos) {
+        @NotNull
+        List<EnderecoAluno> enderecos,
+
+        @NotNull
+        List<DadosCadastroResponsavel> responsaveis
+)
+{
 }
 

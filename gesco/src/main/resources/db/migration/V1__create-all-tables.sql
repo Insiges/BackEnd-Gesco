@@ -15,6 +15,7 @@ imagem varchar(500) not null,
 unique index(id)
 );
 
+
 create table emailEscola(
 id int not null auto_increment primary key,
 email varchar(255) not null unique,
@@ -86,6 +87,7 @@ unique index(id)
 create table turmas(
 id int not null auto_increment primary key,
 nome varchar(20) not null,
+serie varchar(10) not null,
 ano year not null,
 id_escola int not null,
 
@@ -116,6 +118,8 @@ ON DELETE CASCADE,
 
 unique index(id)
 );
+
+
 
 create table emailAluno(
 id int not null auto_increment primary key,
@@ -181,7 +185,7 @@ unique index(id)
 
 create table disciplina(
 id int not null auto_increment primary key,
-nome varchar(20) not null,
+nome varchar(30) not null,
 
 unique index(id)
 );
@@ -288,7 +292,7 @@ dia date not null,
 id_aluno int not null,
 id_disciplina int not null,
 id_professor int not null,
-presenca ENUM('Presente', 'Ausente'),
+presenca ENUM('PRESENTE', 'AUSENTE'),
 
 
 CONSTRAINT fk_frequenciaProfessor
@@ -300,7 +304,7 @@ FOREIGN KEY (id_aluno) REFERENCES alunos(id)
 ON DELETE CASCADE,
 
 CONSTRAINT fk_frequenciaDisciplina
-FOREIGN KEY (id_disciplina) REFERENCES escola(id)
+FOREIGN KEY (id_disciplina) REFERENCES disciplina(id)
 ON DELETE CASCADE,
 
 unique index(id)
@@ -344,7 +348,7 @@ ON DELETE CASCADE,
 unique index(id)
 );
 
-create table tipoAtividade(
+create table tipo_atividade(
 id int not null auto_increment primary key,
 nome varchar(50) not null,
 
@@ -357,8 +361,8 @@ id int not null auto_increment primary key,
 nome varchar(50) not null,
 descricao text not null,
 valor float not null,
-dataAtividade date not null,
-id_tipoAtividade int not null,
+data_atividade date not null,
+id_tipo_atividade int not null,
 id_turma int not null,
 id_professor int not null,
 
@@ -367,7 +371,7 @@ FOREIGN KEY (id_professor) REFERENCES professor(id)
 ON DELETE CASCADE,
 
 CONSTRAINT fk_atividadeTipoAtividade
-FOREIGN KEY (id_tipoAtividade) REFERENCES tipoAtividade(id)
+FOREIGN KEY (id_tipo_atividade) REFERENCES tipo_atividade(id)
 ON DELETE CASCADE,
 
 CONSTRAINT fk_atividadeTurma
@@ -455,7 +459,7 @@ unique index(id)
 create table reserva_sala(
 id int not null auto_increment primary key,
 dia date not null,
-hora time not null,
+turno varchar(20) not null,
 id_sala int not null,
 id_professor int not null,
 

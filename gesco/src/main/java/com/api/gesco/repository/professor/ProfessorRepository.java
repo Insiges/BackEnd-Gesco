@@ -13,7 +13,7 @@ import java.util.List;
 public interface ProfessorRepository extends JpaRepository<Professor, Long> {
     @Query("SELECT new com.api.gesco.domain.professor.DadosDetalhamentoProfessores(" +
             "p.id, p.nome, p.foto, p.cpf, p.dataNascimento, ep.id, ep.email, tp.id, tp.telefone, s.nome, " +
-            "epf.logradouro, epf.cep, epf.bairro, epf.numero, epf.complemento, c.id, c.nome, e.sigla) " +
+            "epf.id, epf.logradouro, epf.cep, epf.bairro, epf.numero, epf.complemento, c.id, c.nome, e.sigla, e.id, e.nome) " +
             "FROM Professor p " +
             "JOIN EmailProfessor ep ON p.id = ep.professor.id " +
             "JOIN TelefoneProfessor tp ON p.id = tp.professor.id " +
@@ -21,12 +21,13 @@ public interface ProfessorRepository extends JpaRepository<Professor, Long> {
             "JOIN Cidade c ON epf.cidade.id = c.id " +
             "JOIN Estado e ON c.estado.id = e.id " +
             "JOIN Sexo s ON s.id = p.sexo.id " +
-            "WHERE p.escola.id = :idEscola")
-    Page<DadosDetalhamentoProfessores> findProfessoresByEscola(@Param("idEscola") Long idEscola, Pageable paginacao);
+            "WHERE p.escola.id = :idEscola " +
+            "ORDER BY p.nome")
+    List<DadosDetalhamentoProfessores> findProfessoresByEscola(@Param("idEscola") Long idEscola);
 
     @Query("SELECT new com.api.gesco.domain.professor.DadosDetalhamentoProfessores(" +
             "p.id, p.nome, p.foto, p.cpf, p.dataNascimento, ep.id, ep.email, tp.id, tp.telefone, s.nome, " +
-            "epf.logradouro, epf.cep, epf.bairro, epf.numero, epf.complemento, c.id, c.nome, e.sigla) " +
+            "epf.id, epf.logradouro, epf.cep, epf.bairro, epf.numero, epf.complemento, c.id, c.nome,  e.sigla, e.id, e.nome) " +
             "FROM Professor p " +
             "JOIN EmailProfessor ep ON p.id = ep.professor.id " +
             "JOIN TelefoneProfessor tp ON p.id = tp.professor.id " +
@@ -35,11 +36,11 @@ public interface ProfessorRepository extends JpaRepository<Professor, Long> {
             "JOIN Estado e ON c.estado.id = e.id " +
             "JOIN Sexo s ON s.id = p.sexo.id " +
             "WHERE p.id = :idProfessor")
-    Page<DadosDetalhamentoProfessores> findProfessorById(@Param("idProfessor") Long idProfessor, Pageable paginacao);
+    DadosDetalhamentoProfessores findProfessorById(@Param("idProfessor") Long idProfessor);
 
     @Query("SELECT new com.api.gesco.domain.professor.DadosDetalhamentoProfessores(" +
             "p.id, p.nome, p.foto, p.cpf, p.dataNascimento, ep.id, ep.email, tp.id, tp.telefone, s.nome, " +
-            "epf.logradouro, epf.cep, epf.bairro, epf.numero, epf.complemento, c.id, c.nome, e.sigla) " +
+            "epf.id, epf.logradouro, epf.cep, epf.bairro, epf.numero, epf.complemento, c.id, c.nome,  e.sigla, e.id, e.nome) " +
             "FROM Professor p " +
             "JOIN EmailProfessor ep ON p.id = ep.professor.id " +
             "JOIN TelefoneProfessor tp ON p.id = tp.professor.id " +

@@ -3,7 +3,9 @@ package com.api.gesco.model.professor;
 
 import com.api.gesco.domain.professor.DadosAtualizarProfessor;
 import com.api.gesco.domain.professor.DadosCadastroProfessor;
+import com.api.gesco.model.atividade.Atividade;
 import com.api.gesco.model.diploma.Diploma;
+import com.api.gesco.model.disciplina_professor.DisciplinaProfesor;
 import com.api.gesco.model.endereco.EnderecoProfessor;
 import com.api.gesco.model.escola.Escola;
 import com.api.gesco.model.sexo.Sexo;
@@ -43,6 +45,12 @@ public class Professor {
 
     @OneToMany(mappedBy = "professor", cascade = CascadeType.ALL)
     private List<Diploma> diplomas;
+
+    @OneToMany(mappedBy = "professor", cascade = CascadeType.ALL)
+    private List<DisciplinaProfesor> disciplinas;
+
+    @OneToMany(mappedBy = "professor", cascade = CascadeType.ALL)
+    private List<Atividade> atividades;
 
     @ManyToOne
     @JoinColumn(name = "id_escola") // Define a chave estrangeira

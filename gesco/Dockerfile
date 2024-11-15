@@ -10,6 +10,9 @@ COPY gradlew /app/
 COPY build.gradle /app/
 COPY settings.gradle /app/
 
+# Adicionar permissão de execução para o gradlew
+RUN chmod +x ./gradlew
+
 # Baixar as dependências do Gradle
 RUN ./gradlew build --no-daemon || return 0
 

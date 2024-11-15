@@ -140,12 +140,27 @@ public class FrequenciaService {
         var professor = professorRepository.findOneById(dados.professor());
         var disciplina = disciplinaRepository.findOneById(dados.disciplina());
         var ausentes = new ArrayList<>(turma.stream().map(DadosRetornoAlunoTurma::id).toList());
+
+        frequenciaRepository.deleteByDisciplinaProfessorAndAlunos(disciplina.getId(),professor.getId(), ausentes);
+
         ausentes.removeAll(dados.alunos());
+
         var alunosPresentes = dados.alunos().stream().map(al -> alunoRepository.findOneById(al));
         var alunosAusentes = ausentes.stream().map(ausente -> alunoRepository.findOneById(ausente));
 
-        alunosAusentes.forEach(aluno -> frequenciaRepository.save(new Frequencia(dados.dia(),aluno,disciplina, professor, dados.presenca() )));
+        alunosAusentes.forEach(aluno -> frequenciaRepository.save(new Frequencia(dados.dia(),aluno,disciplina, professor, Presenca.AUSENTE )));
         alunosPresentes.forEach(aluno -> frequenciaRepository.save(new Frequencia(dados.dia(),aluno,disciplina, professor, dados.presenca() )));
     }
 
+    public ResponseEntity pegarDadosFrequencia(Long idTurma, Long idDisciplina, Long idProfessor, LocalDate dia){
+        var turma = turmasRepository.findOneById(idTurma);
+        var professor = professorRepository.findOneById(idProfessor);
+        var disciplina = disciplinaRepository.findOneById(idDisciplina);
+
+        var frequencia = frequenciaRepository.findAllByDisciplinaIdAndProfessorIdAndDiaAndPresenca(idDisciplina, idProfessor, dia, Presenca.PRESENTE);
+
+        var alunos = frequencia.stream().map(fr -> fr.getAluno().getId()).toList();
+
+        return ResponseEntity.ok(alunos);
+    }
 }

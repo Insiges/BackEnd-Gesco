@@ -3,12 +3,17 @@ package com.api.gesco.repository.frequencia_chamada;
 
 import com.api.gesco.domain.frequencia.DadosRetornoFrequenciaTotal;
 import com.api.gesco.domain.frequencia.Presenca;
+import com.api.gesco.model.alunos.Aluno;
 import com.api.gesco.model.disciplina.Disciplina;
 import com.api.gesco.model.frequencia.Frequencia;
+import com.api.gesco.model.professor.Professor;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.time.LocalDate;
 import java.util.List;
 @Repository
@@ -46,7 +51,14 @@ public interface FrequenciaRepository extends JpaRepository<Frequencia, Long> {
             "WHERE f.presenca IN (PRESENTE,AUSENTE) AND f.aluno.id = :id AND f.disciplina.id = :disciplina")
     List<DadosRetornoFrequenciaTotal> contarFrequenciasPorPresenca(@Param("id") Long alunoId, @Param("disciplina") Long disciplina);
 
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM Frequencia f WHERE f.disciplina.id = :idDisciplina AND f.professor.id = :idProfessor AND f.aluno.id IN :idsAluno")
+    void deleteByDisciplinaProfessorAndAlunos(@Param("idDisciplina") Long idDisciplina,
+                                              @Param("idProfessor") Long idProfessor,
+                                              @Param("idsAluno") List<Long> idsAluno);
 
 
+    List<Frequencia> findAllByDisciplinaIdAndProfessorIdAndDiaAndPresenca(Long disciplina, Long professor, LocalDate dia, Presenca presenca);
 }
 

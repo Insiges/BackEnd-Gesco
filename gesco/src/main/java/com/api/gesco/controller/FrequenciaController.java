@@ -56,45 +56,6 @@ public class FrequenciaController {
         System.out.println(dados);
         frequenciaService.cadastrarFrequencia(dados);
     }
-
-//    @PutMapping("/{id}")
-//    public ResponseEntity<Frequencia> atualizarFrequencia(@PathVariable Long id, @RequestBody FrequenciaRequest frequenciaRequest) {
-//        System.out.println("ID recebido: " + id);
-//        System.out.println("Aluno ID recebido: " + frequenciaRequest.getIdAluno());
-//        System.out.println("Disciplina ID recebido: " + frequenciaRequest.getDisciplinaId());
-//        System.out.println("Professor ID recebido: " + frequenciaRequest.getProfessorId());
-//
-//        Frequencia frequenciaExistente = frequenciaService.buscarPorId(id)
-//            .orElseThrow(() -> new EntityNotFoundException("Frequência não encontrada com ID: " + id));
-//
-//
-//    Aluno aluno = alunoRepository.findById(frequenciaRequest.getIdAluno())
-//            .orElseThrow(() -> new EntityNotFoundException("Aluno não encontrado com ID: " + frequenciaRequest.getIdAluno()));
-//    Disciplina disciplina = disciplinaRepository.findById(frequenciaRequest.getDisciplinaId())
-//            .orElseThrow(() -> new EntityNotFoundException("Disciplina não encontrada com ID: " + frequenciaRequest.getDisciplinaId()));
-//    Professor professor = professorRepository.findById(frequenciaRequest.getProfessorId())
-//            .orElseThrow(() -> new EntityNotFoundException("Professor não encontrado com ID: " + frequenciaRequest.getProfessorId()));
-//
-//    frequenciaExistente.setAluno(aluno);
-//    frequenciaExistente.setDisciplina(disciplina);
-//    frequenciaExistente.setProfessor(professor);
-//    frequenciaExistente.setDia(frequenciaRequest.getDia());
-//
-//    String presenca = frequenciaRequest.getPresenca();
-//    if (presenca != null) {
-//        presenca = presenca.toUpperCase().trim();
-//        try {
-//            frequenciaExistente.setPresenca(Presenca.valueOf(presenca));
-//        } catch (IllegalArgumentException e) {
-//            throw new IllegalArgumentException("Valor de presença inválido: " + presenca);
-//        }
-//    } else {
-//        throw new IllegalArgumentException("Presença não pode ser nula");
-//    }
-//
-//    Frequencia frequenciaAtualizada = frequenciaService.salvarFrequencia(frequenciaExistente);
-//    return ResponseEntity.ok(frequenciaAtualizada);
-//}
     
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletarFrequencia(@PathVariable Long id) {
@@ -164,6 +125,17 @@ public class FrequenciaController {
     public ResponseEntity<Long> contarPorDisciplina(@PathVariable Long disciplinaId) {
         Long count = frequenciaService.contarPorDisciplina(disciplinaId);
         return ResponseEntity.ok(count);
+    }
+
+    @GetMapping("params")
+    public ResponseEntity pegarDadosFrequencia(@RequestParam(value = "dia", required = false) LocalDate dia,
+                                               @RequestParam(value = "turma", required = false) Long turma,
+                                               @RequestParam(value = "disciplina", required = false) Long disciplina,
+                                               @RequestParam(value = "professor", required = false) Long professor
+                                               ){
+        var frequencia = frequenciaService.pegarDadosFrequencia(turma, disciplina, professor, dia);
+
+        return ResponseEntity.ok(frequencia);
     }
 
 }

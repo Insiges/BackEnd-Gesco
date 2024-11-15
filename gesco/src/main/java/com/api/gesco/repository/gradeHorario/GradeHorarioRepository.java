@@ -1,4 +1,4 @@
-package com.api.gesco.repository.frequencia;
+package com.api.gesco.repository.gradeHorario;
 
 import com.api.gesco.domain.grade_horario.DadosDetalhamentoGradeHorario;
 import com.api.gesco.model.frequencia.GradeHorario;

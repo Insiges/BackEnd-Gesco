@@ -1,11 +1,10 @@
 package com.api.gesco.service;
 
 import com.api.gesco.domain.grade_horario.DadosCadastroGrade;
-import com.api.gesco.domain.grade_horario.DadosDetalhamentoGradeHorario;
 import com.api.gesco.domain.grade_horario.DadosDetalhamentoGradeHorarioUnico;
 import com.api.gesco.model.frequencia.GradeHorario;
 import com.api.gesco.repository.disciplina.DisciplinaRepository;
-import com.api.gesco.repository.frequencia.GradeHorarioRepository;
+import com.api.gesco.repository.gradeHorario.GradeHorarioRepository;
 import com.api.gesco.repository.horario.HorarioRepository;
 import com.api.gesco.repository.professor.ProfessorRepository;
 import com.api.gesco.repository.semana.SemanaRepository;

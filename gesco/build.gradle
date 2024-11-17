@@ -1,3 +1,5 @@
+import org.springframework.boot.gradle.tasks.bundling.BootJar
+
 plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.3.3'
@@ -43,4 +45,9 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+// Adicione esta configuração
+tasks.withType(BootJar).configureEach {
+	mainClass = 'com.api.GescoApplication' // Substitua pelo caminho correto da sua classe principal
 }

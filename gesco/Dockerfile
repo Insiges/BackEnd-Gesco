@@ -31,7 +31,7 @@ WORKDIR /app
 # Copiar o JAR gerado para a imagem final
 COPY --from=build /app/build/libs/*.jar /app/app.jar
 
-COPY ./src/main/resources/aplicationdocker.properties ./src/main/resources/aplication.properties
+COPY ./src/main/resources/aplicationdocker.properties ./src/main/resources/application.properties
 
 # Expor a porta da aplicação
 EXPOSE 8080

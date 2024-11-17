@@ -49,5 +49,5 @@ tasks.named('test') {
 
 // Adicione esta configuração
 tasks.withType(BootJar).configureEach {
-	mainClass = 'com.api.GescoApplication' // Substitua pelo caminho correto da sua classe principal
+	mainClass = 'com.api.gesco.GescoApplication'
 }

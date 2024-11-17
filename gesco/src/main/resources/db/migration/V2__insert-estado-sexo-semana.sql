@@ -1,4 +1,4 @@
-insert into sexo(nome, sigla)values
+INSERT INTO sexo(nome, sigla) VALUES
 ("Masculino","M"),("Feminino","F");
 
 INSERT INTO estado (nome, sigla) VALUES

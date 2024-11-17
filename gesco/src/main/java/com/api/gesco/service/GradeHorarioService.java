@@ -60,6 +60,8 @@ public class GradeHorarioService {
 
     @Transactional
     public ResponseEntity atualizarGrade(Long id,DadosCadastroGrade dados){
+        System.out.println(dados);
+        System.out.println(id);
         var grade = repository.findOneById(id);
 
         if (grade != null){

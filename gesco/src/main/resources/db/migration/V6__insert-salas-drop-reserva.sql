@@ -1,6 +1,6 @@
-ALTER TABLE SALAS DROP FOREIGN KEY fk_salas_Escola;
+ALTER TABLE salas DROP FOREIGN KEY fk_salas_Escola;
 
-ALTER TABLE SALAS
+ALTER TABLE salas
 drop column id_escola;
 
 ALTER TABLE reserva_sala

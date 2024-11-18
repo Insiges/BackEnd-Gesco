@@ -16,7 +16,7 @@ unique index(id)
 );
 
 
-create table emailEscola(
+create table emailescola(
 id int not null auto_increment primary key,
 email varchar(255) not null unique,
 id_escola int not null,
@@ -30,7 +30,7 @@ unique index(id)
 
 
 
-create table telefoneEscola(
+create table telefoneescola(
 id int not null auto_increment primary key,
 telefone varchar(20) not null unique,
 id_escola int not null,
@@ -62,7 +62,7 @@ ON DELETE CASCADE,
 unique index(id)
 );
 
-create table enderecoEscola(
+create table enderecoescola(
 id int not null primary key auto_increment,
 logradouro varchar(100) not null,
 cep varchar(10) not null,
@@ -146,7 +146,7 @@ unique index(id)
 );
 
 
-create table enderecoAluno(
+create table enderecoaluno(
 id int not null primary key auto_increment,
 logradouro varchar(100) not null,
 cep varchar(10) not null,
@@ -210,7 +210,7 @@ ON DELETE CASCADE,
 unique index(id)
 );
 
-create table emailProfessor(
+create table emailprofessor(
 id int not null auto_increment primary key,
 email varchar(255) not null unique,
 id_professor int not null,
@@ -222,7 +222,7 @@ ON DELETE CASCADE,
 unique index(id)
 );
 
-create table telefoneProfessor(
+create table telefoneprofessor(
 id int not null auto_increment primary key,
 telefone varchar(20) not null unique,
 id_professor int not null,
@@ -234,7 +234,7 @@ ON DELETE CASCADE,
 unique index(id)
 );
 
-create table enderecoProfessor(
+create table enderecoprofessor(
 id int not null primary key auto_increment,
 logradouro varchar(100) not null,
 cep varchar(10) not null,

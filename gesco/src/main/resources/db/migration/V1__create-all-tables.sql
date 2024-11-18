@@ -121,7 +121,7 @@ unique index(id)
 
 
 
-create table emailAluno(
+create table emailaluno(
 id int not null auto_increment primary key,
 email varchar(255) not null unique,
 id_aluno int not null,
@@ -133,7 +133,7 @@ ON DELETE CASCADE,
 unique index(id)
 );
 
-create table telefoneAluno(
+create table telefonealuno(
 id int not null auto_increment primary key,
 telefone varchar(20) not null unique,
 id_aluno int not null,

@@ -11,7 +11,7 @@ import java.util.List;
 public interface GradeHorarioRepository extends JpaRepository<GradeHorario,Long> {
     GradeHorario findOneById(Long id);
 
-    @Query("SELECT new com.api.gesco.domain.grade_horario.DadosDetalhamentoGradeHorario(g.id, h.hora, s.dia, p.nome, d.nome, t.nome) " +
+    @Query("SELECT new com.api.gesco.domain.grade_horario.DadosDetalhamentoGradeHorario(g.id, h.hora, s.dia, p.nome, d.nome,t.serie, t.nome) " +
             "FROM GradeHorario g " +
             "JOIN g.horario h " +
             "JOIN g.semana s " +
@@ -21,7 +21,7 @@ public interface GradeHorarioRepository extends JpaRepository<GradeHorario,Long>
             "WHERE p.id = :professorId")
     List<DadosDetalhamentoGradeHorario> findGradeHorarioByProfessorId(@Param("professorId") Long professorId);
 
-    @Query("SELECT new com.api.gesco.domain.grade_horario.DadosDetalhamentoGradeHorario(g.id, h.hora, s.dia, p.nome, d.nome, t.nome, t.serie) " +
+    @Query("SELECT new com.api.gesco.domain.grade_horario.DadosDetalhamentoGradeHorario(g.id, h.hora, s.dia, p.nome, d.nome, t.serie, t.nome) " +
             "FROM GradeHorario g " +
             "JOIN g.horario h " +
             "JOIN g.semana s " +

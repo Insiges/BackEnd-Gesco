@@ -53,9 +53,10 @@ public interface FrequenciaRepository extends JpaRepository<Frequencia, Long> {
 
     @Modifying
     @Transactional
-    @Query("DELETE FROM Frequencia f WHERE f.disciplina.id = :idDisciplina AND f.professor.id = :idProfessor AND f.aluno.id IN :idsAluno")
+    @Query("DELETE FROM Frequencia f WHERE f.disciplina.id = :idDisciplina AND f.professor.id = :idProfessor AND f.aluno.id IN :idsAluno AND f.dia = :dia")
     void deleteByDisciplinaProfessorAndAlunos(@Param("idDisciplina") Long idDisciplina,
                                               @Param("idProfessor") Long idProfessor,
+                                              @Param("dia") LocalDate dia,
                                               @Param("idsAluno") List<Long> idsAluno);
 
 

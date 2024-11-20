@@ -141,7 +141,7 @@ public class FrequenciaService {
         var disciplina = disciplinaRepository.findOneById(dados.disciplina());
         var ausentes = new ArrayList<>(turma.stream().map(DadosRetornoAlunoTurma::id).toList());
 
-        frequenciaRepository.deleteByDisciplinaProfessorAndAlunos(disciplina.getId(),professor.getId(), ausentes);
+        frequenciaRepository.deleteByDisciplinaProfessorAndAlunos(disciplina.getId(),professor.getId(),dados.dia(), ausentes);
 
         ausentes.removeAll(dados.alunos());
 

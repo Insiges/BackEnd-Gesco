@@ -21,7 +21,7 @@ public interface GradeHorarioRepository extends JpaRepository<GradeHorario,Long>
             "WHERE p.id = :professorId")
     List<DadosDetalhamentoGradeHorario> findGradeHorarioByProfessorId(@Param("professorId") Long professorId);
 
-    @Query("SELECT new com.api.gesco.domain.grade_horario.DadosDetalhamentoGradeHorario(g.id, h.hora, s.dia, p.nome, d.nome, t.nome) " +
+    @Query("SELECT new com.api.gesco.domain.grade_horario.DadosDetalhamentoGradeHorario(g.id, h.hora, s.dia, p.nome, d.nome, t.nome, t.serie) " +
             "FROM GradeHorario g " +
             "JOIN g.horario h " +
             "JOIN g.semana s " +

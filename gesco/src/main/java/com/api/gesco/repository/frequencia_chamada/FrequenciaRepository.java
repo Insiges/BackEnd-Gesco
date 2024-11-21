@@ -37,7 +37,7 @@ public interface FrequenciaRepository extends JpaRepository<Frequencia, Long> {
     void deleteByAlunoId(Long alunoId);
     void deleteByDisciplinaId(Long disciplinaId);
 
-    @Query(value = "SELECT * FROM frequencia WHERE id_aluno = :alunoId AND id_disciplina = :disciplina", nativeQuery = true)
+    @Query(value = "SELECT * FROM frequencia WHERE id_aluno = :alunoId AND id_disciplina = :disciplina order by frequencia.dia", nativeQuery = true)
     List<Frequencia> findFrequenciaByAlunoAndDisciplina(@Param("alunoId") Long alunoId, @Param("disciplina") Long disciplina);
 
     @Query(value = "SELECT id_disciplina FROM frequencia WHERE id_aluno = :alunoId", nativeQuery = true)
